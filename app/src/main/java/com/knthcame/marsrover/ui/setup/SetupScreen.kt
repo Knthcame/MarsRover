@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,6 +35,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,15 +71,13 @@ private fun SetupScreen(
         val focusManager = LocalFocusManager.current
 
         if (showBottomSheet) {
-            val dismiss = {
-                showBottomSheet = false
-                focusManager.clearFocus()
-            }
             DirectionPicker(
-                onDismiss = dismiss,
+                onDismiss = {
+                    showBottomSheet = false
+                    focusManager.clearFocus()
+                },
                 onSelect = { direction ->
                     onEvent(SetupUiEvent.InitialDirectionChanged(direction))
-                    dismiss()
                 },
             )
         }
@@ -93,6 +94,10 @@ private fun SetupScreen(
                 value = uiState.plateauSize,
                 onValueChange = { value -> onEvent(SetupUiEvent.PlateauSizeChanged(value)) },
                 modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next,
+                ),
             )
             Text(stringResource(R.string.initial_position))
             InitialPositionTextFields(
@@ -110,6 +115,7 @@ private fun SetupScreen(
 
             Button(
                 onClick = onSetupCompleted,
+                enabled = uiState.isContinueEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
@@ -144,6 +150,10 @@ private fun InitialPositionTextFields(
                 Text(stringResource(R.string.x_axis))
             },
             modifier = Modifier.weight(1f),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+            ),
         )
         TextField(
             value = initialY,
@@ -152,6 +162,10 @@ private fun InitialPositionTextFields(
                 Text(stringResource(R.string.y_axis))
             },
             modifier = Modifier.weight(1f),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+            ),
         )
         TextField(
             value = initialDirection?.name ?: "",
@@ -182,8 +196,9 @@ private fun DirectionPicker(
     ) {
         DirectionsList(
             onSelect = { value ->
+                onSelect(value)
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    onSelect(value)
+                    onDismiss()
                 }
             },
             modifier = Modifier

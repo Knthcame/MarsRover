@@ -1,7 +1,10 @@
 package com.knthcame.marsrover.ui
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,10 +30,18 @@ fun MarsRoverNavHost(
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
+
     NavHost(
         navController = navHostController,
         startDestination = Home,
-        modifier = modifier,
+        modifier = modifier
+            .clickable(
+                interactionSource = null,
+                indication = null,
+                onClick = { focusManager.clearFocus() }
+            )
+            .imePadding(),
     ) {
         composable<Home> {
             HomeScreenRoute(onStartSetup = {

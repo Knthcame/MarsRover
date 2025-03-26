@@ -21,6 +21,9 @@ data class SetupUIState(
                 initialDirection = CardinalDirection.North,
             )
     }
+
+    val isContinueEnabled: Boolean
+        get() = plateauSize.isNotEmpty() && initialX.isNotEmpty() && initialY.isNotEmpty()
 }
 
 sealed interface SetupUiEvent {
@@ -45,20 +48,47 @@ class SetupViewModel : ViewModel() {
     }
 
     private fun onPlateauSizeChanged(newValue: String) {
-        _uiState.update { oldValue ->
-            oldValue.copy(plateauSize = newValue)
+        if (newValue.isEmpty()) {
+            _uiState.update { oldValue ->
+                oldValue.copy(plateauSize = "")
+            }
+            return
+        }
+
+        newValue.toIntOrNull()?.let {
+            _uiState.update { oldValue ->
+                oldValue.copy(plateauSize = newValue)
+            }
         }
     }
 
     private fun onInitialXChanged(newValue: String) {
-        _uiState.update { oldValue ->
-            oldValue.copy(initialX = newValue)
+        if (newValue.isEmpty()) {
+            _uiState.update { oldValue ->
+                oldValue.copy(initialX = "")
+            }
+            return
+        }
+
+        newValue.toIntOrNull()?.let {
+            _uiState.update { oldValue ->
+                oldValue.copy(initialX = newValue)
+            }
         }
     }
 
     private fun onInitialYChanged(newValue: String) {
-        _uiState.update { oldValue ->
-            oldValue.copy(initialY = newValue)
+        if (newValue.isEmpty()) {
+            _uiState.update { oldValue ->
+                oldValue.copy(initialY = "")
+            }
+            return
+        }
+
+        newValue.toIntOrNull()?.let {
+            _uiState.update { oldValue ->
+                oldValue.copy(initialY = newValue)
+            }
         }
     }
 
