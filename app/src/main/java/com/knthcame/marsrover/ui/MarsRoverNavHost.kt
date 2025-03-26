@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.knthcame.marsrover.ui.home.HomeScreenRoute
+import com.knthcame.marsrover.ui.movements.MovementsScreenRoute
+import com.knthcame.marsrover.ui.setup.SetupScreenRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,6 +15,12 @@ sealed interface TopLevelDestination
 
 @Serializable
 data object Home : TopLevelDestination
+
+@Serializable
+data object Setup : TopLevelDestination
+
+@Serializable
+data object Movements : TopLevelDestination
 
 @Composable
 fun MarsRoverNavHost(
@@ -25,7 +33,19 @@ fun MarsRoverNavHost(
         modifier = modifier,
     ) {
         composable<Home> {
-            HomeScreenRoute()
+            HomeScreenRoute(onStartSetup = {
+                navHostController.navigate(Setup)
+            })
+        }
+        composable<Setup> {
+            SetupScreenRoute(onSetupCompleted = {
+                navHostController.navigate(Movements)
+            })
+        }
+        composable<Movements> {
+            MovementsScreenRoute(onNavigateBack = {
+                navHostController.popBackStack()
+            })
         }
     }
 }
