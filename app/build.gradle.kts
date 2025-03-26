@@ -71,12 +71,12 @@ sonar {
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/kover/reportRelease.xml")
         property(
             "sonar.coverage.exclusions",
-            "**/androidTest/**" +
-                    "**/test/**" +
-                    "**/ui/theme/**" +
-                    "**/*Screen*" +
-                    "**/*NavHost*" +
-                    "**/MainActivity.kt"
+            "**/androidTest/**," +
+                    "**/test/**," +
+                    "**/ui/theme/**," +
+                    "**/*Screen*," +
+                    "**/*NavHost*," +
+                    "**/MainActivity.kt,"
         )
     }
 }
