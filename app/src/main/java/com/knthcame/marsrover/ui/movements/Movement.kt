@@ -1,13 +1,16 @@
 package com.knthcame.marsrover.ui.movements
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.model.Movement
 
 val Movement.label: String
+    @Composable
     get() = when (this) {
-        Movement.MoveForward -> "Move forward (M)"
-        Movement.RotateLeft -> "Rotate Left (L)"
-        Movement.RotateRight -> "Rotate Right (R)"
+        Movement.MoveForward -> stringResource(R.string.move_forward)
+        Movement.RotateLeft -> stringResource(R.string.rotate_left)
+        Movement.RotateRight -> stringResource(R.string.rotate_right)
     }
 
 val Movement.iconId: Int

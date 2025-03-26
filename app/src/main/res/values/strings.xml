@@ -6,4 +6,14 @@
     <string name="x_axis">X axis</string>
     <string name="y_axis">Y axis</string>
     <string name="direction">Direction</string>
+    <string name="input_movements">Input movements</string>
+    <string name="movements">Movements</string>
+    <string name="movements_supporting_text">Click the buttons to input new movements or erase one.</string>
+    <string name="send_movements">Send movements</string>
+    <string name="ok">OK</string>
+    <string name="input">Input:</string>
+    <string name="output">Output:</string>
+    <string name="move_forward">Move forward (M)</string>
+    <string name="rotate_left">Rotate Left (L)</string>
+    <string name="rotate_right">Rotate Right (R)</string>
 </resources>

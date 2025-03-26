@@ -1,14 +1,11 @@
 package com.knthcame.marsrover.ui.movements
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,8 +29,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
@@ -77,15 +74,14 @@ private fun MovementsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Canvas(
-                Modifier
-                    .background(Color.Gray) //TODO: Remove
-                    .fillMaxWidth(0.7f)
-                    .aspectRatio(1f)
-                    .align(Alignment.CenterHorizontally),
-            ) {
+            val primaryColor = MaterialTheme.colorScheme.primary
+            PlateauCanvas(
+                uiState = uiState,
+                primaryColor = primaryColor,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+            )
 
-            }
+            PlateauCanvasLegend(primaryColor)
 
             MovementsTextField(
                 uiState = uiState,
@@ -102,7 +98,7 @@ private fun MovementsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = uiState.movements.any(),
             ) {
-                Text("Send movements")
+                Text(stringResource(R.string.send_movements))
             }
         }
     }
@@ -125,10 +121,10 @@ private fun MovementsTextField(
         readOnly = true,
         modifier = Modifier.fillMaxWidth(),
         label = {
-            Text("Movements")
+            Text(stringResource(R.string.movements))
         },
         supportingText = {
-            Text("Click the buttons to input new movements or erase one.")
+            Text(stringResource(R.string.movements_supporting_text))
         },
         trailingIcon = {
             IconButton(
@@ -190,7 +186,7 @@ private fun MovementInputButton(
 private fun MovementsTopBar(onNavigateBack: () -> Unit) {
     TopAppBar(
         title = {
-            Text("Input movements")
+            Text(stringResource(R.string.input_movements))
         },
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
@@ -208,7 +204,7 @@ private fun MovementsOutputDialog(
         onDismissRequest = {},
         confirmButton = {
             TextButton(onClick = onDismissOutputDialog) {
-                Text("Ok")
+                Text(stringResource(R.string.ok))
             }
         },
         title = {
@@ -216,10 +212,10 @@ private fun MovementsOutputDialog(
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Input:")
+                Text(stringResource(R.string.input))
                 Text(uiState.input)
                 HorizontalDivider(Modifier.fillMaxWidth())
-                Text("Output:")
+                Text(stringResource(R.string.output))
                 Text(uiState.output)
             }
         }
