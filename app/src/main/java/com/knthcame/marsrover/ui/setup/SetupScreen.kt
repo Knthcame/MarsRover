@@ -41,9 +41,10 @@ import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.model.CardinalDirection
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SetupScreenRoute(onSetupCompleted: () -> Unit, viewModel: SetupViewModel = SetupViewModel()) {
+fun SetupScreenRoute(onSetupCompleted: () -> Unit, viewModel: SetupViewModel = koinViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
     SetupScreen(
