@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.knthcame.marsrover.data.control.model.CardinalDirection
 import com.knthcame.marsrover.ui.home.HomeScreenRoute
 import com.knthcame.marsrover.ui.movements.MovementsScreenRoute
 import com.knthcame.marsrover.ui.setup.SetupScreenRoute
@@ -23,7 +24,12 @@ data object Home : TopLevelDestination
 data object Setup : TopLevelDestination
 
 @Serializable
-data object Movements : TopLevelDestination
+data class Movements(
+    val plateauSize: Int,
+    val initialPositionX: Int,
+    val initialPositionY: Int,
+    val initialDirection: CardinalDirection,
+) : TopLevelDestination
 
 @Composable
 fun MarsRoverNavHost(
@@ -49,8 +55,15 @@ fun MarsRoverNavHost(
             })
         }
         composable<Setup> {
-            SetupScreenRoute(onSetupCompleted = {
-                navHostController.navigate(Movements)
+            SetupScreenRoute(onSetupCompleted = { plateauSize, initialPosition, initialDirection ->
+                navHostController.navigate(
+                    Movements(
+                        plateauSize = plateauSize,
+                        initialPositionX = initialPosition.x,
+                        initialPositionY = initialPosition.y,
+                        initialDirection = initialDirection,
+                    )
+                )
             })
         }
         composable<Movements> {
