@@ -44,6 +44,9 @@ jobs:
           lintRelease
           --build-cache --parallel --continue
 
+      - name: SonarCloud
+        run: ./gradlew sonar
+
       - name: Publish Kotlin test results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
