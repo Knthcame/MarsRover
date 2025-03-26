@@ -8,7 +8,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.09.00"
-sonarcloud = "6.0.1.5171"
+sonarcloud = "6.1.0.5360"
 kover = "0.9.1"
 
 [libraries]
