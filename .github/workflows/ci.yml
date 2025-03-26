@@ -62,7 +62,7 @@ jobs:
       - name: Analyze code
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew lintRelease sonar --info --build-cache
+        run: ./gradlew lint sonar --info --build-cache
 
       - name: Publish Kotlin test results
         uses: EnricoMi/publish-unit-test-result-action@v2

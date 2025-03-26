@@ -65,6 +65,6 @@ sonar {
         property("sonar.projectKey", "Knthcame_MarsRover")
         property("sonar.organization", "knthcame")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "app/build/reports/kover/reportRelease.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/kover/reportRelease.xml")
     }
 }
