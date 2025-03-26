@@ -45,6 +45,8 @@ jobs:
           --build-cache --parallel --continue
 
       - name: SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonar
 
       - name: Publish Kotlin test results
