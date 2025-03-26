@@ -20,6 +20,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,35 +43,20 @@ import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun SetupScreenRoute(onSetupCompleted: () -> Unit) {
-    var plateauSize by remember { mutableStateOf("") }
-    var initialX by remember { mutableStateOf("") }
-    var initialY by remember { mutableStateOf("") }
-    var initialDirection: CardinalDirection? by remember { mutableStateOf(null) }
+fun SetupScreenRoute(onSetupCompleted: () -> Unit, viewModel: SetupViewModel = SetupViewModel()) {
+    val uiState by viewModel.uiState.collectAsState()
 
     SetupScreen(
-        plateauSize = plateauSize,
-        onPlateauSizeValueChanged = { value -> plateauSize = value },
-        initialX = initialX,
-        onInitialXChanged = { value -> initialX = value },
-        initialY = initialY,
-        onInitialYChanged = { value -> initialY = value },
-        initialDirection = initialDirection,
-        onInitialDirectionChanged = { value -> initialDirection = value },
+        uiState = uiState,
+        onEvent = { event -> viewModel.onEvent(event) },
         onSetupCompleted = onSetupCompleted,
     )
 }
 
 @Composable
 private fun SetupScreen(
-    plateauSize: String,
-    onPlateauSizeValueChanged: (String) -> Unit,
-    initialX: String,
-    onInitialXChanged: (String) -> Unit,
-    initialY: String,
-    onInitialYChanged: (String) -> Unit,
-    initialDirection: CardinalDirection?,
-    onInitialDirectionChanged: (CardinalDirection) -> Unit,
+    uiState: SetupUIState,
+    onEvent: (SetupUiEvent) -> Unit,
     onSetupCompleted: () -> Unit,
 ) {
     Scaffold(
@@ -86,10 +72,12 @@ private fun SetupScreen(
                 focusManager.clearFocus()
             }
             DirectionPicker(
-                onDismiss = dismiss, onSelect = { direction ->
-                    onInitialDirectionChanged(direction)
+                onDismiss = dismiss,
+                onSelect = { direction ->
+                    onEvent(SetupUiEvent.InitialDirectionChanged(direction))
                     dismiss()
-                })
+                },
+            )
         }
 
         Column(
@@ -101,17 +89,17 @@ private fun SetupScreen(
         ) {
             Text(stringResource(R.string.plateau_size))
             TextField(
-                value = plateauSize,
-                onValueChange = onPlateauSizeValueChanged,
+                value = uiState.plateauSize,
+                onValueChange = { value -> onEvent(SetupUiEvent.PlateauSizeChanged(value)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             Text(stringResource(R.string.initial_position))
             InitialPositionTextFields(
-                initialX = initialX,
-                onInitialXChanged = onInitialXChanged,
-                initialY = initialY,
-                onInitialYChanged = onInitialYChanged,
-                initialDirection = initialDirection,
+                initialX = uiState.initialX,
+                onInitialXChanged = { value -> onEvent(SetupUiEvent.InitialXChanged(value)) },
+                initialY = uiState.initialY,
+                onInitialYChanged = { value -> onEvent(SetupUiEvent.InitialYChanged(value)) },
+                initialDirection = uiState.initialDirection,
                 onDirectionFocusChanged = { focusState ->
                     showBottomSheet = focusState.isFocused
                 },
@@ -255,20 +243,9 @@ private fun SetupTopBar() {
 private fun SetupScreenPreview() {
     MarsRoverTheme {
         Surface {
-            var plateauSize by remember { mutableStateOf("") }
-            var initialX by remember { mutableStateOf("") }
-            var initialY by remember { mutableStateOf("") }
-            var initialDirection: CardinalDirection? by remember { mutableStateOf(null) }
-
             SetupScreen(
-                plateauSize = plateauSize,
-                onPlateauSizeValueChanged = { value -> plateauSize = value },
-                initialX = initialX,
-                onInitialXChanged = { value -> initialX = value },
-                initialY = initialY,
-                onInitialYChanged = { value -> initialY = value },
-                initialDirection = initialDirection,
-                onInitialDirectionChanged = { value -> initialDirection = value },
+                uiState = SetupUIState.default(),
+                onEvent = { },
                 onSetupCompleted = { }
             )
         }
@@ -280,7 +257,7 @@ private fun SetupScreenPreview() {
 private fun DirectionPickerPreview() {
     MarsRoverTheme {
         Surface {
-            DirectionsList(onSelect = {})
+            DirectionsList(onSelect = { })
         }
     }
 }
