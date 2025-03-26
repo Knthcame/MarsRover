@@ -79,7 +79,8 @@ sonar {
                     "**/ui/theme/**," +
                     "**/*Screen*," +
                     "**/*NavHost*," +
-                    "**/MainActivity.kt,"
+                    "**/MainActivity.kt," +
+                    "**/Koin.kt"
         )
     }
 }

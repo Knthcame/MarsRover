@@ -71,7 +71,7 @@ private fun SetupScreen(
         val focusManager = LocalFocusManager.current
 
         if (showBottomSheet) {
-            DirectionPicker(
+            DirectionModalBottomSheet(
                 onDismiss = {
                     showBottomSheet = false
                     focusManager.clearFocus()
@@ -116,9 +116,7 @@ private fun SetupScreen(
             Button(
                 onClick = onSetupCompleted,
                 enabled = uiState.isContinueEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
                     text = "Continue",
@@ -183,7 +181,7 @@ private fun InitialPositionTextFields(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun DirectionPicker(
+private fun DirectionModalBottomSheet(
     onDismiss: () -> Unit,
     onSelect: (CardinalDirection) -> Unit,
 ) {
@@ -194,7 +192,7 @@ private fun DirectionPicker(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
     ) {
-        DirectionsList(
+        DirectionsCompassButtons(
             onSelect = { value ->
                 onSelect(value)
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
@@ -209,7 +207,7 @@ private fun DirectionPicker(
 }
 
 @Composable
-private fun DirectionsList(
+private fun DirectionsCompassButtons(
     onSelect: (CardinalDirection) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -273,7 +271,7 @@ private fun SetupScreenPreview() {
 private fun DirectionPickerPreview() {
     MarsRoverTheme {
         Surface {
-            DirectionsList(onSelect = { })
+            DirectionsCompassButtons(onSelect = { })
         }
     }
 }
