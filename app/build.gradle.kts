@@ -61,5 +61,7 @@ dependencies {
 sonar {
     properties {
         property("sonar.projectKey", "Knthcame_MarsRover")
+        property("sonar.organization", "knthcame")
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }

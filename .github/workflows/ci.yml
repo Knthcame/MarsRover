@@ -38,16 +38,30 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Lint & test Kotlin code
-        run: ./gradlew clean
-          testReleaseUnitTest
-          lintRelease
-          --build-cache --parallel --continue
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-      - name: SonarCloud
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Execute unit tests
+        run: ./gradlew clean
+          build
+          testReleaseUnitTest
+          --build-cache --parallel
+
+      - name: Analyze code
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar
+        run: ./gradlew lintRelease sonar --info --build-cache
 
       - name: Publish Kotlin test results
         uses: EnricoMi/publish-unit-test-result-action@v2
