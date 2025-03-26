@@ -69,5 +69,14 @@ sonar {
         property("sonar.organization", "knthcame")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/kover/reportRelease.xml")
+        property(
+            "sonar.coverage.exclusions",
+            "**/androidTest/**" +
+                    "**/test/**" +
+                    "**/ui/theme/**" +
+                    "**/*Screen*" +
+                    "**/*NavHost*" +
+                    "**/MainActivity.kt"
+        )
     }
 }
