@@ -54,7 +54,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation)
-    implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.compose.viewmodel.navigation)
     testImplementation(libs.junit)
