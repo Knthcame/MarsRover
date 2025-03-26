@@ -22,6 +22,10 @@ The app is developed with Kotlin as the programming language. It uses the follow
 - [Jetpack compose](https://developer.android.com/compose): for the user interface, based on Material3.
 - [JUnit4](https://junit.org/junit4/): For unit & UI tests.
 - [Kover](https://github.com/Kotlin/kotlinx-kover): Code coverage analysis.
+- [Compose navigation](https://developer.android.com/develop/ui/compose/navigation): Navigation between screens.
+- [Kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization): For (de)serialization of JSON files.
+- [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle): To implement the MVVM architectural pattern.
+- [Koin](https://github.com/InsertKoinIO/koin): Dependency injection.
 
 ## Continuous integration
 
@@ -40,3 +44,7 @@ This project has [Dependabot](https://docs.github.com/en/code-security/dependabo
 Dependabot scans for the new available versions weekly and raises PRs with the version updates. 
 
 It also checks for vulnerabilities in the project dependencies.
+
+# Possible improvements (TODOs)
+- Improve input validation in setup screen. 
+  - E.g: Make sure that X, Y coordinates do not exceed the plateau size. Visual feedback can be added via the supporting text of the corresponding TextField.

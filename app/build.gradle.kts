@@ -55,7 +55,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.compose.viewmodel.navigation)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -76,7 +79,8 @@ sonar {
                     "**/ui/theme/**," +
                     "**/*Screen*," +
                     "**/*NavHost*," +
-                    "**/MainActivity.kt,"
+                    "**/MainActivity.kt," +
+                    "**/Koin.kt"
         )
     }
 }

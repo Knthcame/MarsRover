@@ -29,6 +29,7 @@ class MainActivityTest {
 
     @Test
     fun testLaunch() {
-        composeActivityRule.onNodeWithTag("homeTopBarTitle").assertIsDisplayed()
+        composeActivityRule.onNodeWithTag("homeTopBarTitle", useUnmergedTree = true)
+            .assertIsDisplayed()
     }
 }
