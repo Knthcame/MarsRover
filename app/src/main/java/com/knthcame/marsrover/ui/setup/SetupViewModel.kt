@@ -2,38 +2,12 @@ package com.knthcame.marsrover.ui.setup
 
 import androidx.lifecycle.ViewModel
 import com.knthcame.marsrover.data.control.model.CardinalDirection
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-data class SetupUIState(
-    val plateauSize: String,
-    val initialX: String,
-    val initialY: String,
-    val initialDirection: CardinalDirection,
-) {
-    companion object {
-        fun default(): SetupUIState =
-            SetupUIState(
-                plateauSize = "5",
-                initialX = "0",
-                initialY = "0",
-                initialDirection = CardinalDirection.North,
-            )
-    }
-
-    val isContinueEnabled: Boolean
-        get() = plateauSize.isNotEmpty() && initialX.isNotEmpty() && initialY.isNotEmpty()
-}
-
-sealed interface SetupUiEvent {
-    data class PlateauSizeChanged(val value: String) : SetupUiEvent
-    data class InitialXChanged(val value: String) : SetupUiEvent
-    data class InitialYChanged(val value: String) : SetupUiEvent
-    data class InitialDirectionChanged(val value: CardinalDirection) : SetupUiEvent
-}
-
-class SetupViewModel : ViewModel() {
+class SetupViewModel(viewModelScope: CoroutineScope) : ViewModel(viewModelScope) {
     private val _uiState = MutableStateFlow(SetupUIState.default())
 
     val uiState: StateFlow<SetupUIState> = _uiState
@@ -50,7 +24,7 @@ class SetupViewModel : ViewModel() {
     private fun onPlateauSizeChanged(newValue: String) {
         if (newValue.isEmpty()) {
             _uiState.update { oldValue ->
-                oldValue.copy(plateauSize = "")
+                oldValue.copy(plateauSize = newValue)
             }
             return
         }
@@ -65,7 +39,7 @@ class SetupViewModel : ViewModel() {
     private fun onInitialXChanged(newValue: String) {
         if (newValue.isEmpty()) {
             _uiState.update { oldValue ->
-                oldValue.copy(initialX = "")
+                oldValue.copy(initialX = newValue)
             }
             return
         }
@@ -80,7 +54,7 @@ class SetupViewModel : ViewModel() {
     private fun onInitialYChanged(newValue: String) {
         if (newValue.isEmpty()) {
             _uiState.update { oldValue ->
-                oldValue.copy(initialY = "")
+                oldValue.copy(initialY = newValue)
             }
             return
         }
