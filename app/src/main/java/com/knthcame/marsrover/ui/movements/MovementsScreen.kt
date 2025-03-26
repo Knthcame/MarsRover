@@ -14,14 +14,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -51,6 +54,7 @@ fun MovementsScreenRoute(
         onAddMovement = { movement -> viewModel.addMovement(movement) },
         onRemoveMovement = { viewModel.removeLastMovement() },
         onConfirm = { viewModel.sendMovements() },
+        onDismissOutputDialog = { viewModel.dismissOutputDialog() }
     )
 }
 
@@ -61,6 +65,7 @@ private fun MovementsScreen(
     onAddMovement: (Movement) -> Unit,
     onRemoveMovement: () -> Unit,
     onConfirm: () -> Unit,
+    onDismissOutputDialog: () -> Unit,
 ) {
     Scaffold(topBar = {
         MovementsTopBar(onNavigateBack = onNavigateBack)
@@ -87,11 +92,25 @@ private fun MovementsScreen(
                 onRemoveMovement = onRemoveMovement,
             )
             MovementsInputButtons(
-                onAddMovement = onAddMovement,
-                onConfirm = onConfirm,
-                uiState = uiState
+                onAddMovement = onAddMovement
             )
+
+            Spacer(Modifier.Companion.weight(1f))
+
+            Button(
+                onClick = onConfirm,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = uiState.movements.any(),
+            ) {
+                Text("Send movements")
+            }
         }
+    }
+    if (uiState.outputReceived) {
+        MovementsOutputDialog(
+            uiState = uiState,
+            onDismissOutputDialog = onDismissOutputDialog,
+        )
     }
 }
 
@@ -123,11 +142,7 @@ private fun MovementsTextField(
 }
 
 @Composable
-private fun ColumnScope.MovementsInputButtons(
-    onAddMovement: (Movement) -> Unit,
-    onConfirm: () -> Unit,
-    uiState: MovementsUiState
-) {
+private fun ColumnScope.MovementsInputButtons(onAddMovement: (Movement) -> Unit) {
     MovementInputButton(
         onClick = onAddMovement,
         movement = Movement.MoveForward,
@@ -148,15 +163,6 @@ private fun ColumnScope.MovementsInputButtons(
         )
     }
 
-    Spacer(Modifier.Companion.weight(1f))
-
-    Button(
-        onClick = onConfirm,
-        modifier = Modifier.fillMaxWidth(),
-        enabled = uiState.movements.any(),
-    ) {
-        Text("Send movements")
-    }
 }
 
 @Composable
@@ -194,6 +200,33 @@ private fun MovementsTopBar(onNavigateBack: () -> Unit) {
 }
 
 @Composable
+private fun MovementsOutputDialog(
+    uiState: MovementsUiState,
+    onDismissOutputDialog: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = {},
+        confirmButton = {
+            TextButton(onClick = onDismissOutputDialog) {
+                Text("Ok")
+            }
+        },
+        title = {
+            Text("Rover's output")
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Input:")
+                Text(uiState.input)
+                HorizontalDivider(Modifier.fillMaxWidth())
+                Text("Output:")
+                Text(uiState.output)
+            }
+        }
+    )
+}
+
+@Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun MovementsScreenPreview() {
     MarsRoverTheme {
@@ -202,6 +235,8 @@ fun MovementsScreenPreview() {
             onNavigateBack = { },
             onAddMovement = { },
             onRemoveMovement = { },
-            onConfirm = { })
+            onConfirm = { },
+            onDismissOutputDialog = { },
+        )
     }
 }

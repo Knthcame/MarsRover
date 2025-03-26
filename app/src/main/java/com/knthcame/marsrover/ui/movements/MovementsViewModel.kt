@@ -10,12 +10,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
 class MovementsViewModel(
     private val roverRepository: RoverRepository,
     private val viewModeScope: CoroutineScope,
 ) : ViewModel(viewModeScope) {
     private val _uiState = MutableStateFlow(MovementsUiState.default())
+    private val json = Json { prettyPrint = true }
 
     val uiState: StateFlow<MovementsUiState> = _uiState
 
@@ -23,8 +25,6 @@ class MovementsViewModel(
         _uiState.update { oldValue ->
             oldValue.copy(
                 movements = oldValue.movements + movement,
-                output = "",
-                outputReceived = false,
             )
         }
     }
@@ -33,8 +33,6 @@ class MovementsViewModel(
         _uiState.update { oldValue ->
             oldValue.copy(
                 movements = oldValue.movements.subList(0, oldValue.movements.lastIndex),
-                output = "",
-                outputReceived = false,
             )
         }
     }
@@ -52,10 +50,17 @@ class MovementsViewModel(
 
             _uiState.update { oldValue ->
                 oldValue.copy(
+                    input = json.encodeToString(instructions),
                     output = "${output.roverPosition.x} ${output.roverPosition.y} ${output.roverDirection.code}",
                     outputReceived = true,
                 )
             }
+        }
+    }
+
+    fun dismissOutputDialog() {
+        _uiState.update { oldValue ->
+            oldValue.copy(input = "", output = "", outputReceived = false)
         }
     }
 }
