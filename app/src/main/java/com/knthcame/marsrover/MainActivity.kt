@@ -8,7 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import com.knthcame.marsrover.ui.MarsRoverNavHost
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import org.koin.compose.KoinApplication
-import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
