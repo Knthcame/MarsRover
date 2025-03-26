@@ -1,0 +1,128 @@
+# This workflow ensures that "new code" passes the defined quality gates in a PR.
+name: CI
+
+# This workflow requires permission to publish results as checks and PR comments.
+permissions:
+  checks: write
+  pull-requests: write
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # This job runs all unit tests to ensure none fail.
+  test:
+    name: Run unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis by SonarCloud.
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Lint & test Kotlin code
+        run: ./gradlew clean
+          testReleaseUnitTest
+          lintRelease
+          --build-cache --parallel --continue
+
+      - name: Publish Kotlin test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: '**/test-results/**/*.xml'
+          check_name: 'Kotlin test results'
+
+      - name: Archive Kotlin test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kotlin-unit-test-results
+          path: '**/test-results/**/*.xml'
+
+  # This job runs all instrumented tests to ensure none fail.
+  testAndroidInstrumented:
+    name: Run Android instrumented tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out branch
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run Android instrumented tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          script: ./gradlew clean connectedAndroidTest
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: '**/androidTest-results/**/*.xml'
+          check_name: 'Android instrumented test results'
+
+      - name: Archive test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-instrumented-test-results
+          path: '**/androidTest-results/**/*.xml'
+
+  # Builds & publishes the Android APK in release configuration to ensure that the code compiles successfully.
+  buildAndroid:
+    name: Build Android app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out branch
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Assemble release build
+        run: ./gradlew assembleRelease
+
+      - name: Get release file apk path
+        id: releaseApk
+        run: echo "apkfile=$(find app/build/outputs/apk/release/*.apk)" >> $GITHUB_OUTPUT
+
+      - name: Upload Release Build to Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: ${{ steps.releaseApk.outputs.apkfile }}
