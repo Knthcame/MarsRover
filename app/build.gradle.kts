@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.sonarcloud)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -63,5 +64,6 @@ sonar {
         property("sonar.projectKey", "Knthcame_MarsRover")
         property("sonar.organization", "knthcame")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "app/build/reports/kover/reportRelease.xml")
     }
 }
