@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.koin.compose.viewmodel.navigation)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk.android)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -80,7 +81,9 @@ sonar {
                     "**/*Screen*," +
                     "**/*NavHost*," +
                     "**/MainActivity.kt," +
-                    "**/Koin.kt"
+                    "**/Koin.kt," +
+                    "**/Fake*," +
+                    "**/*Canvas.kt,"
         )
     }
 }
