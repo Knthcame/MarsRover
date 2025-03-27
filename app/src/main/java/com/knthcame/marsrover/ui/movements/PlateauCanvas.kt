@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
-import com.knthcame.marsrover.data.control.model.Coordinates
+import com.knthcame.marsrover.data.control.models.Coordinates
 
 @Composable
 fun PlateauCanvas(

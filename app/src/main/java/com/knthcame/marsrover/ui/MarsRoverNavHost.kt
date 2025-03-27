@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.knthcame.marsrover.data.control.model.CardinalDirection
+import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.ui.home.HomeScreenRoute
 import com.knthcame.marsrover.ui.movements.MovementsScreenRoute
 import com.knthcame.marsrover.ui.setup.SetupScreenRoute

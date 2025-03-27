@@ -1,13 +1,25 @@
 package com.knthcame.marsrover.data.control.sources
 
-class FakeRoverDao : RoverDao {
+import com.knthcame.marsrover.data.calculation.RoverPositionCalculator
+import com.knthcame.marsrover.data.control.models.Instructions
+import com.knthcame.marsrover.data.control.models.Position
+import com.knthcame.marsrover.ui.movements.Movement
+import kotlinx.serialization.json.Json
+
+class FakeRoverDao(private val roverPositionCalculator: RoverPositionCalculator) : RoverDao {
     override suspend fun send(instructions: String): String {
-        return "{\n" +
-                "   \"roverPosition\":{\n" +
-                "      \"x\":1,\n" +
-                "      \"y\":3\n" +
-                "   },\n" +
-                "   \"roverDirection\":\"N\"\n" +
-                "}"
+        val data = Json.decodeFromString<Instructions>(instructions)
+        val movements = data.movements.map { value ->
+            Movement.entries.single { movement -> movement.code == value.toString() }
+        }
+        var position = Position(data.roverPosition, data.roverDirection)
+        movements.forEach { movement ->
+            position = roverPositionCalculator.calculateNextPosition(
+                plateauSize = data.topRightCorner.x,
+                initialPosition = position,
+                movement = movement,
+            )
+        }
+        return Json.encodeToString(position)
     }
 }

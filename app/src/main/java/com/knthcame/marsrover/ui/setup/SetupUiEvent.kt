@@ -1,6 +1,6 @@
 package com.knthcame.marsrover.ui.setup
 
-import com.knthcame.marsrover.data.control.model.CardinalDirection
+import com.knthcame.marsrover.data.control.models.CardinalDirection
 
 sealed interface SetupUiEvent {
     data class PlateauSizeChanged(val value: String) : SetupUiEvent

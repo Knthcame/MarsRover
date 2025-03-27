@@ -1,7 +1,7 @@
 package com.knthcame.marsrover.ui.setup
 
 import androidx.lifecycle.ViewModel
-import com.knthcame.marsrover.data.control.model.CardinalDirection
+import com.knthcame.marsrover.data.control.models.CardinalDirection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

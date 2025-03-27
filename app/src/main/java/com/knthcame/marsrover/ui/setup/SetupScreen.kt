@@ -41,8 +41,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
-import com.knthcame.marsrover.data.control.model.CardinalDirection
-import com.knthcame.marsrover.data.control.model.Coordinates
+import com.knthcame.marsrover.data.control.models.CardinalDirection
+import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel

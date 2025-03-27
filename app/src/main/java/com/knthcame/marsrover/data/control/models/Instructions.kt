@@ -1,4 +1,4 @@
-package com.knthcame.marsrover.data.control.model
+package com.knthcame.marsrover.data.control.models
 
 import kotlinx.serialization.Serializable
 

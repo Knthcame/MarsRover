@@ -1,6 +1,6 @@
 package com.knthcame.marsrover.ui.setup
 
-import com.knthcame.marsrover.data.control.model.CardinalDirection
+import com.knthcame.marsrover.data.control.models.CardinalDirection
 import org.junit.Test
 
 class SetupUIStateTest {

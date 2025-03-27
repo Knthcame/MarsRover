@@ -1,4 +1,4 @@
-package com.knthcame.marsrover.data.control.model
+package com.knthcame.marsrover.data.control.models
 
 import androidx.annotation.Keep
 import kotlinx.serialization.SerialName
