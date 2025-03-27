@@ -1,7 +1,9 @@
 package com.knthcame.marsrover
 
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -38,11 +40,17 @@ class MainActivityTest {
             .assertIsDisplayed()
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun endToEndTest() {
         // Navigate to setup screen
-        composeActivityRule.onNodeWithTag("homeStartButton")
+        val startButtonTestTag = "homeStartButton"
+        composeActivityRule.waitUntilExactlyOneExists(hasTestTag(startButtonTestTag))
+        composeActivityRule.onNodeWithTag(startButtonTestTag)
             .performClick()
+
+        // Wait until navigation completes
+        composeActivityRule.waitUntilExactlyOneExists(hasTestTag("setupPlateauWidthTextField"))
 
         // Input setup data
         composeActivityRule.onNodeWithTag("setupPlateauWidthTextField")
@@ -55,14 +63,21 @@ class MainActivityTest {
             .performTextReplacement("2")
         composeActivityRule.onNodeWithTag("setupInitialDirectionTextField")
             .performClick()
-        composeActivityRule.onNodeWithTag(
-            "modalSheet${CardinalDirection.North}DirectionButton",
-            useUnmergedTree = true,
-        ).performClick()
+
+        // Wait until model sheet opens & select North
+        val northButtonTestTag = "modalSheet${CardinalDirection.North}DirectionButton"
+        composeActivityRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag))
+        composeActivityRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
+            .performClick()
 
         // Navigate to movements screen
-        composeActivityRule.onNodeWithTag("setupContinueButton")
+        val continueButtonTestTag = "setupContinueButton"
+        composeActivityRule.waitUntilExactlyOneExists(hasTestTag(continueButtonTestTag))
+        composeActivityRule.onNodeWithTag(continueButtonTestTag)
             .performClick()
+
+        // Wait until navigation completes
+        composeActivityRule.waitUntilExactlyOneExists(hasTestTag("movementsTextField"))
 
         // Input movements
         composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
@@ -93,7 +108,9 @@ class MainActivityTest {
             .performClick()
 
         // Assert correct output in alert dialog.
-        composeActivityRule.onNodeWithTag("movementsOutputDialogOutputText")
+        val outputTextTesTag = "movementsOutputDialogOutputText"
+        composeActivityRule.waitUntilExactlyOneExists(hasTestTag(outputTextTesTag))
+        composeActivityRule.onNodeWithTag(outputTextTesTag)
             .assertTextEquals("1 3 N")
     }
 }
