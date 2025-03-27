@@ -60,6 +60,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -83,7 +84,8 @@ sonar {
                     "**/MainActivity.kt," +
                     "**/Koin.kt," +
                     "**/Fake*," +
-                    "**/*Canvas.kt,"
+                    "**/*Canvas.kt," +
+                    "**/ui/movements/**," // Due to limitations in navigation library (see README)
         )
     }
 }

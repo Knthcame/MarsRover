@@ -21,6 +21,7 @@ In order to launch to project must be cloned locally and opened with Android Stu
 The app is developed with Kotlin as the programming language. It uses the following libraries:
 - [Jetpack compose](https://developer.android.com/compose): for the user interface, based on Material3.
 - [JUnit4](https://junit.org/junit4/): For unit & UI tests.
+- [Mockk](https://github.com/mockk/mockk): For mocking dependencies in unit tests.
 - [Kover](https://github.com/Kotlin/kotlinx-kover): Code coverage analysis.
 - [Compose navigation](https://developer.android.com/develop/ui/compose/navigation): Navigation between screens.
 - [Kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization): For (de)serialization of JSON files.
@@ -48,3 +49,7 @@ It also checks for vulnerabilities in the project dependencies.
 # Possible improvements (TODOs)
 - Improve input validation in setup screen. 
   - E.g: Make sure that X, Y coordinates do not exceed the plateau size. Visual feedback can be added via the supporting text of the corresponding TextField.
+- Add unit tests for MovementsViewModel
+  - Due to a current [limitation](https://issuetracker.google.com/issues/349807172) of the navigation library, SavedStateHandle requires to use instrumented tests.
+  - Also, mocking SavedStateHandle requires some workarounds at the moment.
+  - Possible solutions include changing the typed navigation for non-typed one.
