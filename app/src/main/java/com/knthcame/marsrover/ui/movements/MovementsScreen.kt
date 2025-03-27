@@ -34,6 +34,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
+import com.knthcame.marsrover.data.control.models.CardinalDirection
+import com.knthcame.marsrover.data.control.models.Coordinates
+import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -43,9 +46,11 @@ fun MovementsScreenRoute(
     viewModel: MovementsViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val roverPositions by viewModel.roverPositions.collectAsState()
 
     MovementsScreen(
         uiState = uiState,
+        roverPositions = roverPositions,
         onNavigateBack = onNavigateBack,
         onAddMovement = { movement -> viewModel.addMovement(movement) },
         onRemoveMovement = { viewModel.removeLastMovement() },
@@ -57,6 +62,7 @@ fun MovementsScreenRoute(
 @Composable
 private fun MovementsScreen(
     uiState: MovementsUiState,
+    roverPositions: List<Position>,
     onNavigateBack: () -> Unit,
     onAddMovement: (Movement) -> Unit,
     onRemoveMovement: () -> Unit,
@@ -73,14 +79,13 @@ private fun MovementsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            val primaryColor = MaterialTheme.colorScheme.primary
             PlateauCanvas(
-                instructions = uiState.instructions,
-                primaryColor = primaryColor,
+                topRightCorner = uiState.instructions.topRightCorner,
+                positions = roverPositions,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
 
-            PlateauCanvasLegend(primaryColor)
+            PlateauCanvasLegend()
 
             MovementsTextField(
                 uiState = uiState,
@@ -227,6 +232,7 @@ fun MovementsScreenPreview() {
     MarsRoverTheme {
         MovementsScreen(
             uiState = MovementsUiState.default(),
+            roverPositions = listOf(Position(Coordinates(2, 1), CardinalDirection.North)),
             onNavigateBack = { },
             onAddMovement = { },
             onRemoveMovement = { },

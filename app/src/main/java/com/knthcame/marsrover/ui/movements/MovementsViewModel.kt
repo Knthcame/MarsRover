@@ -3,8 +3,10 @@ package com.knthcame.marsrover.ui.movements
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
+import com.knthcame.marsrover.data.calculation.RoverPositionCalculator
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Instructions
+import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.data.control.repositories.RoverRepository
 import com.knthcame.marsrover.ui.Movements
 import kotlinx.coroutines.CoroutineScope
@@ -17,9 +19,11 @@ import kotlinx.serialization.json.Json
 class MovementsViewModel(
     savedStateHandle: SavedStateHandle,
     private val roverRepository: RoverRepository,
+    private val roverPositionCalculator: RoverPositionCalculator,
     private val viewModeScope: CoroutineScope,
 ) : ViewModel(viewModeScope) {
     private val route = savedStateHandle.toRoute<Movements>()
+    private val json = Json { prettyPrint = true }
     private val _uiState = MutableStateFlow(
         MovementsUiState(
             instructions = Instructions(
@@ -33,9 +37,17 @@ class MovementsViewModel(
             outputReceived = false,
         )
     )
-    private val json = Json { prettyPrint = true }
+    private val _roverPositions = MutableStateFlow(
+        listOf(
+            Position(
+                roverPosition = Coordinates(route.initialPositionX, route.initialPositionY),
+                roverDirection = route.initialDirection,
+            )
+        )
+    )
 
     val uiState: StateFlow<MovementsUiState> = _uiState
+    val roverPositions: StateFlow<List<Position>> = _roverPositions
 
     fun addMovement(movement: Movement) {
         _uiState.update { oldValue ->
@@ -43,6 +55,14 @@ class MovementsViewModel(
             oldValue.copy(
                 instructions = oldValue.instructions.copy(movements = movements + movement.code),
             )
+        }
+        val nextPosition = roverPositionCalculator.calculateNextPosition(
+            topRightCorner = uiState.value.instructions.topRightCorner,
+            initialPosition = roverPositions.value.last(),
+            movement = movement,
+        )
+        _roverPositions.update { oldValue ->
+            oldValue + nextPosition
         }
     }
 
@@ -53,6 +73,9 @@ class MovementsViewModel(
             oldValue.copy(
                 instructions = oldValue.instructions.copy(movements = newMovements),
             )
+        }
+        _roverPositions.update { oldValue ->
+            oldValue.subList(0, oldValue.lastIndex)
         }
     }
 
