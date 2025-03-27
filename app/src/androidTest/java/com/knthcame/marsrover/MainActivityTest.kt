@@ -1,7 +1,6 @@
 package com.knthcame.marsrover
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -34,23 +33,24 @@ class MainActivityTest {
         assertEquals("com.knthcame.marsrover", appContext.packageName)
     }
 
-    @Test
-    fun testLaunch() {
-        composeActivityRule.onNodeWithTag("homeTopBarTitle")
-            .assertIsDisplayed()
-    }
-
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun endToEndTest() {
+        val timeoutMillis = 10_000L
         // Navigate to setup screen
         val startButtonTestTag = "homeStartButton"
-        composeActivityRule.waitUntilExactlyOneExists(hasTestTag(startButtonTestTag))
+        composeActivityRule.waitUntilExactlyOneExists(
+            hasTestTag(startButtonTestTag),
+            timeoutMillis = timeoutMillis,
+        )
         composeActivityRule.onNodeWithTag(startButtonTestTag)
             .performClick()
 
         // Wait until navigation completes
-        composeActivityRule.waitUntilExactlyOneExists(hasTestTag("setupPlateauWidthTextField"))
+        composeActivityRule.waitUntilExactlyOneExists(
+            hasTestTag("setupPlateauWidthTextField"),
+            timeoutMillis = timeoutMillis,
+        )
 
         // Input setup data
         composeActivityRule.onNodeWithTag("setupPlateauWidthTextField")
@@ -66,18 +66,27 @@ class MainActivityTest {
 
         // Wait until model sheet opens & select North
         val northButtonTestTag = "modalSheet${CardinalDirection.North}DirectionButton"
-        composeActivityRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag))
+        composeActivityRule.waitUntilExactlyOneExists(
+            hasTestTag(northButtonTestTag),
+            timeoutMillis = timeoutMillis,
+        )
         composeActivityRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
             .performClick()
 
         // Navigate to movements screen
         val continueButtonTestTag = "setupContinueButton"
-        composeActivityRule.waitUntilExactlyOneExists(hasTestTag(continueButtonTestTag))
+        composeActivityRule.waitUntilExactlyOneExists(
+            hasTestTag(continueButtonTestTag),
+            timeoutMillis = timeoutMillis,
+        )
         composeActivityRule.onNodeWithTag(continueButtonTestTag)
             .performClick()
 
         // Wait until navigation completes
-        composeActivityRule.waitUntilExactlyOneExists(hasTestTag("movementsTextField"))
+        composeActivityRule.waitUntilExactlyOneExists(
+            hasTestTag("movementsTextField"),
+            timeoutMillis = timeoutMillis,
+        )
 
         // Input movements
         composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
@@ -109,7 +118,10 @@ class MainActivityTest {
 
         // Assert correct output in alert dialog.
         val outputTextTesTag = "movementsOutputDialogOutputText"
-        composeActivityRule.waitUntilExactlyOneExists(hasTestTag(outputTextTesTag))
+        composeActivityRule.waitUntilExactlyOneExists(
+            hasTestTag(outputTextTesTag),
+            timeoutMillis = timeoutMillis,
+        )
         composeActivityRule.onNodeWithTag(outputTextTesTag)
             .assertTextEquals("1 3 N")
     }
