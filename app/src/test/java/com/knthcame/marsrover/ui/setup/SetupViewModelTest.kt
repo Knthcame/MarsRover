@@ -46,27 +46,27 @@ class SetupViewModelTest {
     fun onEvent_updatesPlateauWidth_whenValueIsEmpty() {
         val newValue = ""
 
-        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+        viewModel.onEvent(SetupUiEvent.PlateauWidthChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(plateauHeight = newValue))
+        assert(viewModel.uiState.value == defaultUiState.copy(plateauWidth = newValue))
     }
 
     @Test
     fun onEvent_updatesPlateauWidth_whenValueIsInteger() {
         val newValue = 12.toString()
 
-        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+        viewModel.onEvent(SetupUiEvent.PlateauWidthChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(plateauHeight = newValue))
+        assert(viewModel.uiState.value == defaultUiState.copy(plateauWidth = newValue))
     }
 
     @Test
     fun onEvent_doesNotUpdatePlateauWidth_whenValueIsNotAnInteger() {
         val newValue = "5f"
 
-        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+        viewModel.onEvent(SetupUiEvent.PlateauWidthChanged(newValue))
 
-        assert(viewModel.uiState.value.plateauHeight != newValue)
+        assert(viewModel.uiState.value.plateauWidth != newValue)
     }
 
     @Test
