@@ -12,9 +12,15 @@
 The app allows to send instructions to the Mars Rover to turn or move in a specific direction. 
 The robot attempts to move as indicated inside its "grid" and returns the final coordinates as result.
 
+![Home screen](./screenshots/home_screen.png)
+![Setup screen](./screenshots/setup_screen.png)
+![Modal sheet for picking the Rover's starting direction](./screenshots/Direction_sheet.png)
+![Movements screen](./screenshots/Movements_Screen.png)
+![Output_dialog](./screenshots/Output_Dialog.png)
+
 # Setup
 
-In order to launch to project must be cloned locally and opened with Android Studio. Or other IDEs that support Android development.
+In order to launch to project must be cloned locally and opened with Android Studio. Or other IDEs that support Android development. The app can then be deployed to an emulator or a real device via Android Studio.
 
 # Tech stack
 
