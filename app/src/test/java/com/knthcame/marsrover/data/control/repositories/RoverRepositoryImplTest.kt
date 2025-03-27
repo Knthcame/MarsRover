@@ -1,9 +1,9 @@
 package com.knthcame.marsrover.data.control.repositories
 
-import com.knthcame.marsrover.data.control.model.CardinalDirection
-import com.knthcame.marsrover.data.control.model.Coordinates
-import com.knthcame.marsrover.data.control.model.Instructions
-import com.knthcame.marsrover.data.control.model.Output
+import com.knthcame.marsrover.data.control.models.CardinalDirection
+import com.knthcame.marsrover.data.control.models.Coordinates
+import com.knthcame.marsrover.data.control.models.Instructions
+import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.data.control.sources.RoverDao
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -16,12 +16,12 @@ import org.junit.Test
 class RoverRepositoryImplTest {
     private lateinit var roverDao: RoverDao
     private lateinit var repositoryImpl: RoverRepositoryImpl
-    private val roverOutput = Output(Coordinates(1, 2), CardinalDirection.West)
+    private val roverPosition = Position(Coordinates(1, 2), CardinalDirection.West)
 
     @Before
     fun setUp() {
         roverDao = mockk<RoverDao> {
-            coEvery { send(any()) } returns Json.encodeToString(roverOutput)
+            coEvery { send(any()) } returns Json.encodeToString(roverPosition)
         }
         repositoryImpl = RoverRepositoryImpl(roverDao)
     }
@@ -51,6 +51,6 @@ class RoverRepositoryImplTest {
 
         val result = repositoryImpl.send(instructions)
 
-        assert(result == roverOutput)
+        assert(result == roverPosition)
     }
 }

@@ -41,15 +41,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
-import com.knthcame.marsrover.data.control.model.CardinalDirection
-import com.knthcame.marsrover.data.control.model.Coordinates
+import com.knthcame.marsrover.data.control.models.CardinalDirection
+import com.knthcame.marsrover.data.control.models.Coordinates
+import com.knthcame.marsrover.data.control.models.Position
+import com.knthcame.marsrover.ui.movements.PlateauCanvas
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SetupScreenRoute(
-    onSetupCompleted: (plateauSize: Int, initialPosition: Coordinates, initialDirection: CardinalDirection) -> Unit,
+    onSetupCompleted: (topRightCorner: Coordinates, initialPosition: Coordinates, initialDirection: CardinalDirection) -> Unit,
     viewModel: SetupViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -59,7 +61,10 @@ fun SetupScreenRoute(
         onEvent = { event -> viewModel.onEvent(event) },
         onSetupCompleted = {
             onSetupCompleted(
-                uiState.plateauSize.toInt(),
+                Coordinates(
+                    x = uiState.plateauWidth.toInt(),
+                    y = uiState.plateauHeight.toInt()
+                ),
                 Coordinates(
                     uiState.initialX.toInt(),
                     uiState.initialY.toInt(),
@@ -102,16 +107,29 @@ private fun SetupScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(stringResource(R.string.plateau_size))
-            TextField(
-                value = uiState.plateauSize,
-                onValueChange = { value -> onEvent(SetupUiEvent.PlateauSizeChanged(value)) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next,
+            PlateauCanvas(
+                topRightCorner = Coordinates(
+                    x = uiState.plateauWidth.toIntOrNull() ?: 1,
+                    y = uiState.plateauHeight.toIntOrNull() ?: 1,
                 ),
+                positions = listOf(
+                    Position(
+                        roverPosition = Coordinates(
+                            x = uiState.initialX.toIntOrNull() ?: 0,
+                            y = uiState.initialY.toIntOrNull() ?: 0,
+                        ),
+                        roverDirection = uiState.initialDirection,
+                    )
+                ),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
+
+            Text(stringResource(R.string.plateau_size))
+            PlateauSizeTextFields(
+                uiState = uiState,
+                onEvent = onEvent,
+            )
+
             Text(stringResource(R.string.initial_position))
             InitialPositionTextFields(
                 initialX = uiState.initialX,
@@ -139,6 +157,39 @@ private fun SetupScreen(
             }
         }
 
+    }
+}
+
+@Composable
+private fun PlateauSizeTextFields(
+    uiState: SetupUIState,
+    onEvent: (SetupUiEvent) -> Unit,
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        TextField(
+            value = uiState.plateauWidth,
+            onValueChange = { value -> onEvent(SetupUiEvent.PlateauWidthChanged(value)) },
+            modifier = Modifier.weight(1f),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+            ),
+            label = {
+                Text(stringResource(R.string.width))
+            },
+        )
+        TextField(
+            value = uiState.plateauHeight,
+            onValueChange = { value -> onEvent(SetupUiEvent.PlateauHeightChanged(value)) },
+            modifier = Modifier.weight(1f),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+            ),
+            label = {
+                Text(stringResource(R.string.height))
+            },
+        )
     }
 }
 

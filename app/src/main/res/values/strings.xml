@@ -2,7 +2,11 @@
     <string name="app_name">Mars Rover</string>
     <string name="initial_setup">Setup Rover</string>
     <string name="plateau_size">Plateau size</string>
+    <string name="height">Height</string>
+    <string name="width">Width</string>
     <string name="initial_position">Initial position</string>
+    <string name="rover_path">Rover\'s predicted path</string>
+    <string name="rover_position_and_direction">Rover\'s predicted final position and direction</string>
     <string name="x_axis">X axis</string>
     <string name="y_axis">Y axis</string>
     <string name="direction">Direction</string>

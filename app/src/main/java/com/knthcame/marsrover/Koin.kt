@@ -1,5 +1,7 @@
 package com.knthcame.marsrover
 
+import com.knthcame.marsrover.data.calculation.RoverPositionCalculator
+import com.knthcame.marsrover.data.calculation.RoverPositionCalculatorImpl
 import com.knthcame.marsrover.data.control.repositories.RoverRepository
 import com.knthcame.marsrover.data.control.repositories.RoverRepositoryImpl
 import com.knthcame.marsrover.data.control.sources.FakeRoverDao
@@ -17,6 +19,7 @@ import org.koin.dsl.module
 val androidModule = module {
     singleOf(::RoverRepositoryImpl) { bind<RoverRepository>() }
     singleOf(::FakeRoverDao) { bind<RoverDao>() }
+    singleOf(::RoverPositionCalculatorImpl) { bind<RoverPositionCalculator>() }
 
     factory { CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()) }
 

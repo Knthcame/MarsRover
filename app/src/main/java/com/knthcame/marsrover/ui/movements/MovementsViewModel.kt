@@ -3,8 +3,10 @@ package com.knthcame.marsrover.ui.movements
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
-import com.knthcame.marsrover.data.control.model.Coordinates
-import com.knthcame.marsrover.data.control.model.Instructions
+import com.knthcame.marsrover.data.calculation.RoverPositionCalculator
+import com.knthcame.marsrover.data.control.models.Coordinates
+import com.knthcame.marsrover.data.control.models.Instructions
+import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.data.control.repositories.RoverRepository
 import com.knthcame.marsrover.ui.Movements
 import kotlinx.coroutines.CoroutineScope
@@ -17,50 +19,74 @@ import kotlinx.serialization.json.Json
 class MovementsViewModel(
     savedStateHandle: SavedStateHandle,
     private val roverRepository: RoverRepository,
+    private val roverPositionCalculator: RoverPositionCalculator,
     private val viewModeScope: CoroutineScope,
 ) : ViewModel(viewModeScope) {
     private val route = savedStateHandle.toRoute<Movements>()
+    private val json = Json { prettyPrint = true }
     private val _uiState = MutableStateFlow(
-        MovementsUiState.default().copy(
-            plateauSize = route.plateauSize,
-            initialPosition = Coordinates(route.initialPositionX, route.initialPositionY),
-            initialDirection = route.initialDirection,
+        MovementsUiState(
+            instructions = Instructions(
+                topRightCorner = Coordinates(route.plateauWidth, route.plateauHeight),
+                roverPosition = Coordinates(route.initialPositionX, route.initialPositionY),
+                roverDirection = route.initialDirection,
+                movements = "",
+            ),
+            input = "",
+            output = "",
+            outputReceived = false,
         )
     )
-    private val json = Json { prettyPrint = true }
+    private val _roverPositions = MutableStateFlow(
+        listOf(
+            Position(
+                roverPosition = Coordinates(route.initialPositionX, route.initialPositionY),
+                roverDirection = route.initialDirection,
+            )
+        )
+    )
 
     val uiState: StateFlow<MovementsUiState> = _uiState
+    val roverPositions: StateFlow<List<Position>> = _roverPositions
 
     fun addMovement(movement: Movement) {
         _uiState.update { oldValue ->
+            val movements = oldValue.instructions.movements
             oldValue.copy(
-                movements = oldValue.movements + movement,
+                instructions = oldValue.instructions.copy(movements = movements + movement.code),
             )
+        }
+        val nextPosition = roverPositionCalculator.calculateNextPosition(
+            topRightCorner = uiState.value.instructions.topRightCorner,
+            currentPosition = roverPositions.value.last(),
+            movement = movement,
+        )
+        _roverPositions.update { oldValue ->
+            oldValue + nextPosition
         }
     }
 
     fun removeLastMovement() {
         _uiState.update { oldValue ->
+            val oldMovements = oldValue.instructions.movements
+            val newMovements = oldMovements.substring(0, oldMovements.lastIndex)
             oldValue.copy(
-                movements = oldValue.movements.subList(0, oldValue.movements.lastIndex),
+                instructions = oldValue.instructions.copy(movements = newMovements),
             )
+        }
+        _roverPositions.update { oldValue ->
+            oldValue.subList(0, oldValue.lastIndex)
         }
     }
 
     fun sendMovements() {
         viewModeScope.launch {
             val state = uiState.value
-            val instructions = Instructions(
-                topRightCorner = Coordinates(state.plateauSize, state.plateauSize),
-                roverPosition = state.initialPosition,
-                roverDirection = state.initialDirection,
-                movements = state.movements.joinToString(separator = "") { value -> value.code }
-            )
-            val output = roverRepository.send(instructions)
+            val output = roverRepository.send(state.instructions)
 
             _uiState.update { oldValue ->
                 oldValue.copy(
-                    input = json.encodeToString(instructions),
+                    input = json.encodeToString(state.instructions),
                     output = "${output.roverPosition.x} ${output.roverPosition.y} ${output.roverDirection.code}",
                     outputReceived = true,
                 )

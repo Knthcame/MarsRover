@@ -1,7 +1,7 @@
 package com.knthcame.marsrover.ui.setup
 
 import androidx.lifecycle.ViewModel
-import com.knthcame.marsrover.data.control.model.CardinalDirection
+import com.knthcame.marsrover.data.control.models.CardinalDirection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,21 +17,37 @@ class SetupViewModel(viewModelScope: CoroutineScope) : ViewModel(viewModelScope)
             is SetupUiEvent.InitialDirectionChanged -> onInitialDirectionChanged(event.value)
             is SetupUiEvent.InitialXChanged -> onInitialXChanged(event.value)
             is SetupUiEvent.InitialYChanged -> onInitialYChanged(event.value)
-            is SetupUiEvent.PlateauSizeChanged -> onPlateauSizeChanged(event.value)
+            is SetupUiEvent.PlateauHeightChanged -> onPlateauHeightChanged(event.value)
+            is SetupUiEvent.PlateauWidthChanged -> onPlateauWidthChanged(event.value)
         }
     }
 
-    private fun onPlateauSizeChanged(newValue: String) {
+    private fun onPlateauWidthChanged(newValue: String) {
         if (newValue.isEmpty()) {
             _uiState.update { oldValue ->
-                oldValue.copy(plateauSize = newValue)
+                oldValue.copy(plateauWidth = newValue)
             }
             return
         }
 
         newValue.toIntOrNull()?.let {
             _uiState.update { oldValue ->
-                oldValue.copy(plateauSize = newValue)
+                oldValue.copy(plateauWidth = newValue)
+            }
+        }
+    }
+
+    private fun onPlateauHeightChanged(newValue: String) {
+        if (newValue.isEmpty()) {
+            _uiState.update { oldValue ->
+                oldValue.copy(plateauHeight = newValue)
+            }
+            return
+        }
+
+        newValue.toIntOrNull()?.let {
+            _uiState.update { oldValue ->
+                oldValue.copy(plateauHeight = newValue)
             }
         }
     }

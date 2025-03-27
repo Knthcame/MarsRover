@@ -1,9 +1,9 @@
-package com.knthcame.marsrover.data.control.model
+package com.knthcame.marsrover.data.control.models
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Output(
+data class Position(
     val roverPosition: Coordinates,
     val roverDirection: CardinalDirection,
 )

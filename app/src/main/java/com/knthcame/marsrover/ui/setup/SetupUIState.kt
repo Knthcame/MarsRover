@@ -1,9 +1,10 @@
 package com.knthcame.marsrover.ui.setup
 
-import com.knthcame.marsrover.data.control.model.CardinalDirection
+import com.knthcame.marsrover.data.control.models.CardinalDirection
 
 data class SetupUIState(
-    val plateauSize: String,
+    val plateauHeight: String,
+    val plateauWidth: String,
     val initialX: String,
     val initialY: String,
     val initialDirection: CardinalDirection,
@@ -11,7 +12,8 @@ data class SetupUIState(
     companion object {
         fun default(): SetupUIState =
             SetupUIState(
-                plateauSize = "5",
+                plateauHeight = "5",
+                plateauWidth = "5",
                 initialX = "0",
                 initialY = "0",
                 initialDirection = CardinalDirection.North,
@@ -19,5 +21,5 @@ data class SetupUIState(
     }
 
     val isContinueEnabled: Boolean
-        get() = plateauSize.isNotEmpty() && initialX.isNotEmpty() && initialY.isNotEmpty()
+        get() = plateauHeight.isNotEmpty() && plateauWidth.isNotEmpty() && initialX.isNotEmpty() && initialY.isNotEmpty()
 }
