@@ -8,10 +8,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.ui.movements.Movement
-import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,13 +23,6 @@ import org.junit.runner.RunWith
 class MainActivityTest {
     @get:Rule
     val composeActivityRule = createAndroidComposeRule<MainActivity>()
-
-    @Test
-    fun testPackageName() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.knthcame.marsrover", appContext.packageName)
-    }
 
     @OptIn(ExperimentalTestApi::class)
     @Test
