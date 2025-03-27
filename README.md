@@ -12,8 +12,8 @@
 The app allows to send instructions to the Mars Rover to turn or move in a specific direction. 
 The robot attempts to move as indicated inside its "grid" and returns the final coordinates as result.
 
-![Home screen](./screenshots/home_screen.png)
-![Setup screen](./screenshots/setup_screen.png)
+![Home screen](./screenshots/Home_screen.png)
+![Setup screen](./screenshots/Setup_Screen.png)
 ![Modal sheet for picking the Rover's starting direction](./screenshots/Direction_sheet.png)
 ![Movements screen](./screenshots/Movements_Screen.png)
 ![Output_dialog](./screenshots/Output_Dialog.png)
