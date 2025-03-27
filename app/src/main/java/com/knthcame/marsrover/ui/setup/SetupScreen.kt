@@ -43,6 +43,8 @@ import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
+import com.knthcame.marsrover.data.control.models.Position
+import com.knthcame.marsrover.ui.movements.PlateauCanvas
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -105,11 +107,29 @@ private fun SetupScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            PlateauCanvas(
+                topRightCorner = Coordinates(
+                    x = uiState.plateauWidth.toIntOrNull() ?: 1,
+                    y = uiState.plateauHeight.toIntOrNull() ?: 1,
+                ),
+                positions = listOf(
+                    Position(
+                        roverPosition = Coordinates(
+                            x = uiState.initialX.toIntOrNull() ?: 0,
+                            y = uiState.initialY.toIntOrNull() ?: 0,
+                        ),
+                        roverDirection = uiState.initialDirection,
+                    )
+                ),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+            )
+
             Text(stringResource(R.string.plateau_size))
             PlateauSizeTextFields(
                 uiState = uiState,
                 onEvent = onEvent,
             )
+
             Text(stringResource(R.string.initial_position))
             InitialPositionTextFields(
                 initialX = uiState.initialX,
