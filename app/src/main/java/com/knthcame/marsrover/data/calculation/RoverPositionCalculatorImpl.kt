@@ -10,13 +10,13 @@ import kotlin.math.min
 class RoverPositionCalculatorImpl : RoverPositionCalculator {
     override fun calculateNextPosition(
         topRightCorner: Coordinates,
-        initialPosition: Position,
+        currentPosition: Position,
         movement: Movement,
     ): Position {
         return when (movement) {
-            Movement.MoveForward -> moveForward(topRightCorner, initialPosition)
-            Movement.RotateLeft -> rotateLeft(initialPosition)
-            Movement.RotateRight -> rotateRight(initialPosition)
+            Movement.MoveForward -> moveForward(topRightCorner, currentPosition)
+            Movement.RotateLeft -> rotateLeft(currentPosition)
+            Movement.RotateRight -> rotateRight(currentPosition)
         }
     }
 

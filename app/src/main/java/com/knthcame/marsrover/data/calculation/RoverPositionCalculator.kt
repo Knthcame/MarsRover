@@ -7,7 +7,7 @@ import com.knthcame.marsrover.ui.movements.Movement
 fun interface RoverPositionCalculator {
     fun calculateNextPosition(
         topRightCorner: Coordinates,
-        initialPosition: Position,
+        currentPosition: Position,
         movement: Movement,
     ): Position
 }

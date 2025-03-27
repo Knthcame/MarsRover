@@ -16,7 +16,7 @@ class FakeRoverDao(private val roverPositionCalculator: RoverPositionCalculator)
         movements.forEach { movement ->
             position = roverPositionCalculator.calculateNextPosition(
                 topRightCorner = data.topRightCorner,
-                initialPosition = position,
+                currentPosition = position,
                 movement = movement,
             )
         }

@@ -23,7 +23,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_doesNotIncreaseY_whenAlreadyOnPlateauLimit() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(topRightCorner, CardinalDirection.North),
+            currentPosition = Position(topRightCorner, CardinalDirection.North),
             movement = Movement.MoveForward,
         )
 
@@ -35,7 +35,7 @@ class RoverPositionCalculatorImplTest {
         val result =
             calculator.calculateNextPosition(
                 topRightCorner = topRightCorner,
-                initialPosition = Position(roverPosition.roverPosition, CardinalDirection.East),
+                currentPosition = Position(roverPosition.roverPosition, CardinalDirection.East),
                 movement = Movement.MoveForward,
             )
 
@@ -46,7 +46,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_doesNotIncreaseX_whenAlreadyOnPlateauLimit() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(topRightCorner, CardinalDirection.East),
+            currentPosition = Position(topRightCorner, CardinalDirection.East),
             movement = Movement.MoveForward,
         )
 
@@ -58,7 +58,7 @@ class RoverPositionCalculatorImplTest {
         val result =
             calculator.calculateNextPosition(
                 topRightCorner = topRightCorner,
-                initialPosition = Position(roverPosition.roverPosition, CardinalDirection.South),
+                currentPosition = Position(roverPosition.roverPosition, CardinalDirection.South),
                 movement = Movement.MoveForward,
             )
 
@@ -69,7 +69,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_doesNotDecreaseY_whenAlreadyOnPlateauLimit() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(2, 0), CardinalDirection.South),
+            currentPosition = Position(Coordinates(2, 0), CardinalDirection.South),
             movement = Movement.MoveForward,
         )
 
@@ -81,7 +81,7 @@ class RoverPositionCalculatorImplTest {
         val result =
             calculator.calculateNextPosition(
                 topRightCorner = topRightCorner,
-                initialPosition = Position(roverPosition.roverPosition, CardinalDirection.West),
+                currentPosition = Position(roverPosition.roverPosition, CardinalDirection.West),
                 movement = Movement.MoveForward,
             )
 
@@ -92,7 +92,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_doesNotDecreaseX_whenAlreadyOnPlateauLimit() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.West),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.West),
             movement = Movement.MoveForward,
         )
 
@@ -103,7 +103,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_rotatesToEast_WhenRotatingRightAndFacingNorth() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.North),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.North),
             movement = Movement.RotateRight,
         )
 
@@ -114,7 +114,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_rotatesToSouth_WhenRotatingRightAndFacingEast() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.East),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.East),
             movement = Movement.RotateRight,
         )
 
@@ -125,7 +125,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_rotatesToWest_WhenRotatingRightAndFacingSouth() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.South),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.South),
             movement = Movement.RotateRight,
         )
 
@@ -136,7 +136,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_rotatesToNorth_WhenRotatingRightAndFacingWest() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.West),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.West),
             movement = Movement.RotateRight,
         )
 
@@ -147,7 +147,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_rotatesToWest_WhenRotatingLeftAndFacingNorth() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.North),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.North),
             movement = Movement.RotateLeft,
         )
 
@@ -158,7 +158,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_rotatesToSouth_WhenRotatingLeftAndFacingWest() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.West),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.West),
             movement = Movement.RotateLeft,
         )
 
@@ -169,7 +169,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_rotatesToEast_WhenRotatingLeftAndFacingSouth() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.South),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.South),
             movement = Movement.RotateLeft,
         )
 
@@ -180,7 +180,7 @@ class RoverPositionCalculatorImplTest {
     fun calculateNextPosition_rotatesToNorth_WhenRotatingLeftAndFacingEast() {
         val result = calculator.calculateNextPosition(
             topRightCorner = topRightCorner,
-            initialPosition = Position(Coordinates(0, 2), CardinalDirection.East),
+            currentPosition = Position(Coordinates(0, 2), CardinalDirection.East),
             movement = Movement.RotateLeft,
         )
 

@@ -58,7 +58,7 @@ class MovementsViewModel(
         }
         val nextPosition = roverPositionCalculator.calculateNextPosition(
             topRightCorner = uiState.value.instructions.topRightCorner,
-            initialPosition = roverPositions.value.last(),
+            currentPosition = roverPositions.value.last(),
             movement = movement,
         )
         _roverPositions.update { oldValue ->
