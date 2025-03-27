@@ -43,7 +43,7 @@ private fun HomeScreen(
                 .padding(innerPadding)
                 .padding(16.dp),
         ) {
-            Text("Welcome!")
+            Text(stringResource(R.string.welcome_text))
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = onStartSetup,
@@ -52,7 +52,7 @@ private fun HomeScreen(
                     .align(Alignment.CenterHorizontally),
             ) {
                 Text(
-                    text = "Start",
+                    text = stringResource(R.string.start),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                 )

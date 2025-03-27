@@ -20,4 +20,16 @@
     <string name="move_forward">Move forward (M)</string>
     <string name="rotate_left">Rotate Left (L)</string>
     <string name="rotate_right">Rotate Right (R)</string>
+    <string name="start">Start</string>
+    <string name="welcome_text">Welcome!
+        \n\n
+        The MarsRover app allows to send instructions to the Mars Rover to turn or move in a specific direction. The robot attempts to move as indicated inside its plateau and returns the final coordinates as result.
+        \n\n
+        In the next screen you will have to first configure the initial conditions of the Rover:
+        \n· The width and height of the plateau where the Rover will move.
+        \n· The initial coordinates where the Rover will be.
+        \n\n
+        In the second screen you can input how the Rover will move through the plateau. Don\'t worry! It\'s programmed to not fall off the plateau.
+        \n\n
+        Click "Start" to begin the control of the Mars Rover!</string>
 </resources>
