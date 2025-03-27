@@ -42,18 +42,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.model.CardinalDirection
+import com.knthcame.marsrover.data.control.model.Coordinates
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SetupScreenRoute(onSetupCompleted: () -> Unit, viewModel: SetupViewModel = koinViewModel()) {
+fun SetupScreenRoute(
+    onSetupCompleted: (plateauSize: Int, initialPosition: Coordinates, initialDirection: CardinalDirection) -> Unit,
+    viewModel: SetupViewModel = koinViewModel(),
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     SetupScreen(
         uiState = uiState,
         onEvent = { event -> viewModel.onEvent(event) },
-        onSetupCompleted = onSetupCompleted,
+        onSetupCompleted = {
+            onSetupCompleted(
+                uiState.plateauSize.toInt(),
+                Coordinates(
+                    uiState.initialX.toInt(),
+                    uiState.initialY.toInt(),
+                ),
+                uiState.initialDirection,
+            )
+        },
     )
 }
 
