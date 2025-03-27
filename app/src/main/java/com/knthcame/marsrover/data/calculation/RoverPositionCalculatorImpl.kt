@@ -9,21 +9,21 @@ import kotlin.math.min
 
 class RoverPositionCalculatorImpl : RoverPositionCalculator {
     override fun calculateNextPosition(
-        plateauSize: Int,
+        topRightCorner: Coordinates,
         initialPosition: Position,
         movement: Movement,
     ): Position {
         return when (movement) {
-            Movement.MoveForward -> moveForward(plateauSize, initialPosition)
+            Movement.MoveForward -> moveForward(topRightCorner, initialPosition)
             Movement.RotateLeft -> rotateLeft(initialPosition)
             Movement.RotateRight -> rotateRight(initialPosition)
         }
     }
 
-    private fun moveForward(plateauSize: Int, initialPosition: Position): Position {
+    private fun moveForward(topRightCorner: Coordinates, initialPosition: Position): Position {
         val newCoordinates = when (initialPosition.roverDirection) {
-            CardinalDirection.North -> moveNorth(plateauSize, initialPosition.roverPosition)
-            CardinalDirection.East -> moveEast(plateauSize, initialPosition.roverPosition)
+            CardinalDirection.North -> moveNorth(topRightCorner.y, initialPosition.roverPosition)
+            CardinalDirection.East -> moveEast(topRightCorner.x, initialPosition.roverPosition)
             CardinalDirection.South -> moveSouth(initialPosition.roverPosition)
             CardinalDirection.West -> moveWest(initialPosition.roverPosition)
         }
@@ -31,13 +31,13 @@ class RoverPositionCalculatorImpl : RoverPositionCalculator {
         return Position(newCoordinates, initialPosition.roverDirection)
     }
 
-    private fun moveNorth(plateauSize: Int, initialCoordinates: Coordinates): Coordinates {
-        val y = min(plateauSize, initialCoordinates.y + 1)
+    private fun moveNorth(plateauHeight: Int, initialCoordinates: Coordinates): Coordinates {
+        val y = min(plateauHeight, initialCoordinates.y + 1)
         return Coordinates(initialCoordinates.x, y)
     }
 
-    private fun moveEast(plateauSize: Int, initialCoordinates: Coordinates): Coordinates {
-        val x = min(plateauSize, initialCoordinates.x + 1)
+    private fun moveEast(plateauWidth: Int, initialCoordinates: Coordinates): Coordinates {
+        val x = min(plateauWidth, initialCoordinates.x + 1)
         return Coordinates(x, initialCoordinates.y)
     }
 

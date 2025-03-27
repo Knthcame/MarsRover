@@ -75,7 +75,7 @@ private fun MovementsScreen(
         ) {
             val primaryColor = MaterialTheme.colorScheme.primary
             PlateauCanvas(
-                uiState = uiState,
+                instructions = uiState.instructions,
                 primaryColor = primaryColor,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
@@ -95,7 +95,7 @@ private fun MovementsScreen(
             Button(
                 onClick = onConfirm,
                 modifier = Modifier.fillMaxWidth(),
-                enabled = uiState.movements.any(),
+                enabled = uiState.instructions.movements.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.send_movements))
             }
@@ -115,7 +115,7 @@ private fun MovementsTextField(
     onRemoveMovement: () -> Unit
 ) {
     TextField(
-        value = uiState.movements.joinToString { value -> value.code },
+        value = uiState.instructions.movements,
         onValueChange = { },
         readOnly = true,
         modifier = Modifier.fillMaxWidth(),
@@ -128,7 +128,7 @@ private fun MovementsTextField(
         trailingIcon = {
             IconButton(
                 onClick = onRemoveMovement,
-                enabled = uiState.movements.any(),
+                enabled = uiState.instructions.movements.isNotEmpty(),
             ) {
                 Icon(painterResource(R.drawable.backspace), "Backspace icon")
             }

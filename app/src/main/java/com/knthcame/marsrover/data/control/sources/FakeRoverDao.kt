@@ -15,7 +15,7 @@ class FakeRoverDao(private val roverPositionCalculator: RoverPositionCalculator)
         var position = Position(data.roverPosition, data.roverDirection)
         movements.forEach { movement ->
             position = roverPositionCalculator.calculateNextPosition(
-                plateauSize = data.topRightCorner.x,
+                topRightCorner = data.topRightCorner,
                 initialPosition = position,
                 movement = movement,
             )

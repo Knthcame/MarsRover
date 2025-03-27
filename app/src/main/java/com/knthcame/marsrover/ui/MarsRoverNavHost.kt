@@ -25,7 +25,8 @@ data object Setup : TopLevelDestination
 
 @Serializable
 data class Movements(
-    val plateauSize: Int,
+    val plateauHeight: Int,
+    val plateauWidth: Int,
     val initialPositionX: Int,
     val initialPositionY: Int,
     val initialDirection: CardinalDirection,
@@ -55,10 +56,11 @@ fun MarsRoverNavHost(
             })
         }
         composable<Setup> {
-            SetupScreenRoute(onSetupCompleted = { plateauSize, initialPosition, initialDirection ->
+            SetupScreenRoute(onSetupCompleted = { topRightCorner, initialPosition, initialDirection ->
                 navHostController.navigate(
                     Movements(
-                        plateauSize = plateauSize,
+                        plateauHeight = topRightCorner.y,
+                        plateauWidth = topRightCorner.x,
                         initialPositionX = initialPosition.x,
                         initialPositionY = initialPosition.y,
                         initialDirection = initialDirection,

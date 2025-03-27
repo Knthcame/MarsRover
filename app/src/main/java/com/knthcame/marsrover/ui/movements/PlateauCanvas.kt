@@ -20,10 +20,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.Coordinates
+import com.knthcame.marsrover.data.control.models.Instructions
 
 @Composable
 fun PlateauCanvas(
-    uiState: MovementsUiState,
+    instructions: Instructions,
     primaryColor: Color,
     modifier: Modifier = Modifier,
 ) {
@@ -34,8 +35,11 @@ fun PlateauCanvas(
             .fillMaxWidth(0.7f)
             .aspectRatio(1f)
     ) {
-        drawPlateauGrid(uiState, lineColor)
-        val initialPositionOffset = calculateOffset(uiState.plateauSize, uiState.initialPosition)
+        drawPlateauGrid(instructions, lineColor)
+        val initialPositionOffset = calculateOffset(
+            topRightCorner = instructions.topRightCorner,
+            position = instructions.roverPosition,
+        )
         drawCircle(
             color = primaryColor,
             radius = 15f,
@@ -60,22 +64,27 @@ fun PlateauCanvasLegend(primaryColor: Color) {
     }
 }
 
-private fun DrawScope.calculateOffset(plateauSize: Int, position: Coordinates) = Offset(
-    x = position.x * (size.width / plateauSize),
-    y = (plateauSize - position.y) * (size.height / plateauSize),
+// topRightCorner of (0,0) means the bottom-left corner.
+// While and offset of (0,0) means the top-left corner.
+private fun DrawScope.calculateOffset(topRightCorner: Coordinates, position: Coordinates) = Offset(
+    x = position.x * (size.width / topRightCorner.x),
+    y = (topRightCorner.y - position.y) * (size.height / topRightCorner.y),
 )
 
 private fun DrawScope.drawPlateauGrid(
-    uiState: MovementsUiState, lineColor: Color
+    instructions: Instructions,
+    lineColor: Color
 ) {
-    for (i in 0..uiState.plateauSize) {
-        val x = i * (size.width / uiState.plateauSize)
+    for (i in 0..instructions.topRightCorner.x) {
+        val x = i * (size.width / instructions.topRightCorner.x)
         drawLine(
             color = lineColor,
             start = Offset(x = x, y = 0f),
             end = Offset(x = x, y = size.height),
         )
-        val y = i * (size.height / uiState.plateauSize)
+    }
+    for (i in 0..instructions.topRightCorner.y) {
+        val y = i * (size.height / instructions.topRightCorner.y)
         drawLine(
             color = lineColor,
             start = Offset(x = 0f, y = y),

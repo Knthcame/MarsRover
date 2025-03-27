@@ -16,30 +16,57 @@ class SetupViewModelTest {
     }
 
     @Test
-    fun onEvent_updatesPlateauSize_whenValueIsEmpty() {
+    fun onEvent_updatesPlateauHeight_whenValueIsEmpty() {
         val newValue = ""
 
-        viewModel.onEvent(SetupUiEvent.PlateauSizeChanged(newValue))
+        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(plateauSize = newValue))
+        assert(viewModel.uiState.value == defaultUiState.copy(plateauHeight = newValue))
     }
 
     @Test
-    fun onEvent_updatesPlateauSize_whenValueIsInteger() {
+    fun onEvent_updatesPlateauHeight_whenValueIsInteger() {
         val newValue = 12.toString()
 
-        viewModel.onEvent(SetupUiEvent.PlateauSizeChanged(newValue))
+        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(plateauSize = newValue))
+        assert(viewModel.uiState.value == defaultUiState.copy(plateauHeight = newValue))
     }
 
     @Test
-    fun onEvent_doesNotUpdatePlateauSize_whenValueIsNotAnInteger() {
+    fun onEvent_doesNotUpdatePlateauHeight_whenValueIsNotAnInteger() {
         val newValue = "5f"
 
-        viewModel.onEvent(SetupUiEvent.PlateauSizeChanged(newValue))
+        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
 
-        assert(viewModel.uiState.value.plateauSize != newValue)
+        assert(viewModel.uiState.value.plateauHeight != newValue)
+    }
+
+    @Test
+    fun onEvent_updatesPlateauWidth_whenValueIsEmpty() {
+        val newValue = ""
+
+        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+
+        assert(viewModel.uiState.value == defaultUiState.copy(plateauHeight = newValue))
+    }
+
+    @Test
+    fun onEvent_updatesPlateauWidth_whenValueIsInteger() {
+        val newValue = 12.toString()
+
+        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+
+        assert(viewModel.uiState.value == defaultUiState.copy(plateauHeight = newValue))
+    }
+
+    @Test
+    fun onEvent_doesNotUpdatePlateauWidth_whenValueIsNotAnInteger() {
+        val newValue = "5f"
+
+        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+
+        assert(viewModel.uiState.value.plateauHeight != newValue)
     }
 
     @Test
