@@ -3,7 +3,12 @@ package com.knthcame.marsrover.ui.movements
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.knthcame.marsrover.R
-import com.knthcame.marsrover.data.control.model.Movement
+
+enum class Movement(val code: CharSequence) {
+    MoveForward("M"),
+    RotateLeft("L"),
+    RotateRight("R"),
+}
 
 val Movement.label: String
     @Composable

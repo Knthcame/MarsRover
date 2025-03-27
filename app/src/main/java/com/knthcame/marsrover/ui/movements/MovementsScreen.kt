@@ -34,7 +34,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
-import com.knthcame.marsrover.data.control.model.Movement
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import org.koin.androidx.compose.koinViewModel
 

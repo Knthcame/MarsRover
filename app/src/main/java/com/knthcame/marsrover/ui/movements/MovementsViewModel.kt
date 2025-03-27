@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.knthcame.marsrover.data.control.model.Coordinates
 import com.knthcame.marsrover.data.control.model.Instructions
-import com.knthcame.marsrover.data.control.model.Movement
 import com.knthcame.marsrover.data.control.repositories.RoverRepository
 import com.knthcame.marsrover.ui.Movements
 import kotlinx.coroutines.CoroutineScope

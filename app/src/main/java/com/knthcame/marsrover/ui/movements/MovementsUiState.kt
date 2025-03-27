@@ -2,7 +2,6 @@ package com.knthcame.marsrover.ui.movements
 
 import com.knthcame.marsrover.data.control.model.CardinalDirection
 import com.knthcame.marsrover.data.control.model.Coordinates
-import com.knthcame.marsrover.data.control.model.Movement
 
 data class MovementsUiState(
     val plateauSize: Int,
