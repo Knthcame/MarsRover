@@ -1,9 +1,11 @@
 package com.knthcame.marsrover.data.control.model
 
+import androidx.annotation.Keep
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Keep
 enum class CardinalDirection(val code: CharSequence) {
     @SerialName("N")
     North("N"),
