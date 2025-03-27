@@ -34,26 +34,26 @@ class MainActivityTest {
 
     @Test
     fun testLaunch() {
-        composeActivityRule.onNodeWithTag("homeTopBarTitle", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("homeTopBarTitle")
             .assertIsDisplayed()
     }
 
     @Test
     fun endToEndTest() {
         // Navigate to setup screen
-        composeActivityRule.onNodeWithTag("homeStartButton", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("homeStartButton")
             .performClick()
 
         // Input setup data
-        composeActivityRule.onNodeWithTag("setupPlateauWidthTextField", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("setupPlateauWidthTextField")
             .performTextReplacement("5")
-        composeActivityRule.onNodeWithTag("setupPlateauHeightTextField", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("setupPlateauHeightTextField")
             .performTextReplacement("5")
-        composeActivityRule.onNodeWithTag("setupInitialXTextField", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("setupInitialXTextField")
             .performTextReplacement("1")
-        composeActivityRule.onNodeWithTag("setupInitialYTextField", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("setupInitialYTextField")
             .performTextReplacement("2")
-        composeActivityRule.onNodeWithTag("setupInitialDirectionTextField", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("setupInitialDirectionTextField")
             .performClick()
         composeActivityRule.onNodeWithTag(
             "modalSheet${CardinalDirection.North}DirectionButton",
@@ -61,7 +61,7 @@ class MainActivityTest {
         ).performClick()
 
         // Navigate to movements screen
-        composeActivityRule.onNodeWithTag("setupContinueButton", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("setupContinueButton")
             .performClick()
 
         // Input movements
@@ -89,11 +89,11 @@ class MainActivityTest {
             .assertTextEquals("LMLMLMLMM")
 
         // Send instructions
-        composeActivityRule.onNodeWithTag("sendMovementsButton", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("sendMovementsButton")
             .performClick()
 
         // Assert correct output in alert dialog.
-        composeActivityRule.onNodeWithTag("movementsOutputDialogOutputText", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag("movementsOutputDialogOutputText")
             .assertTextEquals("1 3 N")
     }
 }
