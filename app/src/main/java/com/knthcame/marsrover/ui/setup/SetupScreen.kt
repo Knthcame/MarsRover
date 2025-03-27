@@ -147,7 +147,9 @@ private fun SetupScreen(
             Button(
                 onClick = onSetupCompleted,
                 enabled = uiState.isContinueEnabled,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("setupContinueButton"),
             ) {
                 Text(
                     text = "Continue",
@@ -169,7 +171,9 @@ private fun PlateauSizeTextFields(
         TextField(
             value = uiState.plateauWidth,
             onValueChange = { value -> onEvent(SetupUiEvent.PlateauWidthChanged(value)) },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag("setupPlateauWidthTextField"),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -181,7 +185,9 @@ private fun PlateauSizeTextFields(
         TextField(
             value = uiState.plateauHeight,
             onValueChange = { value -> onEvent(SetupUiEvent.PlateauHeightChanged(value)) },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag("setupPlateauHeightTextField"),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -211,7 +217,9 @@ private fun InitialPositionTextFields(
             label = {
                 Text(stringResource(R.string.x_axis))
             },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag("setupInitialXTextField"),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -223,7 +231,9 @@ private fun InitialPositionTextFields(
             label = {
                 Text(stringResource(R.string.y_axis))
             },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag("setupInitialYTextField"),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -238,7 +248,8 @@ private fun InitialPositionTextFields(
             readOnly = true,
             modifier = Modifier
                 .weight(1f)
-                .onFocusChanged(onDirectionFocusChanged),
+                .onFocusChanged(onDirectionFocusChanged)
+                .testTag("setupInitialDirectionTextField"),
         )
     }
 }
@@ -300,7 +311,10 @@ private fun DirectionsCompassButtons(
 
 @Composable
 private fun DirectionButton(direction: CardinalDirection, onSelect: (CardinalDirection) -> Unit) {
-    OutlinedButton(onClick = { onSelect(direction) }) {
+    OutlinedButton(
+        onClick = { onSelect(direction) },
+        modifier = Modifier.testTag("modalSheet${direction}DirectionButton"),
+    ) {
         Text(direction.name)
     }
 }

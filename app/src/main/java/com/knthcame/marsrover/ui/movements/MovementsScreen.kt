@@ -29,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -99,7 +100,9 @@ private fun MovementsScreen(
 
             Button(
                 onClick = onConfirm,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("sendMovementsButton"),
                 enabled = uiState.instructions.movements.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.send_movements))
@@ -123,7 +126,9 @@ private fun MovementsTextField(
         value = uiState.instructions.movements,
         onValueChange = { },
         readOnly = true,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("movementsTextField"),
         label = {
             Text(stringResource(R.string.movements))
         },
@@ -173,7 +178,7 @@ private fun MovementInputButton(
 ) {
     OutlinedButton(
         onClick = { onClick(movement) },
-        modifier = modifier,
+        modifier = modifier.testTag("add${movement}MovementButton"),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -220,7 +225,7 @@ private fun MovementsOutputDialog(
                 Text(uiState.input)
                 HorizontalDivider(Modifier.fillMaxWidth())
                 Text(stringResource(R.string.output))
-                Text(uiState.output)
+                Text(uiState.output, modifier = Modifier.testTag("movementsOutputDialogOutputText"))
             }
         }
     )

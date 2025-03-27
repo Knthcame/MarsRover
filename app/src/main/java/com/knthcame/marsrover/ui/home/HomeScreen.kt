@@ -49,7 +49,8 @@ private fun HomeScreen(
                 onClick = onStartSetup,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
+                    .align(Alignment.CenterHorizontally)
+                    .testTag("homeStartButton"),
             ) {
                 Text(
                     text = stringResource(R.string.start),
