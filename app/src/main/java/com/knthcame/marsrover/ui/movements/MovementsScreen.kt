@@ -89,8 +89,6 @@ private fun MovementsScreen(
                     .heightIn(max = 200.dp),
             )
 
-            PlateauCanvasLegend()
-
             MovementsTextField(
                 uiState = uiState,
                 onRemoveMovement = onRemoveMovement,
