@@ -27,7 +27,7 @@ class MainActivityTest {
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun endToEndTest() {
-        val timeoutMillis = 10_000L
+        val timeoutMillis = 20_000L
         // Navigate to setup screen
         val startButtonTestTag = "homeStartButton"
         composeActivityRule.waitUntilExactlyOneExists(
