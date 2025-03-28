@@ -57,7 +57,6 @@ Both unit tests and UI test have been added:
 - UI tests
   - Found in the androidTest module
   - A full end-to-end test has been added to ensure that the desired outcome is reached when specific data is input via UI and no errors or blockers occur.
-    - However, it fails on the CI workflow but works locally. Consequently it has been "disabled" and split into tests for each screen.
   - Specific tests for each screen test that user input leads to the expected outcomes.
 
 ## Continuous integration

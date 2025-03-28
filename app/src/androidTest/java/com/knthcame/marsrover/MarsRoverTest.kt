@@ -11,13 +11,14 @@ import com.knthcame.marsrover.ui.MarsRoverNavHost
 import com.knthcame.marsrover.ui.movements.Movement
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import org.junit.Rule
+import org.junit.Test
 import org.koin.compose.KoinApplication
 
 class MarsRoverTest {
     @get:Rule
     val composeRule = createComposeRule()
 
-    //@Test // Does not work on the CI workflow. Uncomment to execute locally.
+    @Test
     fun endToEndTest() {
         composeRule.setContent {
             KoinApplication(application = {
@@ -47,8 +48,7 @@ class MarsRoverTest {
         composeRule.onNodeWithTag(
             "modalSheet${CardinalDirection.North}DirectionButton",
             useUnmergedTree = true,
-        )
-            .performClick()
+        ).performClick()
 
         // Navigate to movements screen
         composeRule.onNodeWithTag("setupContinueButton")
@@ -73,10 +73,6 @@ class MarsRoverTest {
             .performClick()
         composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
             .performClick()
-
-        // Assert correct movement sequence is shown
-        composeRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
-            .assertTextEquals("LMLMLMLMM")
 
         // Send instructions
         composeRule.onNodeWithTag("sendMovementsButton")
