@@ -1,6 +1,7 @@
 package com.knthcame.marsrover
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -25,7 +26,7 @@ class MarsRoverTest {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun endToEndTest2() {
+    fun endToEndTest() {
         composeRule.setContent {
             KoinApplication(application = {
                 modules(androidModule)
@@ -36,7 +37,7 @@ class MarsRoverTest {
             }
         }
 
-        val timeoutMillis = 20_000L
+        val timeoutMillis = 5_000L
         // Navigate to setup screen
         val startButtonTestTag = "homeStartButton"
         composeRule.waitUntilExactlyOneExists(
@@ -44,6 +45,7 @@ class MarsRoverTest {
             timeoutMillis = timeoutMillis,
         )
         composeRule.onNodeWithTag(startButtonTestTag)
+            .assertHasClickAction()
             .performClick()
 
         // Wait until navigation completes
