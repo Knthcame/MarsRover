@@ -19,7 +19,6 @@ class MovementsScreenTest {
     @get:Rule
     val composeRule = createComposeRule()
 
-    @OptIn(ExperimentalTestApi::class)
     @Test
     fun movementsTextField_displaysMovementsSequence_accordingToUserInput() {
         composeRule.setContent {
@@ -78,17 +77,12 @@ class MovementsScreenTest {
             .assertTextEquals("LMLMLMLMM")
 
         // Send instructions
-        composeRule.onNodeWithTag("sendMovementsButton")
+        composeRule.onNodeWithTag("sendMovementsButton", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
         // Assert correct output in alert dialog.
-        val outputTextTestTag = "movementsOutputDialogOutputText"
-        composeRule.waitUntilAtLeastOneExists(
-            hasTestTag(outputTextTestTag),
-            timeoutMillis = 5_000,
-        )
-        composeRule.onNodeWithTag(outputTextTestTag)
+        composeRule.onNodeWithTag("movementsOutputDialogOutputText", useUnmergedTree = true)
             .assertTextEquals("1 3 N")
     }
 }

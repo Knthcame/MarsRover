@@ -3,7 +3,6 @@ package com.knthcame.marsrover
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -40,84 +39,69 @@ class MainActivityTest {
             .assertIsDisplayed()
     }
 
-    @OptIn(ExperimentalTestApi::class)
     @Test
     fun endToEndTest() {
-        val timeoutMillis = 10_000L
         // Navigate to setup screen
-        composeActivityRule.onNodeWithTag("homeStartButton")
-            .performClick()
-
-        composeActivityRule.waitUntilAtLeastOneExists(
-            matcher = hasTestTag("setupPlateauWidthTextField"),
-            timeoutMillis = timeoutMillis,
-        )
+        composeActivityRule.onNodeWithTag("homeStartButton").performClick()
 
         // Input setup data
-        composeActivityRule.onNodeWithTag("setupPlateauWidthTextField")
-            .performTextReplacement("5")
-        composeActivityRule.onNodeWithTag("setupPlateauHeightTextField")
-            .performTextReplacement("3")
-        composeActivityRule.onNodeWithTag("setupInitialXTextField")
-            .performTextReplacement("1")
-        composeActivityRule.onNodeWithTag("setupInitialYTextField")
-            .performTextReplacement("2")
+        composeActivityRule.onNodeWithTag("setupPlateauWidthTextField").performTextReplacement("5")
+        composeActivityRule.onNodeWithTag("setupPlateauHeightTextField").performTextReplacement("3")
+        composeActivityRule.onNodeWithTag("setupInitialXTextField").performTextReplacement("1")
+        composeActivityRule.onNodeWithTag("setupInitialYTextField").performTextReplacement("2")
 
         // Navigate to movements screen
-        composeActivityRule.onNodeWithTag("setupContinueButton")
-            .performScrollTo()
-            .performClick()
-
-        composeActivityRule.waitUntilAtLeastOneExists(
-            matcher = hasTestTag("movementsTopBarTitle"),
-            timeoutMillis = timeoutMillis,
-        )
+        composeActivityRule.onNodeWithTag("setupContinueButton", useUnmergedTree = true)
+            .performScrollTo().performClick()
 
         // Input movements
-        composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
-            .performScrollTo()
-            .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
-            .performScrollTo()
-            .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
-            .performScrollTo()
-            .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
-            .performScrollTo()
-            .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
-            .performScrollTo()
-            .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
-            .performScrollTo()
-            .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
-            .performScrollTo()
-            .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
-            .performScrollTo()
-            .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
-            .performScrollTo()
-            .performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.RotateLeft}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.MoveForward}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.RotateLeft}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.MoveForward}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.RotateLeft}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.MoveForward}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.RotateLeft}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.MoveForward}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
+        composeActivityRule.onNodeWithTag(
+            testTag = "add${Movement.MoveForward}MovementButton",
+            useUnmergedTree = true,
+        ).performScrollTo().performClick()
 
         // Assert correct movement sequence is shown
         composeActivityRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
             .assertTextEquals("LMLMLMLMM")
 
         // Send instructions
-        composeActivityRule.onNodeWithTag("sendMovementsButton")
-            .performScrollTo()
-            .performClick()
+        composeActivityRule.onNodeWithTag("sendMovementsButton", useUnmergedTree = true)
+            .performScrollTo().performClick()
 
         // Assert correct output in alert dialog.
-        val outputTextTestTag = "movementsOutputDialogOutputText"
-        composeActivityRule.waitUntilAtLeastOneExists(
-            hasTestTag(outputTextTestTag),
-            timeoutMillis = 5_000,
-        )
-        composeActivityRule.onNodeWithTag(outputTextTestTag)
+        composeActivityRule.onNodeWithTag("movementsOutputDialogOutputText", useUnmergedTree = true)
             .assertTextEquals("1 3 N")
 
     }
