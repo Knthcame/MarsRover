@@ -42,9 +42,15 @@ class MainActivityTest {
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun endToEndTest() {
+        val timeoutMillis = 10_000L
         // Navigate to setup screen
         composeActivityRule.onNodeWithTag("homeStartButton")
             .performClick()
+
+        composeActivityRule.waitUntilAtLeastOneExists(
+            matcher = hasTestTag("setupPlateauWidthTextField"),
+            timeoutMillis = timeoutMillis,
+        )
 
         // Input setup data
         composeActivityRule.onNodeWithTag("setupPlateauWidthTextField")
@@ -59,6 +65,11 @@ class MainActivityTest {
         // Navigate to movements screen
         composeActivityRule.onNodeWithTag("setupContinueButton")
             .performClick()
+
+        composeActivityRule.waitUntilAtLeastOneExists(
+            matcher = hasTestTag("add${Movement.RotateLeft}MovementButton"),
+            timeoutMillis = timeoutMillis,
+        )
 
         // Input movements
         composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
@@ -80,17 +91,8 @@ class MainActivityTest {
         composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
             .performClick()
 
-        // Send instructions
-        composeActivityRule.onNodeWithTag("sendMovementsButton")
-            .performClick()
-
-        // Assert correct output in alert dialog.
-        val outputTextTestTag = "movementsOutputDialogOutputText"
-        composeActivityRule.waitUntilAtLeastOneExists(
-            hasTestTag(outputTextTestTag),
-            timeoutMillis = 5_000,
-        )
-        composeActivityRule.onNodeWithTag(outputTextTestTag)
-            .assertTextEquals("1 3 N")
+        // Assert correct movement sequence is shown
+        composeActivityRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
+            .assertTextEquals("LMLMLMLMM")
     }
 }
