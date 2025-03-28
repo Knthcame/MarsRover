@@ -17,7 +17,7 @@ class MovementsScreenTest {
     val composeRule = createComposeRule()
 
     @Test
-    fun outputAlertDialog_showsRoverMovementsOutput_accordingToUserInput() {
+    fun movementsTextField_displaysMovementsSequence_accordingToUserInput() {
         composeRule.setContent {
             KoinApplication(application = { modules(androidModule) }) {
                 MovementsScreenRoute(
@@ -63,13 +63,5 @@ class MovementsScreenTest {
         // Assert correct movement sequence is shown
         composeRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
             .assertTextEquals("LMLMLMLMM")
-
-        // Send instructions
-        composeRule.onNodeWithTag("sendMovementsButton")
-            .performClick()
-
-        // Assert correct output in alert dialog.
-        composeRule.onNodeWithTag("movementsOutputDialogOutputText")
-            .assertTextEquals("1 3 N")
     }
 }

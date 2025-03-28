@@ -38,7 +38,7 @@ The app is developed with Kotlin as the programming language. It uses the follow
 
 The app architecture has been developed according to [Android's official guidelines](https://developer.android.com/topic/architecture).
 
-The code is structure into 'data' and 'ui' layers (domain wasn't necessary):
+The code is structured into 'data' and 'ui' layers (domain wasn't necessary):
 - Data layer
   - Split into 'control' and 'calculation' packages
   - 'Control' uses a repository and data source. Since there is no real data source to send the Rover instructions, this is faked. In a real scenario it would probably use Retrofit or Okhttp to send the data to a cloud.
