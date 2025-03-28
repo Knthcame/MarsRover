@@ -1,10 +1,11 @@
 package com.knthcame.marsrover.ui.home
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -43,16 +44,22 @@ private fun HomeScreen(
                 .padding(innerPadding)
                 .padding(16.dp),
         ) {
-            Text("Welcome!")
-            Spacer(Modifier.weight(1f))
+            val scrollState = rememberScrollState()
+            Text(
+                text = stringResource(R.string.welcome_text),
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(scrollState),
+            )
             Button(
                 onClick = onStartSetup,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
+                    .align(Alignment.CenterHorizontally)
+                    .testTag("homeStartButton"),
             ) {
                 Text(
-                    text = "Start",
+                    text = stringResource(R.string.start),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                 )

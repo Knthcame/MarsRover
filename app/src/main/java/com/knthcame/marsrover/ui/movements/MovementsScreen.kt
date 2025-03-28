@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -29,6 +32,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,13 +80,16 @@ private fun MovementsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             PlateauCanvas(
                 topRightCorner = uiState.instructions.topRightCorner,
                 positions = roverPositions,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .heightIn(max = 200.dp),
             )
 
             PlateauCanvasLegend()
@@ -99,7 +106,9 @@ private fun MovementsScreen(
 
             Button(
                 onClick = onConfirm,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("sendMovementsButton"),
                 enabled = uiState.instructions.movements.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.send_movements))
@@ -123,12 +132,14 @@ private fun MovementsTextField(
         value = uiState.instructions.movements,
         onValueChange = { },
         readOnly = true,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("movementsTextField"),
         label = {
             Text(stringResource(R.string.movements))
         },
         supportingText = {
-            Text(stringResource(R.string.movements_supporting_text))
+            Text(stringResource(R.string.movements_supporting_text), maxLines = 1)
         },
         trailingIcon = {
             IconButton(
@@ -173,7 +184,7 @@ private fun MovementInputButton(
 ) {
     OutlinedButton(
         onClick = { onClick(movement) },
-        modifier = modifier,
+        modifier = modifier.testTag("add${movement}MovementButton"),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -190,7 +201,10 @@ private fun MovementInputButton(
 private fun MovementsTopBar(onNavigateBack: () -> Unit) {
     TopAppBar(
         title = {
-            Text(stringResource(R.string.input_movements))
+            Text(
+                text = stringResource(R.string.input_movements),
+                modifier = Modifier.testTag("movementsTopBarTitle"),
+            )
         },
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
@@ -220,7 +234,7 @@ private fun MovementsOutputDialog(
                 Text(uiState.input)
                 HorizontalDivider(Modifier.fillMaxWidth())
                 Text(stringResource(R.string.output))
-                Text(uiState.output)
+                Text(uiState.output, modifier = Modifier.testTag("movementsOutputDialogOutputText"))
             }
         }
     )

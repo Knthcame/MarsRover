@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -104,7 +107,8 @@ private fun SetupScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             PlateauCanvas(
@@ -121,7 +125,9 @@ private fun SetupScreen(
                         roverDirection = uiState.initialDirection,
                     )
                 ),
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .heightIn(max = 200.dp),
             )
 
             Text(stringResource(R.string.plateau_size))
@@ -147,7 +153,9 @@ private fun SetupScreen(
             Button(
                 onClick = onSetupCompleted,
                 enabled = uiState.isContinueEnabled,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("setupContinueButton"),
             ) {
                 Text(
                     text = "Continue",
@@ -169,7 +177,9 @@ private fun PlateauSizeTextFields(
         TextField(
             value = uiState.plateauWidth,
             onValueChange = { value -> onEvent(SetupUiEvent.PlateauWidthChanged(value)) },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag("setupPlateauWidthTextField"),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -181,7 +191,9 @@ private fun PlateauSizeTextFields(
         TextField(
             value = uiState.plateauHeight,
             onValueChange = { value -> onEvent(SetupUiEvent.PlateauHeightChanged(value)) },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag("setupPlateauHeightTextField"),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -211,7 +223,9 @@ private fun InitialPositionTextFields(
             label = {
                 Text(stringResource(R.string.x_axis))
             },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag("setupInitialXTextField"),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -223,7 +237,9 @@ private fun InitialPositionTextFields(
             label = {
                 Text(stringResource(R.string.y_axis))
             },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag("setupInitialYTextField"),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -238,7 +254,8 @@ private fun InitialPositionTextFields(
             readOnly = true,
             modifier = Modifier
                 .weight(1f)
-                .onFocusChanged(onDirectionFocusChanged),
+                .onFocusChanged(onDirectionFocusChanged)
+                .testTag("setupInitialDirectionTextField"),
         )
     }
 }
@@ -300,7 +317,10 @@ private fun DirectionsCompassButtons(
 
 @Composable
 private fun DirectionButton(direction: CardinalDirection, onSelect: (CardinalDirection) -> Unit) {
-    OutlinedButton(onClick = { onSelect(direction) }) {
+    OutlinedButton(
+        onClick = { onSelect(direction) },
+        modifier = Modifier.testTag("modalSheet${direction}DirectionButton"),
+    ) {
         Text(direction.name)
     }
 }
