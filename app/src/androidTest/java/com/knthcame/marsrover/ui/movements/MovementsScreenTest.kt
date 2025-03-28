@@ -63,6 +63,10 @@ class MovementsScreenTest {
         composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
             .performClick()
 
+        // Assert correct movement sequence is shown
+        composeRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
+            .assertTextEquals("LMLMLMLMM")
+
         // Send instructions
         composeRule.onNodeWithTag("sendMovementsButton")
             .performClick()

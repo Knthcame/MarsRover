@@ -67,7 +67,7 @@ class MainActivityTest {
             .performClick()
 
         composeActivityRule.waitUntilAtLeastOneExists(
-            matcher = hasTestTag("add${Movement.RotateLeft}MovementButton"),
+            matcher = hasTestTag("add${Movement.MoveForward}MovementButton"),
             timeoutMillis = timeoutMillis,
         )
 
@@ -94,5 +94,19 @@ class MainActivityTest {
         // Assert correct movement sequence is shown
         composeActivityRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
             .assertTextEquals("LMLMLMLMM")
+
+        // Send instructions
+        composeActivityRule.onNodeWithTag("sendMovementsButton")
+            .performClick()
+
+        // Assert correct output in alert dialog.
+        val outputTextTestTag = "movementsOutputDialogOutputText"
+        composeActivityRule.waitUntilAtLeastOneExists(
+            hasTestTag(outputTextTestTag),
+            timeoutMillis = 5_000,
+        )
+        composeActivityRule.onNodeWithTag(outputTextTestTag)
+            .assertTextEquals("1 3 N")
+
     }
 }

@@ -124,7 +124,7 @@ private fun SetupScreen(
                 ),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .heightIn(max = 200.dp),
+                    .heightIn(max = 175.dp),
             )
 
             Text(stringResource(R.string.plateau_size))

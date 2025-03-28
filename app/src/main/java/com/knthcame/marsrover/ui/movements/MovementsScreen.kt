@@ -79,14 +79,14 @@ private fun MovementsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             PlateauCanvas(
                 topRightCorner = uiState.instructions.topRightCorner,
                 positions = roverPositions,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .heightIn(max = 200.dp),
+                    .heightIn(max = 175.dp),
             )
 
             MovementsTextField(
@@ -134,7 +134,7 @@ private fun MovementsTextField(
             Text(stringResource(R.string.movements))
         },
         supportingText = {
-            Text(stringResource(R.string.movements_supporting_text))
+            Text(stringResource(R.string.movements_supporting_text), maxLines = 1)
         },
         trailingIcon = {
             IconButton(
