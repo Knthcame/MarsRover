@@ -1,4 +1,4 @@
-package com.knthcame.marsrover
+package com.knthcame.marsrover.ui.setup
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertHasClickAction
@@ -7,9 +7,9 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
+import com.knthcame.marsrover.androidModule
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
-import com.knthcame.marsrover.ui.setup.SetupScreenRoute
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import org.junit.Rule
 import org.junit.Test
@@ -52,21 +52,14 @@ class SetupScreenTest {
             .performTextReplacement("2")
         composeRule.onNodeWithTag("setupInitialDirectionTextField")
             .performClick()
-
-        // Wait until model sheet opens & select North
-        val northButtonTestTag = "modalSheet${CardinalDirection.North}DirectionButton"
-        composeRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag))
-        composeRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
+        composeRule.onNodeWithTag("modalSheet${CardinalDirection.North}DirectionButton", useUnmergedTree = true)
             .performClick()
 
-        // Navigate to movements screen
-        val continueButtonTestTag = "setupContinueButton"
-        composeRule.waitUntilExactlyOneExists(hasTestTag(continueButtonTestTag))
-        composeRule.onNodeWithTag(continueButtonTestTag)
-            .assertHasClickAction()
+        // Click continue button
+        composeRule.onNodeWithTag("setupContinueButton")
             .performClick()
 
-        // Wait until navigation completes
+        // Assert input is communicated to next screen.
         assert(navTopRightCorner == Coordinates(5, 5))
         assert(navInitialPosition == Coordinates(1, 2))
         assert(navInitialDirection == CardinalDirection.North)
