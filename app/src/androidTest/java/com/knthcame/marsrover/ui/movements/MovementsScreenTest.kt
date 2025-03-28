@@ -6,6 +6,7 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.lifecycle.SavedStateHandle
 import com.knthcame.marsrover.androidModule
 import com.knthcame.marsrover.data.control.models.CardinalDirection
@@ -45,22 +46,31 @@ class MovementsScreenTest {
 
         // Input movements
         composeRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+            .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+            .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+            .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+            .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
 
         // Assert correct movement sequence is shown
@@ -69,6 +79,7 @@ class MovementsScreenTest {
 
         // Send instructions
         composeRule.onNodeWithTag("sendMovementsButton")
+            .performScrollTo()
             .performClick()
 
         // Assert correct output in alert dialog.

@@ -7,6 +7,7 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -64,31 +65,41 @@ class MainActivityTest {
 
         // Navigate to movements screen
         composeActivityRule.onNodeWithTag("setupContinueButton")
+            .performScrollTo()
             .performClick()
 
         composeActivityRule.waitUntilAtLeastOneExists(
-            matcher = hasTestTag("add${Movement.MoveForward}MovementButton"),
+            matcher = hasTestTag("movementsTopBarTitle"),
             timeoutMillis = timeoutMillis,
         )
 
         // Input movements
         composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+            .performScrollTo()
             .performClick()
         composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
         composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+            .performScrollTo()
             .performClick()
         composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
         composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+            .performScrollTo()
             .performClick()
         composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
         composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+            .performScrollTo()
             .performClick()
         composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
         composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+            .performScrollTo()
             .performClick()
 
         // Assert correct movement sequence is shown
@@ -97,6 +108,7 @@ class MainActivityTest {
 
         // Send instructions
         composeActivityRule.onNodeWithTag("sendMovementsButton")
+            .performScrollTo()
             .performClick()
 
         // Assert correct output in alert dialog.

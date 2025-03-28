@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -78,16 +80,19 @@ private fun MovementsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             PlateauCanvas(
                 topRightCorner = uiState.instructions.topRightCorner,
                 positions = roverPositions,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .heightIn(max = 175.dp),
+                    .heightIn(max = 200.dp),
             )
+
+            PlateauCanvasLegend()
 
             MovementsTextField(
                 uiState = uiState,
@@ -196,7 +201,10 @@ private fun MovementInputButton(
 private fun MovementsTopBar(onNavigateBack: () -> Unit) {
     TopAppBar(
         title = {
-            Text(stringResource(R.string.input_movements))
+            Text(
+                text = stringResource(R.string.input_movements),
+                modifier = Modifier.testTag("movementsTopBarTitle"),
+            )
         },
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
