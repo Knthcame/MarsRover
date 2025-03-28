@@ -3,117 +3,126 @@ package com.knthcame.marsrover
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
+import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.knthcame.marsrover.data.control.models.CardinalDirection
+import com.knthcame.marsrover.ui.MarsRoverNavHost
 import com.knthcame.marsrover.ui.movements.Movement
+import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.compose.KoinApplication
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class MarsRoverTest {
     @get:Rule
-    val composeActivityRule = createAndroidComposeRule<MainActivity>()
+    val composeRule = createComposeRule()
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun endToEndTest() {
+    fun endToEndTest2() {
+        composeRule.setContent {
+            KoinApplication(application = {
+                modules(androidModule)
+            }) {
+                MarsRoverTheme {
+                    MarsRoverNavHost(rememberNavController())
+                }
+            }
+        }
+
         val timeoutMillis = 20_000L
         // Navigate to setup screen
         val startButtonTestTag = "homeStartButton"
-        composeActivityRule.waitUntilExactlyOneExists(
+        composeRule.waitUntilExactlyOneExists(
             hasTestTag(startButtonTestTag),
             timeoutMillis = timeoutMillis,
         )
-        composeActivityRule.onNodeWithTag(startButtonTestTag)
+        composeRule.onNodeWithTag(startButtonTestTag)
             .performClick()
 
         // Wait until navigation completes
-        composeActivityRule.waitUntilExactlyOneExists(
+        composeRule.waitUntilExactlyOneExists(
             hasTestTag("setupPlateauWidthTextField"),
             timeoutMillis = timeoutMillis,
         )
 
         // Input setup data
-        composeActivityRule.onNodeWithTag("setupPlateauWidthTextField")
+        composeRule.onNodeWithTag("setupPlateauWidthTextField")
             .performTextReplacement("5")
-        composeActivityRule.onNodeWithTag("setupPlateauHeightTextField")
+        composeRule.onNodeWithTag("setupPlateauHeightTextField")
             .performTextReplacement("5")
-        composeActivityRule.onNodeWithTag("setupInitialXTextField")
+        composeRule.onNodeWithTag("setupInitialXTextField")
             .performTextReplacement("1")
-        composeActivityRule.onNodeWithTag("setupInitialYTextField")
+        composeRule.onNodeWithTag("setupInitialYTextField")
             .performTextReplacement("2")
-        composeActivityRule.onNodeWithTag("setupInitialDirectionTextField")
+        composeRule.onNodeWithTag("setupInitialDirectionTextField")
             .performClick()
 
         // Wait until model sheet opens & select North
         val northButtonTestTag = "modalSheet${CardinalDirection.North}DirectionButton"
-        composeActivityRule.waitUntilExactlyOneExists(
+        composeRule.waitUntilExactlyOneExists(
             hasTestTag(northButtonTestTag),
             timeoutMillis = timeoutMillis,
         )
-        composeActivityRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
+        composeRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
             .performClick()
 
         // Navigate to movements screen
         val continueButtonTestTag = "setupContinueButton"
-        composeActivityRule.waitUntilExactlyOneExists(
+        composeRule.waitUntilExactlyOneExists(
             hasTestTag(continueButtonTestTag),
             timeoutMillis = timeoutMillis,
         )
-        composeActivityRule.onNodeWithTag(continueButtonTestTag)
+        composeRule.onNodeWithTag(continueButtonTestTag)
             .performClick()
 
         // Wait until navigation completes
-        composeActivityRule.waitUntilExactlyOneExists(
+        composeRule.waitUntilExactlyOneExists(
             hasTestTag("movementsTextField"),
             timeoutMillis = timeoutMillis,
         )
 
         // Input movements
-        composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
             .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
             .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
             .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
             .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
             .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
             .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.RotateLeft}MovementButton")
             .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
             .performClick()
-        composeActivityRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
+        composeRule.onNodeWithTag("add${Movement.MoveForward}MovementButton")
             .performClick()
 
         // Assert correct movement sequence is shown
-        composeActivityRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
+        composeRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
             .assertTextEquals("LMLMLMLMM")
 
         // Send instructions
-        composeActivityRule.onNodeWithTag("sendMovementsButton")
+        composeRule.onNodeWithTag("sendMovementsButton")
             .performClick()
 
         // Assert correct output in alert dialog.
         val outputTextTesTag = "movementsOutputDialogOutputText"
-        composeActivityRule.waitUntilExactlyOneExists(
+        composeRule.waitUntilExactlyOneExists(
             hasTestTag(outputTextTesTag),
             timeoutMillis = timeoutMillis,
         )
-        composeActivityRule.onNodeWithTag(outputTextTesTag)
+        composeRule.onNodeWithTag(outputTextTesTag)
             .assertTextEquals("1 3 N")
     }
 }
