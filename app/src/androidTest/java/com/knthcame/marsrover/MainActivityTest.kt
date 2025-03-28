@@ -55,8 +55,6 @@ class MainActivityTest {
             .performTextReplacement("1")
         composeActivityRule.onNodeWithTag("setupInitialYTextField")
             .performTextReplacement("2")
-        composeActivityRule.onNodeWithTag("setupInitialDirectionTextField")
-            .performClick()
 
         // Navigate to movements screen
         composeActivityRule.onNodeWithTag("setupContinueButton")
@@ -88,9 +86,9 @@ class MainActivityTest {
 
         // Assert correct output in alert dialog.
         val outputTextTestTag = "movementsOutputDialogOutputText"
-        composeActivityRule.waitUntilExactlyOneExists(
+        composeActivityRule.waitUntilAtLeastOneExists(
             hasTestTag(outputTextTestTag),
-            timeoutMillis = 5_000
+            timeoutMillis = 5_000,
         )
         composeActivityRule.onNodeWithTag(outputTextTestTag)
             .assertTextEquals("1 3 N")
