@@ -50,10 +50,10 @@ class MarsRoverTest {
             .performClick()
 
         val northButtonTestTag = "modalSheet${CardinalDirection.North}DirectionButton"
-        composeRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag))
+        composeRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag), timeoutMillis = 5_000)
         composeRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
             .performClick()
-        composeRule.waitUntilDoesNotExist(hasTestTag(northButtonTestTag))
+        composeRule.waitUntilDoesNotExist(hasTestTag(northButtonTestTag), timeoutMillis = 5_000)
 
         // Navigate to movements screen
         composeRule.onNodeWithTag("setupContinueButton")
@@ -84,7 +84,9 @@ class MarsRoverTest {
             .performClick()
 
         // Assert correct output in alert dialog.
-        composeRule.onNodeWithTag("movementsOutputDialogOutputText")
+        val outputTextTestTag = "movementsOutputDialogOutputText"
+        composeRule.waitUntilExactlyOneExists(hasTestTag(outputTextTestTag), timeoutMillis = 5_000)
+        composeRule.onNodeWithTag(outputTextTestTag)
             .assertTextEquals("1 3 N")
     }
 }
