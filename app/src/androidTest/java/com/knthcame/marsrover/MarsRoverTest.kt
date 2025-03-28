@@ -1,6 +1,8 @@
 package com.knthcame.marsrover
 
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -18,6 +20,7 @@ class MarsRoverTest {
     @get:Rule
     val composeRule = createComposeRule()
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun endToEndTest() {
         composeRule.setContent {
@@ -38,17 +41,19 @@ class MarsRoverTest {
         composeRule.onNodeWithTag("setupPlateauWidthTextField")
             .performTextReplacement("5")
         composeRule.onNodeWithTag("setupPlateauHeightTextField")
-            .performTextReplacement("5")
+            .performTextReplacement("3")
         composeRule.onNodeWithTag("setupInitialXTextField")
             .performTextReplacement("1")
         composeRule.onNodeWithTag("setupInitialYTextField")
             .performTextReplacement("2")
         composeRule.onNodeWithTag("setupInitialDirectionTextField")
             .performClick()
-        composeRule.onNodeWithTag(
-            "modalSheet${CardinalDirection.North}DirectionButton",
-            useUnmergedTree = true,
-        ).performClick()
+
+        val northButtonTestTag = "modalSheet${CardinalDirection.North}DirectionButton"
+        composeRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag))
+        composeRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
+            .performClick()
+        composeRule.waitUntilDoesNotExist(hasTestTag(northButtonTestTag))
 
         // Navigate to movements screen
         composeRule.onNodeWithTag("setupContinueButton")

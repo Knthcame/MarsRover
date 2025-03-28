@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -66,11 +67,7 @@ fun PlateauCanvas(
     val roverColor = roverColor
     val roverIcon = roverIcon
 
-    Canvas(
-        modifier
-            .fillMaxWidth(0.7f)
-            .aspectRatio(1f)
-    ) {
+    Canvas(modifier.aspectRatio(topRightCorner.x.toFloat() / topRightCorner.y)) {
         drawPlateauGrid(topRightCorner, gridLineColor)
 
         if (positions.size > 1) {
@@ -258,11 +255,12 @@ private fun PlateauCanvasSetupPreview() {
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 PlateauCanvas(
                     topRightCorner = Coordinates(5, 7),
                     positions = listOf(Position(Coordinates(3, 2), CardinalDirection.North)),
-                    modifier = Modifier.size(300.dp),
+                    modifier = Modifier.heightIn(max = 300.dp),
                 )
 
                 PlateauCanvasLegend()
@@ -282,7 +280,7 @@ private fun PlateauCanvasMovementsPreview() {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 PlateauCanvas(
-                    topRightCorner = Coordinates(5, 7),
+                    topRightCorner = Coordinates(7, 5),
                     positions = listOf(
                         Position(Coordinates(3, 2), CardinalDirection.North),
                         Position(Coordinates(3, 3), CardinalDirection.North),
@@ -291,7 +289,7 @@ private fun PlateauCanvasMovementsPreview() {
                         Position(Coordinates(4, 3), CardinalDirection.South),
                         Position(Coordinates(4, 2), CardinalDirection.South),
                     ),
-                    modifier = Modifier.size(300.dp),
+                    modifier = Modifier.heightIn(max = 300.dp),
                 )
 
                 PlateauCanvasLegend()

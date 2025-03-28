@@ -1,7 +1,6 @@
 package com.knthcame.marsrover.ui.setup
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -45,22 +44,26 @@ class SetupScreenTest {
         composeRule.onNodeWithTag("setupPlateauWidthTextField")
             .performTextReplacement("5")
         composeRule.onNodeWithTag("setupPlateauHeightTextField")
-            .performTextReplacement("5")
+            .performTextReplacement("2")
         composeRule.onNodeWithTag("setupInitialXTextField")
             .performTextReplacement("1")
         composeRule.onNodeWithTag("setupInitialYTextField")
             .performTextReplacement("2")
         composeRule.onNodeWithTag("setupInitialDirectionTextField")
             .performClick()
-        composeRule.onNodeWithTag("modalSheet${CardinalDirection.North}DirectionButton", useUnmergedTree = true)
+
+        val northButtonTestTag = "modalSheet${CardinalDirection.North}DirectionButton"
+        composeRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag))
+        composeRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
             .performClick()
+        composeRule.waitUntilDoesNotExist(hasTestTag(northButtonTestTag))
 
         // Click continue button
         composeRule.onNodeWithTag("setupContinueButton")
             .performClick()
 
         // Assert input is communicated to next screen.
-        assert(navTopRightCorner == Coordinates(5, 5))
+        assert(navTopRightCorner == Coordinates(5, 2))
         assert(navInitialPosition == Coordinates(1, 2))
         assert(navInitialDirection == CardinalDirection.North)
     }
