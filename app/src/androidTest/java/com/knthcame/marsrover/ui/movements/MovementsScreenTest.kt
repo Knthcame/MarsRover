@@ -1,8 +1,6 @@
 package com.knthcame.marsrover.ui.movements
 
-import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -12,8 +10,9 @@ import com.knthcame.marsrover.androidModule
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import org.junit.Rule
 import org.junit.Test
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.KoinApplication
-import org.koin.compose.koinInject
+import org.koin.dsl.module
 
 class MovementsScreenTest {
     @get:Rule
@@ -21,24 +20,25 @@ class MovementsScreenTest {
 
     @Test
     fun movementsTextField_displaysMovementsSequence_accordingToUserInput() {
+        val testModule = module {
+            single {
+                SavedStateHandle(
+                    mapOf(
+                        "plateauHeight" to 5,
+                        "plateauWidth" to 5,
+                        "initialPositionX" to 1,
+                        "initialPositionY" to 2,
+                        "initialDirection" to CardinalDirection.North,
+                    )
+                )
+            }
+        }
+
         composeRule.setContent {
-            KoinApplication(application = { modules(androidModule) }) {
+            KoinApplication(application = { modules(androidModule, testModule) }) {
                 MovementsScreenRoute(
                     onNavigateBack = { },
-                    viewModel = MovementsViewModel(
-                        savedStateHandle = SavedStateHandle(
-                            mapOf(
-                                "plateauHeight" to 5,
-                                "plateauWidth" to 5,
-                                "initialPositionX" to 1,
-                                "initialPositionY" to 2,
-                                "initialDirection" to CardinalDirection.North,
-                            )
-                        ),
-                        roverRepository = koinInject(),
-                        roverPositionCalculator = koinInject(),
-                        viewModeScope = koinInject(),
-                    )
+                    viewModel = koinViewModel<MovementsViewModel>(),
                 )
             }
         }
