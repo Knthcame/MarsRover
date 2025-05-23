@@ -13,7 +13,7 @@ sonarcloud = "6.1.0.5360"
 kover = "0.9.1"
 navigation = "2.8.9"
 serialization = "1.8.0"
-koin = "4.0.3"
+koin = "4.0.4"
 mockk = "1.13.17"
 
 [libraries]
