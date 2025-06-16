@@ -93,6 +93,7 @@ sonar {
                     "**/*Screen*," +
                     "**/*NavHost*," +
                     "**/MainActivity.kt," +
+                    "**/*Application.kt," +
                     "**/di/**.kt," +
                     "**/Fake*," +
                     "**/*Canvas.kt," +
