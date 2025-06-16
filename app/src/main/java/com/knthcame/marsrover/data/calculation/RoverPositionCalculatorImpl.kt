@@ -4,10 +4,13 @@ import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.movements.Movement
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.max
 import kotlin.math.min
 
-class RoverPositionCalculatorImpl : RoverPositionCalculator {
+@Singleton
+class RoverPositionCalculatorImpl @Inject constructor() : RoverPositionCalculator {
     override fun calculateNextPosition(
         topRightCorner: Coordinates,
         currentPosition: Position,

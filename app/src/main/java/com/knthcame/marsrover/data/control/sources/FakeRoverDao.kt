@@ -5,8 +5,12 @@ import com.knthcame.marsrover.data.control.models.Instructions
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.movements.Movement
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FakeRoverDao(private val roverPositionCalculator: RoverPositionCalculator) : RoverDao {
+@Singleton
+class FakeRoverDao @Inject constructor(private val roverPositionCalculator: RoverPositionCalculator) :
+    RoverDao {
     override suspend fun send(instructions: String): String {
         val data = Json.decodeFromString<Instructions>(instructions)
         val movements = data.movements.map { value ->

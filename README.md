@@ -32,7 +32,7 @@ The app is developed with Kotlin as the programming language. It uses the follow
 - [Compose navigation](https://developer.android.com/develop/ui/compose/navigation): Navigation between screens.
 - [Kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization): For (de)serialization of JSON files.
 - [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle): To implement the MVVM architectural pattern.
-- [Koin](https://github.com/InsertKoinIO/koin): Dependency injection.
+- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android): Dependency injection.
 
 # Architecture
 

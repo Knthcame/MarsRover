@@ -37,17 +37,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovementsScreenRoute(
     onNavigateBack: () -> Unit,
-    viewModel: MovementsViewModel = koinViewModel(),
+    viewModel: MovementsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val roverPositions by viewModel.roverPositions.collectAsState()

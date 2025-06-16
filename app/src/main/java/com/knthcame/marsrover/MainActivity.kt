@@ -7,19 +7,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.knthcame.marsrover.ui.MarsRoverNavHost
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
-import org.koin.compose.KoinApplication
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            KoinApplication(application = {
-                modules(androidModule)
-            }) {
-                MarsRoverTheme {
-                    MarsRoverNavHost(rememberNavController())
-                }
+            MarsRoverTheme {
+                MarsRoverNavHost(rememberNavController())
             }
         }
     }

@@ -2,22 +2,33 @@ package com.knthcame.marsrover.ui.setup
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextReplacement
-import com.knthcame.marsrover.androidModule
+import com.knthcame.marsrover.HiltTestActivity
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.koin.compose.KoinApplication
 
+@HiltAndroidTest
 class SetupScreenTest {
-    @get:Rule
-    val composeRule = createComposeRule()
+    @get:Rule(order = 0)
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeRule = createAndroidComposeRule<HiltTestActivity>()
+
+    @Before
+    fun before() {
+        hiltRule.inject()
+    }
 
     @OptIn(ExperimentalTestApi::class)
     @Test
@@ -27,17 +38,12 @@ class SetupScreenTest {
         var navInitialDirection: CardinalDirection? = null
 
         composeRule.setContent {
-            KoinApplication(application = {
-                modules(androidModule)
-            }) {
-                MarsRoverTheme {
-                    SetupScreenRoute(onSetupCompleted = { topRightCorner, initialPosition, initialDirection ->
-                        navTopRightCorner = topRightCorner
-                        navInitialPosition = initialPosition
-                        navInitialDirection = initialDirection
-                    })
-
-                }
+            MarsRoverTheme {
+                SetupScreenRoute(onSetupCompleted = { topRightCorner, initialPosition, initialDirection ->
+                    navTopRightCorner = topRightCorner
+                    navInitialPosition = initialPosition
+                    navInitialDirection = initialDirection
+                })
             }
         }
 
