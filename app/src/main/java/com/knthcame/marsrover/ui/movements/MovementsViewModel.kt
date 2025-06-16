@@ -9,14 +9,17 @@ import com.knthcame.marsrover.data.control.models.Instructions
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.data.control.repositories.RoverRepository
 import com.knthcame.marsrover.ui.Movements
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-class MovementsViewModel(
+@HiltViewModel
+class MovementsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val roverRepository: RoverRepository,
     private val roverPositionCalculator: RoverPositionCalculator,

@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.sonarcloud)
     alias(libs.plugins.kover)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -18,7 +20,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.knthcame.marsrover.HiltTestRunner"
     }
 
     buildTypes {
@@ -55,19 +57,28 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.compose.viewmodel.navigation)
+    implementation(libs.hilt.android.core)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
+
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)
+    testImplementation(libs.hilt.android.testing)
+    kspTest(libs.hilt.compiler)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
 sonar {
     properties {
         property("sonar.projectKey", "Knthcame_MarsRover")
@@ -82,7 +93,7 @@ sonar {
                     "**/*Screen*," +
                     "**/*NavHost*," +
                     "**/MainActivity.kt," +
-                    "**/Koin.kt," +
+                    "**/di/**.kt," +
                     "**/Fake*," +
                     "**/*Canvas.kt," +
                     "**/ui/movements/**," // Due to limitations in navigation library (see README)
