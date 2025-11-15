@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -102,7 +100,7 @@ private fun MovementsScreen(
                 onAddMovement = onAddMovement
             )
 
-            Spacer(Modifier.Companion.weight(1f))
+            Spacer(Modifier.weight(1f))
 
             Button(
                 onClick = onConfirm,
@@ -157,7 +155,7 @@ private fun ColumnScope.MovementsInputButtons(onAddMovement: (Movement) -> Unit)
     MovementInputButton(
         onClick = onAddMovement,
         movement = Movement.MoveForward,
-        modifier = Modifier.Companion.align(Alignment.CenterHorizontally),
+        modifier = Modifier.align(Alignment.CenterHorizontally),
     )
 
     Row(
@@ -208,7 +206,7 @@ private fun MovementsTopBar(onNavigateBack: () -> Unit) {
         },
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
-                Icon(Icons.AutoMirrored.Default.ArrowBack, "Navigate back arrow")
+                Icon(painterResource(R.drawable.outline_arrow_back_24), "Navigate back arrow")
             }
         })
 }
