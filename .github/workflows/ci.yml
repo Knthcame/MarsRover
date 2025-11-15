@@ -99,7 +99,11 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: List devices
-        run: $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list device
+        run: |
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list 
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list target
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list device
 
       - name: Run Android instrumented tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -107,7 +111,7 @@ jobs:
           api-level: 36
           arch: x86_64
           disable-animations: true
-          profile: Pixel 9
+          profile: pixel_7_pro
           script: ./gradlew clean connectedAndroidTest
 
       - name: Publish Test Results
