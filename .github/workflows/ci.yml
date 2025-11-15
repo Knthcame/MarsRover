@@ -111,7 +111,7 @@ jobs:
           api-level: 36
           arch: x86_64
           disable-animations: true
-          profile: pixel_7_pro
+          profile: android-36
           script: ./gradlew clean connectedAndroidTest
 
       - name: Publish Test Results
