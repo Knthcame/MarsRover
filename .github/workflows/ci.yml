@@ -98,12 +98,9 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: List devices
+      - name: Install buil tools
         run: |
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list 
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list target
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list device
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager 'build-tools;36.0.0'
 
       - name: Run Android instrumented tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -111,7 +108,8 @@ jobs:
           api-level: 36
           arch: x86_64
           disable-animations: true
-          profile: android-36
+          target: google_apis
+          profile: pixel_7_pro
           script: ./gradlew clean connectedAndroidTest
 
       - name: Publish Test Results
