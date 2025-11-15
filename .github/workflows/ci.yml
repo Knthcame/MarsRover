@@ -98,13 +98,16 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: List devices
+        run: avdmanager list device
+
       - name: Run Android instrumented tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
           arch: x86_64
           disable-animations: true
-          profile: Galaxy Nexus
+          profile: Pixel 9
           script: ./gradlew clean connectedAndroidTest
 
       - name: Publish Test Results
