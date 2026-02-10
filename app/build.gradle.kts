@@ -1,6 +1,8 @@
+import com.android.build.api.dsl.ApplicationExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.sonarcloud)
     alias(libs.plugins.kover)
@@ -9,7 +11,15 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
-android {
+kotlin {
+    target {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+}
+
+configure<ApplicationExtension> {
     namespace = "com.knthcame.marsrover"
     compileSdk = 36
 
@@ -36,9 +46,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
