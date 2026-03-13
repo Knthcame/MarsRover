@@ -35,18 +35,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
+import com.knthcame.marsrover.ui.navigation.Movements
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
 fun MovementsScreenRoute(
+    movements: Movements,
     onNavigateBack: () -> Unit,
-    viewModel: MovementsViewModel = hiltViewModel(),
 ) {
+    val viewModel = hiltViewModel<MovementsViewModel, MovementsViewModel.Factory> { factory ->
+        factory.create(movements)
+    }
     val uiState by viewModel.uiState.collectAsState()
     val roverPositions by viewModel.roverPositions.collectAsState()
 

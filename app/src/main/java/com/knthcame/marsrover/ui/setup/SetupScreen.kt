@@ -43,7 +43,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
@@ -55,8 +55,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SetupScreenRoute(
     onSetupCompleted: (topRightCorner: Coordinates, initialPosition: Coordinates, initialDirection: CardinalDirection) -> Unit,
-    viewModel: SetupViewModel = hiltViewModel(),
 ) {
+    val viewModel = hiltViewModel<SetupViewModel>()
     val uiState by viewModel.uiState.collectAsState()
 
     SetupScreen(
@@ -69,8 +69,8 @@ fun SetupScreenRoute(
                     y = uiState.plateauHeight.toInt()
                 ),
                 Coordinates(
-                    uiState.initialX.toInt(),
-                    uiState.initialY.toInt(),
+                    x = uiState.initialX.toInt(),
+                    y = uiState.initialY.toInt(),
                 ),
                 uiState.initialDirection,
             )
