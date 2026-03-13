@@ -11,11 +11,13 @@ plugins {
     alias(libs.plugins.serialization) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint) apply false
 }
 
 subprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
     configure<KtlintExtension> {
         debug.set(true)
         reporters {

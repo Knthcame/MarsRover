@@ -62,8 +62,9 @@ jobs:
       - name: Lint code
         run: ./gradlew
           ktlintCheck
+          detekt
           lint
-          --info --build-cache
+          --info --build-cache --parallel --continue
 
       - name: Get ktlint reports file paths
         id: ktlintPath

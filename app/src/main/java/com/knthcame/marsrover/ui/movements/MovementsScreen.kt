@@ -40,6 +40,8 @@ import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
+import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
+import com.knthcame.marsrover.ui.components.plateau.PlateauCanvasLegend
 import com.knthcame.marsrover.ui.navigation.Movements
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 

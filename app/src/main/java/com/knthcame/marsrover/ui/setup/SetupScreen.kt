@@ -2,33 +2,28 @@ package com.knthcame.marsrover.ui.setup
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +31,6 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -48,9 +42,9 @@ import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
-import com.knthcame.marsrover.ui.movements.PlateauCanvas
+import com.knthcame.marsrover.ui.components.bottomsheets.DirectionModalBottomSheet
+import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun SetupScreenRoute(
@@ -115,24 +109,7 @@ private fun SetupScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            PlateauCanvas(
-                topRightCorner = Coordinates(
-                    x = uiState.plateauWidth.toIntOrNull() ?: 1,
-                    y = uiState.plateauHeight.toIntOrNull() ?: 1,
-                ),
-                positions = listOf(
-                    Position(
-                        roverPosition = Coordinates(
-                            x = uiState.initialX.toIntOrNull() ?: 0,
-                            y = uiState.initialY.toIntOrNull() ?: 0,
-                        ),
-                        roverDirection = uiState.initialDirection,
-                    ),
-                ),
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .heightIn(max = 200.dp),
-            )
+            SetupPlateauCanvas(uiState)
 
             Text(stringResource(R.string.plateau_size))
             PlateauSizeTextFields(
@@ -142,18 +119,12 @@ private fun SetupScreen(
 
             Text(stringResource(R.string.initial_position))
             InitialPositionTextFields(
-                initialX = uiState.initialX,
-                onInitialXChanged = { value -> onEvent(SetupUiEvent.InitialXChanged(value)) },
-                initialY = uiState.initialY,
-                onInitialYChanged = { value -> onEvent(SetupUiEvent.InitialYChanged(value)) },
-                initialDirection = uiState.initialDirection,
-                onDirectionFocusChanged = { focusState ->
-                    showBottomSheet = focusState.isFocused
-                },
+                uiState = uiState,
+                onEvent = onEvent,
+                onDirectionFocusChanged = { focusState -> showBottomSheet = focusState.isFocused },
             )
 
             Spacer(Modifier.weight(1f))
-
             Button(
                 onClick = onSetupCompleted,
                 enabled = uiState.isContinueEnabled,
@@ -169,6 +140,28 @@ private fun SetupScreen(
             }
         }
     }
+}
+
+@Composable
+private fun ColumnScope.SetupPlateauCanvas(uiState: SetupUIState) {
+    PlateauCanvas(
+        topRightCorner = Coordinates(
+            x = uiState.plateauWidth.toIntOrNull() ?: 1,
+            y = uiState.plateauHeight.toIntOrNull() ?: 1,
+        ),
+        positions = listOf(
+            Position(
+                roverPosition = Coordinates(
+                    x = uiState.initialX.toIntOrNull() ?: 0,
+                    y = uiState.initialY.toIntOrNull() ?: 0,
+                ),
+                roverDirection = uiState.initialDirection,
+            ),
+        ),
+        modifier = Modifier
+            .align(Alignment.CenterHorizontally)
+            .heightIn(max = 200.dp),
+    )
 }
 
 @Composable
@@ -207,19 +200,16 @@ private fun PlateauSizeTextFields(uiState: SetupUIState, onEvent: (SetupUiEvent)
 
 @Composable
 private fun InitialPositionTextFields(
-    initialX: String,
-    onInitialXChanged: (String) -> Unit,
-    initialY: String,
-    onInitialYChanged: (String) -> Unit,
-    initialDirection: CardinalDirection?,
+    uiState: SetupUIState,
+    onEvent: (SetupUiEvent) -> Unit,
     onDirectionFocusChanged: (FocusState) -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         TextField(
-            value = initialX,
-            onValueChange = onInitialXChanged,
+            value = uiState.initialX,
+            onValueChange = { value -> onEvent(SetupUiEvent.InitialXChanged(value)) },
             label = {
                 Text(stringResource(R.string.x_axis))
             },
@@ -232,8 +222,8 @@ private fun InitialPositionTextFields(
             ),
         )
         TextField(
-            value = initialY,
-            onValueChange = onInitialYChanged,
+            value = uiState.initialY,
+            onValueChange = { value -> onEvent(SetupUiEvent.InitialYChanged(value)) },
             label = {
                 Text(stringResource(R.string.y_axis))
             },
@@ -246,7 +236,7 @@ private fun InitialPositionTextFields(
             ),
         )
         TextField(
-            value = initialDirection?.name ?: "",
+            value = uiState.initialDirection.name,
             onValueChange = {},
             label = {
                 Text(stringResource(R.string.direction))
@@ -257,71 +247,6 @@ private fun InitialPositionTextFields(
                 .onFocusChanged(onDirectionFocusChanged)
                 .testTag("setupInitialDirectionTextField"),
         )
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun DirectionModalBottomSheet(
-    onDismiss: () -> Unit,
-    onSelect: (CardinalDirection) -> Unit,
-) {
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = sheetState,
-    ) {
-        DirectionsCompassButtons(
-            onSelect = { value ->
-                onSelect(value)
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    onDismiss()
-                }
-            },
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.CenterHorizontally),
-        )
-    }
-}
-
-@Composable
-private fun DirectionsCompassButtons(
-    onSelect: (CardinalDirection) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier,
-    ) {
-        DirectionButton(CardinalDirection.North, onSelect)
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            DirectionButton(CardinalDirection.West, onSelect)
-            // Icon from https://www.flaticon.com/free-icon/cardinal_2998824?term=cardinal+directions&page=1&position=1&origin=tag&related_id=2998824
-            Icon(
-                painter = painterResource(R.drawable.cardinal),
-                contentDescription = "Cardinal directions",
-                modifier = Modifier.size(128.dp),
-            )
-            DirectionButton(CardinalDirection.East, onSelect)
-        }
-        DirectionButton(CardinalDirection.South, onSelect)
-    }
-}
-
-@Composable
-private fun DirectionButton(direction: CardinalDirection, onSelect: (CardinalDirection) -> Unit) {
-    OutlinedButton(
-        onClick = { onSelect(direction) },
-        modifier = Modifier.testTag("modalSheet${direction}DirectionButton"),
-    ) {
-        Text(direction.name)
     }
 }
 
@@ -346,16 +271,6 @@ private fun SetupScreenPreview() {
                 onEvent = { },
                 onSetupCompleted = { },
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun DirectionPickerPreview() {
-    MarsRoverTheme {
-        Surface {
-            DirectionsCompassButtons(onSelect = { })
         }
     }
 }
