@@ -93,8 +93,8 @@ sonar {
         property("sonar.projectKey", "Knthcame_MarsRover")
         property("sonar.organization", "knthcame")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/kover/reportRelease.xml")
-        property("sonar.kotlin.detekt.reportPaths", "build/reports/ktlint/")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/kover/report.xml")
+        property("sonar.kotlin.detekt.reportPaths", "build/reports/ktlint/**/*")
         property(
             "sonar.coverage.exclusions",
             "**/androidTest/**," +
