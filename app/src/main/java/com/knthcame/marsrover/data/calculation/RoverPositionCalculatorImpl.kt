@@ -15,12 +15,10 @@ class RoverPositionCalculatorImpl @Inject constructor() : RoverPositionCalculato
         topRightCorner: Coordinates,
         currentPosition: Position,
         movement: Movement,
-    ): Position {
-        return when (movement) {
-            Movement.MoveForward -> moveForward(topRightCorner, currentPosition)
-            Movement.RotateLeft -> rotateLeft(currentPosition)
-            Movement.RotateRight -> rotateRight(currentPosition)
-        }
+    ): Position = when (movement) {
+        Movement.MoveForward -> moveForward(topRightCorner, currentPosition)
+        Movement.RotateLeft -> rotateLeft(currentPosition)
+        Movement.RotateRight -> rotateRight(currentPosition)
     }
 
     private fun moveForward(topRightCorner: Coordinates, initialPosition: Position): Position {

@@ -33,5 +33,7 @@ abstract class DataSourceModule {
 abstract class CalculatorModule {
     @Singleton
     @Binds
-    abstract fun bindRoverPositionCalculator(roverPositionCalculator: RoverPositionCalculatorImpl): RoverPositionCalculator
+    abstract fun bindRoverPositionCalculator(
+        roverPositionCalculator: RoverPositionCalculatorImpl,
+    ): RoverPositionCalculator
 }

@@ -68,6 +68,8 @@ For this, the main branch has been protected, requiring a Pull Request with the 
 - Static code analysis is performed via:
   - [SonarQube Cloud](https://sonarcloud.io/project/overview?id=Knthcame_MarsRover): This enforces sonar's [Clean as you code](https://docs.sonarsource.com/sonarqube-cloud/core-concepts/clean-as-you-code/introduction/) own quality gate.
   - [Android lint](https://developer.android.com/studio/write/lint): Implement specific lint checks for Android apps.
+  - [Detekt](https://detekt.dev/): Code smell analysis for kotlin projects.
+  - [ktlint](https://github.com/pinterest/ktlint): Kotlin linter with built-in formatter.
 - A release apk is produced to enable manual testing.
 
 ### Dependabot

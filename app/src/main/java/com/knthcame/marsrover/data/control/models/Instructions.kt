@@ -9,4 +9,3 @@ data class Instructions(
     val roverDirection: CardinalDirection,
     val movements: String,
 )
-

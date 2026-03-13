@@ -39,7 +39,11 @@ class SetupScreenTest {
 
         composeRule.setContent {
             MarsRoverTheme {
-                SetupScreenRoute(onSetupCompleted = { topRightCorner, initialPosition, initialDirection ->
+                SetupScreenRoute(onSetupCompleted = {
+                        topRightCorner,
+                        initialPosition,
+                        initialDirection,
+                    ->
                     navTopRightCorner = topRightCorner
                     navInitialPosition = initialPosition
                     navInitialDirection = initialDirection

@@ -40,14 +40,13 @@ import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
+import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
+import com.knthcame.marsrover.ui.components.plateau.PlateauCanvasLegend
 import com.knthcame.marsrover.ui.navigation.Movements
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
-fun MovementsScreenRoute(
-    movements: Movements,
-    onNavigateBack: () -> Unit,
-) {
+fun MovementsScreenRoute(movements: Movements, onNavigateBack: () -> Unit) {
     val viewModel = hiltViewModel<MovementsViewModel, MovementsViewModel.Factory> { factory ->
         factory.create(movements)
     }
@@ -61,7 +60,7 @@ fun MovementsScreenRoute(
         onAddMovement = { movement -> viewModel.addMovement(movement) },
         onRemoveMovement = { viewModel.removeLastMovement() },
         onConfirm = { viewModel.sendMovements() },
-        onDismissOutputDialog = { viewModel.dismissOutputDialog() }
+        onDismissOutputDialog = { viewModel.dismissOutputDialog() },
     )
 }
 
@@ -101,7 +100,7 @@ private fun MovementsScreen(
                 onRemoveMovement = onRemoveMovement,
             )
             MovementsInputButtons(
-                onAddMovement = onAddMovement
+                onAddMovement = onAddMovement,
             )
 
             Spacer(Modifier.weight(1f))
@@ -126,10 +125,7 @@ private fun MovementsScreen(
 }
 
 @Composable
-private fun MovementsTextField(
-    uiState: MovementsUiState,
-    onRemoveMovement: () -> Unit
-) {
+private fun MovementsTextField(uiState: MovementsUiState, onRemoveMovement: () -> Unit) {
     TextField(
         value = uiState.instructions.movements,
         onValueChange = { },
@@ -150,7 +146,7 @@ private fun MovementsTextField(
             ) {
                 Icon(painterResource(R.drawable.backspace), "Backspace icon")
             }
-        }
+        },
     )
 }
 
@@ -168,14 +164,13 @@ private fun ColumnScope.MovementsInputButtons(onAddMovement: (Movement) -> Unit)
     ) {
         MovementInputButton(
             onClick = onAddMovement,
-            movement = Movement.RotateLeft
+            movement = Movement.RotateLeft,
         )
         MovementInputButton(
             onClick = onAddMovement,
-            movement = Movement.RotateRight
+            movement = Movement.RotateRight,
         )
     }
-
 }
 
 @Composable
@@ -212,14 +207,12 @@ private fun MovementsTopBar(onNavigateBack: () -> Unit) {
             IconButton(onClick = onNavigateBack) {
                 Icon(painterResource(R.drawable.outline_arrow_back_24), "Navigate back arrow")
             }
-        })
+        },
+    )
 }
 
 @Composable
-private fun MovementsOutputDialog(
-    uiState: MovementsUiState,
-    onDismissOutputDialog: () -> Unit,
-) {
+private fun MovementsOutputDialog(uiState: MovementsUiState, onDismissOutputDialog: () -> Unit) {
     AlertDialog(
         onDismissRequest = {},
         confirmButton = {
@@ -238,7 +231,7 @@ private fun MovementsOutputDialog(
                 Text(stringResource(R.string.output))
                 Text(uiState.output, modifier = Modifier.testTag("movementsOutputDialogOutputText"))
             }
-        }
+        },
     )
 }
 
