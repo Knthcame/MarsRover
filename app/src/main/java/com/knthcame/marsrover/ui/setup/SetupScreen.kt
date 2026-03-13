@@ -54,7 +54,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SetupScreenRoute(
-    onSetupCompleted: (topRightCorner: Coordinates, initialPosition: Coordinates, initialDirection: CardinalDirection) -> Unit,
+    onSetupCompleted: (
+        topRightCorner: Coordinates,
+        initialPosition: Coordinates,
+        initialDirection: CardinalDirection,
+    ) -> Unit,
 ) {
     val viewModel = hiltViewModel<SetupViewModel>()
     val uiState by viewModel.uiState.collectAsState()
@@ -66,7 +70,7 @@ fun SetupScreenRoute(
             onSetupCompleted(
                 Coordinates(
                     x = uiState.plateauWidth.toInt(),
-                    y = uiState.plateauHeight.toInt()
+                    y = uiState.plateauHeight.toInt(),
                 ),
                 Coordinates(
                     x = uiState.initialX.toInt(),
@@ -123,7 +127,7 @@ private fun SetupScreen(
                             y = uiState.initialY.toIntOrNull() ?: 0,
                         ),
                         roverDirection = uiState.initialDirection,
-                    )
+                    ),
                 ),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -164,15 +168,11 @@ private fun SetupScreen(
                 )
             }
         }
-
     }
 }
 
 @Composable
-private fun PlateauSizeTextFields(
-    uiState: SetupUIState,
-    onEvent: (SetupUiEvent) -> Unit,
-) {
+private fun PlateauSizeTextFields(uiState: SetupUIState, onEvent: (SetupUiEvent) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         TextField(
             value = uiState.plateauWidth,
@@ -344,7 +344,7 @@ private fun SetupScreenPreview() {
             SetupScreen(
                 uiState = SetupUIState.default(),
                 onEvent = { },
-                onSetupCompleted = { }
+                onSetupCompleted = { },
             )
         }
     }

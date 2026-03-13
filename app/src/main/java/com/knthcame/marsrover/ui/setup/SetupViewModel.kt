@@ -3,11 +3,11 @@ package com.knthcame.marsrover.ui.setup
 import androidx.lifecycle.ViewModel
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
 class SetupViewModel @Inject constructor(viewModelScope: CoroutineScope) :

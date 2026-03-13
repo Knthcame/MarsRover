@@ -17,7 +17,6 @@ object CoroutinesModule {
     fun providesDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
-    fun providesCoroutineScope(
-        dispatcher: CoroutineDispatcher
-    ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
+    fun providesCoroutineScope(dispatcher: CoroutineDispatcher): CoroutineScope =
+        CoroutineScope(SupervisorJob() + dispatcher)
 }

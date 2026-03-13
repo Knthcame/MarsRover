@@ -42,15 +42,15 @@ class MovementsViewModel @AssistedInject constructor(
             input = "",
             output = "",
             outputReceived = false,
-        )
+        ),
     )
     private val _roverPositions = MutableStateFlow(
         listOf(
             Position(
                 roverPosition = Coordinates(route.initialPositionX, route.initialPositionY),
                 roverDirection = route.initialDirection,
-            )
-        )
+            ),
+        ),
     )
 
     val uiState: StateFlow<MovementsUiState> = _uiState
@@ -94,7 +94,13 @@ class MovementsViewModel @AssistedInject constructor(
             _uiState.update { oldValue ->
                 oldValue.copy(
                     input = json.encodeToString(state.instructions),
-                    output = "${output.roverPosition.x} ${output.roverPosition.y} ${output.roverDirection.code}",
+                    output = buildString {
+                        append(output.roverPosition.x)
+                        append(" ")
+                        append(output.roverPosition.y)
+                        append(" ")
+                        append(output.roverDirection.code)
+                    },
                     outputReceived = true,
                 )
             }

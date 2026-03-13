@@ -10,16 +10,18 @@ data class SetupUIState(
     val initialDirection: CardinalDirection,
 ) {
     companion object {
-        fun default(): SetupUIState =
-            SetupUIState(
-                plateauHeight = "5",
-                plateauWidth = "5",
-                initialX = "0",
-                initialY = "0",
-                initialDirection = CardinalDirection.North,
-            )
+        fun default(): SetupUIState = SetupUIState(
+            plateauHeight = "5",
+            plateauWidth = "5",
+            initialX = "0",
+            initialY = "0",
+            initialDirection = CardinalDirection.North,
+        )
     }
 
     val isContinueEnabled: Boolean
-        get() = plateauHeight.isNotEmpty() && plateauWidth.isNotEmpty() && initialX.isNotEmpty() && initialY.isNotEmpty()
+        get() = plateauHeight.isNotEmpty() &&
+            plateauWidth.isNotEmpty() &&
+            initialX.isNotEmpty() &&
+            initialY.isNotEmpty()
 }

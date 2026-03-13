@@ -53,7 +53,7 @@ private val roverIcon: ImageBitmap
     @Composable
     get() = ImageBitmap.imageResource(R.drawable.navigation)
 
-private const val pathStrokeWidth = 5f
+private const val PATH_STROKE_WIDTH = 5f
 
 @Composable
 fun PlateauCanvas(
@@ -97,22 +97,23 @@ fun PlateauCanvasLegend() {
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
                 stringResource(R.string.initial_position),
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
             )
             Spacer(
                 Modifier
                     .size(8.dp)
                     .drawBehind {
                         drawCircle(color = initialPositionColor)
-                    })
+                    },
+            )
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(stringResource(R.string.rover_path), style = MaterialTheme.typography.labelSmall)
             Spacer(
@@ -123,14 +124,15 @@ fun PlateauCanvasLegend() {
                             color = initialPositionColor,
                             start = Offset(0f, size.height / 2),
                             end = Offset(size.width, size.height / 2),
-                            strokeWidth = pathStrokeWidth,
-                            colorFilter = ColorFilter.tint(lineColor)
+                            strokeWidth = PATH_STROKE_WIDTH,
+                            colorFilter = ColorFilter.tint(lineColor),
                         )
-                    })
+                    },
+            )
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
                 stringResource(R.string.rover_position_and_direction),
@@ -150,7 +152,8 @@ fun PlateauCanvasLegend() {
                                 height = roverSize.toPx().toInt(),
                             ),
                         )
-                    })
+                    },
+            )
         }
     }
 }
@@ -199,13 +202,13 @@ private fun DrawScope.drawRoverPath(
         val offset = calculateOffset(topRightCorner, position.roverPosition)
         path.lineTo(offset.x, offset.y)
     }
-    drawPath(path, color, style = Stroke(width = pathStrokeWidth))
+    drawPath(path, color, style = Stroke(width = PATH_STROKE_WIDTH))
 }
 
 private fun DrawScope.drawInitialPosition(
     topRightCorner: Coordinates,
     positions: List<Position>,
-    primaryColor: Color
+    primaryColor: Color,
 ) {
     val initialPositionOffset = calculateOffset(
         topRightCorner = topRightCorner,
@@ -225,10 +228,7 @@ private fun DrawScope.calculateOffset(topRightCorner: Coordinates, position: Coo
     y = (topRightCorner.y - position.y) * (size.height / topRightCorner.y),
 )
 
-private fun DrawScope.drawPlateauGrid(
-    topRightCorner: Coordinates,
-    lineColor: Color
-) {
+private fun DrawScope.drawPlateauGrid(topRightCorner: Coordinates, lineColor: Color) {
     for (i in 0..topRightCorner.x) {
         val x = i * (size.width / topRightCorner.x)
         drawLine(

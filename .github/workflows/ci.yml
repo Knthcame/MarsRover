@@ -59,10 +59,23 @@ jobs:
           koverXmlReportRelease
           --build-cache --parallel
 
-      - name: Analyze code
+      - name: Lint code
+        run: ./gradlew
+          ktlintCheck
+          lint
+          --info --build-cache
+
+      - name: Get ktlint reports file paths
+        id: ktlintPath
+        if: always()
+        run: echo "ktlintReportPaths=$(find **/build/reports/ktlint/**/*.xml | tr "\n" ",")" >> $GITHUB_OUTPUT
+
+      - name: Sonarqube analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew lint sonar --info --build-cache
+        run: ./gradlew 
+          sonar -Dsonar.kotlin.ktlint.reportPaths=${{ steps.ktlintPath.outputs.ktlintReportPaths }}
+          --info --build-cache
 
       - name: Publish Kotlin test results
         uses: EnricoMi/publish-unit-test-result-action@v2
