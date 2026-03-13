@@ -62,7 +62,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android.core)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -98,7 +100,7 @@ sonar {
                     "**/test/**," +
                     "**/ui/theme/**," +
                     "**/*Screen*," +
-                    "**/*NavHost*," +
+                    "**/*NavDisplay*," +
                     "**/MainActivity.kt," +
                     "**/*Application.kt," +
                     "**/di/**.kt," +

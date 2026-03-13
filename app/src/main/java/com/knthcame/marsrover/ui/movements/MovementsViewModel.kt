@@ -1,14 +1,16 @@
 package com.knthcame.marsrover.ui.movements
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
 import com.knthcame.marsrover.data.calculation.RoverPositionCalculator
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Instructions
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.data.control.repositories.RoverRepository
-import com.knthcame.marsrover.ui.Movements
+import com.knthcame.marsrover.ui.navigation.Movements
+import com.knthcame.marsrover.ui.navigation.ViewModelAssistedFactory
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,16 +18,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
 
-@HiltViewModel
-class MovementsViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = MovementsViewModel.Factory::class)
+class MovementsViewModel @AssistedInject constructor(
+    @Assisted route: Movements,
     private val roverRepository: RoverRepository,
     private val roverPositionCalculator: RoverPositionCalculator,
     private val viewModeScope: CoroutineScope,
 ) : ViewModel(viewModeScope) {
-    private val route = savedStateHandle.toRoute<Movements>()
+
+    @AssistedFactory
+    interface Factory : ViewModelAssistedFactory<MovementsViewModel, Movements>
+
     private val json = Json { prettyPrint = true }
     private val _uiState = MutableStateFlow(
         MovementsUiState(
