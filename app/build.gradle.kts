@@ -100,7 +100,7 @@ sonar {
                     "**/test/**," +
                     "**/ui/theme/**," +
                     "**/*Screen*," +
-                    "**/*NavHost*," +
+                    "**/*NavDisplay*," +
                     "**/MainActivity.kt," +
                     "**/*Application.kt," +
                     "**/di/**.kt," +
