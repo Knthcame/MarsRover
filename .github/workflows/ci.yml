@@ -52,31 +52,19 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      # koverXmlReportRelease executes testReleaseUnitTest internally.
-      - name: Execute unit tests with coverage
+      # koverXmlReport executes unit tests internally.
+      - name: Lint & test with coverage
         run: ./gradlew clean
-          build
-          koverXmlReportRelease
-          --build-cache --parallel
-
-      - name: Lint code
-        run: ./gradlew
+          koverXmlReport
           ktlintCheck
           detekt
           lint
           --info --build-cache --parallel --continue
 
-      - name: Get ktlint reports file paths
-        id: ktlintPath
-        if: always()
-        run: echo "ktlintReportPaths=$(find **/build/reports/ktlint/**/*.xml | tr "\n" ",")" >> $GITHUB_OUTPUT
-
       - name: Sonarqube analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew 
-          sonar -Dsonar.kotlin.ktlint.reportPaths=${{ steps.ktlintPath.outputs.ktlintReportPaths }}
-          --info --build-cache
+        run: ./gradlew sonar --info --build-cache
 
       - name: Publish Kotlin test results
         uses: EnricoMi/publish-unit-test-result-action@v2
