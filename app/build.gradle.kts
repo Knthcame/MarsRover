@@ -95,7 +95,7 @@ sonar {
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/kover/report.xml")
         property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
-        property("sonar.kotlin.ktlint.reportPaths", "build/reports/ktlint/**/*")
+        property("sonar.kotlin.ktlint.reportPaths", "build/reports/ktlint/")
         property(
             "sonar.coverage.exclusions",
             "**/androidTest/**," +
