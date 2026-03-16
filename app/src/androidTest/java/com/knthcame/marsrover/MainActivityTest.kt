@@ -114,6 +114,5 @@ class MainActivityTest {
         // Assert correct output in alert dialog.
         composeActivityRule.onNodeWithTag("movementsOutputDialogOutputText", useUnmergedTree = true)
             .assertTextEquals("1 3 N")
-
     }
 }

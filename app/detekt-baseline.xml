@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongParameterList:MovementsScreen.kt$( uiState: MovementsUiState, roverPositions: List&lt;Position&gt;, onNavigateBack: () -&gt; Unit, onAddMovement: (Movement) -&gt; Unit, onRemoveMovement: () -&gt; Unit, onConfirm: () -&gt; Unit, onDismissOutputDialog: () -&gt; Unit, )</ID>
+  </CurrentIssues>
+</SmellBaseline>

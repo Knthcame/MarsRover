@@ -43,7 +43,7 @@ fun MarsRoverNavDisplay(modifier: Modifier = Modifier) {
             .clickable(
                 interactionSource = null,
                 indication = null,
-                onClick = { focusManager.clearFocus() }
+                onClick = { focusManager.clearFocus() },
             )
             .imePadding(),
         entryDecorators = listOf(
@@ -57,7 +57,11 @@ fun MarsRoverNavDisplay(modifier: Modifier = Modifier) {
                 })
             }
             entry<Setup> {
-                SetupScreenRoute(onSetupCompleted = { topRightCorner, initialPosition, initialDirection ->
+                SetupScreenRoute(onSetupCompleted = {
+                        topRightCorner,
+                        initialPosition,
+                        initialDirection,
+                    ->
                     backStack.add(
                         Movements(
                             plateauHeight = topRightCorner.y,
@@ -65,7 +69,7 @@ fun MarsRoverNavDisplay(modifier: Modifier = Modifier) {
                             initialPositionX = initialPosition.x,
                             initialPositionY = initialPosition.y,
                             initialDirection = initialDirection,
-                        )
+                        ),
                     )
                 })
             }
@@ -75,6 +79,6 @@ fun MarsRoverNavDisplay(modifier: Modifier = Modifier) {
                     onNavigateBack = { backStack.removeLastOrNull() },
                 )
             }
-        }
+        },
     )
 }

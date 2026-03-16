@@ -13,7 +13,7 @@ data class MovementsUiState(
     companion object {
         fun default() = MovementsUiState(
             instructions = Instructions(
-                topRightCorner = Coordinates(5, 5),
+                topRightCorner = Coordinates(DEFAULT_PLATEAU_SIZE, DEFAULT_PLATEAU_SIZE),
                 roverPosition = Coordinates(0, 0),
                 roverDirection = CardinalDirection.North,
                 movements = "",
@@ -22,5 +22,7 @@ data class MovementsUiState(
             output = "",
             outputReceived = false,
         )
+
+        private const val DEFAULT_PLATEAU_SIZE = 5
     }
 }

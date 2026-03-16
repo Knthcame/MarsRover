@@ -31,9 +31,7 @@ fun HomeScreenRoute(onStartSetup: () -> Unit) {
 }
 
 @Composable
-private fun HomeScreen(
-    onStartSetup: () -> Unit,
-) {
+private fun HomeScreen(onStartSetup: () -> Unit) {
     Scaffold(
         topBar = { HomeTopBar() },
         modifier = Modifier.fillMaxSize(),
@@ -85,7 +83,7 @@ private fun HomeScreenPreview() {
     MarsRoverTheme {
         Surface {
             HomeScreen(
-                onStartSetup = { }
+                onStartSetup = { },
             )
         }
     }
