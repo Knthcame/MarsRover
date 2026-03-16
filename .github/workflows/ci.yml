@@ -29,6 +29,14 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis by SonarCloud.
 
+      - name: Git LFS setup
+        run: |
+          git lfs install --local
+          git lfs track "**/snapshots/**/*.png"
+          git lfs pull
+          git lfs ls-files
+          git lfs fsck
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -56,10 +64,11 @@ jobs:
       - name: Lint & test with coverage
         run: ./gradlew clean
           koverXmlReport
+          verifyPaparazziDebug
           ktlintCheck
           detekt
           lint
-          --info --build-cache --parallel --continue
+          --info --build-cache --parallel --continue --configuration-cache
 
       - name: Get ktlint reports file paths
         id: ktlintPath
@@ -68,12 +77,21 @@ jobs:
         run: echo "ktlintReportPaths=$(find build/reports/ktlint/**/*.xml | tr "\n" ",")" >> $GITHUB_OUTPUT
 
       - name: Sonarqube analysis
+        if: always()
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew
           sonar
           -Dsonar.kotlin.ktlint.reportPaths=${{ steps.ktlintPath.outputs.ktlintReportPaths }}
-          --info --build-cache
+          --info --build-cache --configuration-cache
+
+      - name: Publish Paparazzi failures
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
+        if: always()
+        with:
+          name: paparazzi-failures
+          path: '**/build/paparazzi/failures/delta-*.png'
 
       - name: Publish Kotlin test results
         uses: EnricoMi/publish-unit-test-result-action@v2

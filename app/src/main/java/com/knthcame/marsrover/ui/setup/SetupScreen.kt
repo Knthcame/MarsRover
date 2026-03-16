@@ -15,12 +15,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,9 +35,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.knthcame.marsrover.R
-import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.components.bottomsheets.DirectionModalBottomSheet
@@ -47,37 +43,7 @@ import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
-fun SetupScreenRoute(
-    onSetupCompleted: (
-        topRightCorner: Coordinates,
-        initialPosition: Coordinates,
-        initialDirection: CardinalDirection,
-    ) -> Unit,
-) {
-    val viewModel = hiltViewModel<SetupViewModel>()
-    val uiState by viewModel.uiState.collectAsState()
-
-    SetupScreen(
-        uiState = uiState,
-        onEvent = { event -> viewModel.onEvent(event) },
-        onSetupCompleted = {
-            onSetupCompleted(
-                Coordinates(
-                    x = uiState.plateauWidth.toInt(),
-                    y = uiState.plateauHeight.toInt(),
-                ),
-                Coordinates(
-                    x = uiState.initialX.toInt(),
-                    y = uiState.initialY.toInt(),
-                ),
-                uiState.initialDirection,
-            )
-        },
-    )
-}
-
-@Composable
-private fun SetupScreen(
+fun SetupScreen(
     uiState: SetupUIState,
     onEvent: (SetupUiEvent) -> Unit,
     onSetupCompleted: () -> Unit,
@@ -263,14 +229,12 @@ private fun SetupTopBar() {
 
 @Preview
 @Composable
-private fun SetupScreenPreview() {
+fun SetupScreenPreview() {
     MarsRoverTheme {
-        Surface {
-            SetupScreen(
-                uiState = SetupUIState.default(),
-                onEvent = { },
-                onSetupCompleted = { },
-            )
-        }
+        SetupScreen(
+            uiState = SetupUIState.default(),
+            onEvent = { },
+            onSetupCompleted = { },
+        )
     }
 }

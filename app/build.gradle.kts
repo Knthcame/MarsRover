@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.paparazzi)
 }
 
 kotlin {
@@ -99,15 +100,12 @@ sonar {
             "sonar.coverage.exclusions",
             "**/androidTest/**," +
                     "**/test/**," +
-                    "**/ui/theme/**," +
-                    "**/ui/components/**," +
-                    "**/*Screen*," +
+                    "**/*ScreenRoute*," +
                     "**/*NavDisplay*," +
                     "**/MainActivity.kt," +
                     "**/*Application.kt," +
                     "**/di/**.kt," +
                     "**/Fake*," +
-                    "**/*Canvas.kt," +
                     "**/ui/movements/**," // Due to limitations in navigation library (see README)
         )
     }
