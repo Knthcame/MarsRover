@@ -33,6 +33,7 @@ The app is developed with Kotlin as the programming language. It uses the follow
 - [Kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization): For (de)serialization of JSON files.
 - [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle): To implement the MVVM architectural pattern.
 - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android): Dependency injection.
+- [Paparazzi](https://github.com/cashapp/paparazzi): For screenshot testing.
 
 # Architecture
 
@@ -58,6 +59,9 @@ Both unit tests and UI test have been added:
   - Found in the androidTest module
   - A full end-to-end test has been added to ensure that the desired outcome is reached when specific data is input via UI and no errors or blockers occur.
   - Specific tests for each screen test that user input leads to the expected outcomes.
+- Screenshot tests
+  - Found in the test module
+  - Aim to cover composable functions.
 
 ## Continuous integration
 
