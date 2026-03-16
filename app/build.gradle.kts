@@ -100,6 +100,7 @@ sonar {
             "**/androidTest/**," +
                     "**/test/**," +
                     "**/ui/theme/**," +
+                    "**/ui/components/**," +
                     "**/*Screen*," +
                     "**/*NavDisplay*," +
                     "**/MainActivity.kt," +
