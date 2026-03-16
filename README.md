@@ -1,9 +1,9 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Knthcame_MarsRover)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=alert_status)](https://sonarcloud.io/summary/overall?id=Knthcame_MarsRover)
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Knthcame_MarsRover)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Knthcame_MarsRover)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Knthcame_MarsRover)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Knthcame_MarsRover)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=coverage)](https://sonarcloud.io/summary/overall?id=Knthcame_MarsRover)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=reliability_rating)](https://sonarcloud.io/summary/overall?id=Knthcame_MarsRover)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=security_rating)](https://sonarcloud.io/summary/overall?id=Knthcame_MarsRover)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Knthcame_MarsRover&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=Knthcame_MarsRover)
 
 # MarsRover
 
