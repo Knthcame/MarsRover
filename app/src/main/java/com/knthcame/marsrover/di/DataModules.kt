@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+interface RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindRoverRepository(roverRepository: RoverRepositoryImpl): RoverRepository
@@ -22,7 +22,7 @@ abstract class RepositoryModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataSourceModule {
+interface DataSourceModule {
     @Singleton
     @Binds
     abstract fun bindRoverDao(roverDao: FakeRoverDao): RoverDao
@@ -30,7 +30,7 @@ abstract class DataSourceModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class CalculatorModule {
+interface CalculatorModule {
     @Singleton
     @Binds
     abstract fun bindRoverPositionCalculator(
