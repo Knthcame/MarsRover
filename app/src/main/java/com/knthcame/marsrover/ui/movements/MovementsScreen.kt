@@ -1,6 +1,5 @@
 package com.knthcame.marsrover.ui.movements
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -26,7 +25,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -214,12 +212,25 @@ private fun MovementsOutputDialog(uiState: MovementsUiState, onDismissOutputDial
 }
 
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
 fun MovementsScreenPreview() {
     MarsRoverTheme {
         MovementsScreen(
-            uiState = MovementsUiState.default(),
-            roverPositions = listOf(Position(Coordinates(2, 1), CardinalDirection.North)),
+            uiState = MovementsUiState.default().let { uiState ->
+                uiState.copy(
+                    instructions = uiState.instructions.copy(
+                        movements = "MRMLM",
+                    ),
+                )
+            },
+            roverPositions = listOf(
+                Position(Coordinates(2, 1), CardinalDirection.North),
+                Position(Coordinates(2, 2), CardinalDirection.North),
+                Position(Coordinates(2, 2), CardinalDirection.East),
+                Position(Coordinates(3, 2), CardinalDirection.East),
+                Position(Coordinates(3, 2), CardinalDirection.North),
+                Position(Coordinates(3, 3), CardinalDirection.North),
+            ),
             onNavigateBack = { },
             onAddMovement = { },
             onRemoveMovement = { },
