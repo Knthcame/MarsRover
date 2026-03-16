@@ -11,9 +11,7 @@ class HomeScreenTest {
     val paparazzi = Paparazzi(deviceConfig = DeviceConfig.PIXEL_6)
 
     @Test
-    fun homeScreen() {
-        paparazzi.snapshot {
-            HomeScreenPreview()
-        }
+    fun homeScreen() = paparazzi.snapshot {
+        HomeScreenPreview()
     }
 }

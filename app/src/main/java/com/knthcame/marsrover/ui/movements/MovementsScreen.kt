@@ -11,17 +11,14 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -38,6 +35,7 @@ import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvasLegend
+import com.knthcame.marsrover.ui.outcome.OutcomeDialog
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
@@ -93,9 +91,10 @@ fun MovementsScreen(
         }
     }
     if (uiState.outputReceived) {
-        MovementsOutputDialog(
-            uiState = uiState,
-            onDismissOutputDialog = onDismissOutputDialog,
+        OutcomeDialog(
+            input = uiState.input,
+            output = uiState.output,
+            onDismiss = onDismissOutputDialog,
         )
     }
 }
@@ -182,30 +181,6 @@ private fun MovementsTopBar(onNavigateBack: () -> Unit) {
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
                 Icon(painterResource(R.drawable.outline_arrow_back_24), "Navigate back arrow")
-            }
-        },
-    )
-}
-
-@Composable
-private fun MovementsOutputDialog(uiState: MovementsUiState, onDismissOutputDialog: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = {},
-        confirmButton = {
-            TextButton(onClick = onDismissOutputDialog) {
-                Text(stringResource(R.string.ok))
-            }
-        },
-        title = {
-            Text("Rover's output")
-        },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(R.string.input))
-                Text(uiState.input)
-                HorizontalDivider(Modifier.fillMaxWidth())
-                Text(stringResource(R.string.output))
-                Text(uiState.output, modifier = Modifier.testTag("movementsOutputDialogOutputText"))
             }
         },
     )
