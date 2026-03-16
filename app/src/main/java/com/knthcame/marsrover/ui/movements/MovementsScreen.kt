@@ -26,7 +26,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,37 +34,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvasLegend
-import com.knthcame.marsrover.ui.navigation.Movements
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
-fun MovementsScreenRoute(movements: Movements, onNavigateBack: () -> Unit) {
-    val viewModel = hiltViewModel<MovementsViewModel, MovementsViewModel.Factory> { factory ->
-        factory.create(movements)
-    }
-    val uiState by viewModel.uiState.collectAsState()
-    val roverPositions by viewModel.roverPositions.collectAsState()
-
-    MovementsScreen(
-        uiState = uiState,
-        roverPositions = roverPositions,
-        onNavigateBack = onNavigateBack,
-        onAddMovement = { movement -> viewModel.addMovement(movement) },
-        onRemoveMovement = { viewModel.removeLastMovement() },
-        onConfirm = { viewModel.sendMovements() },
-        onDismissOutputDialog = { viewModel.dismissOutputDialog() },
-    )
-}
-
-@Composable
-private fun MovementsScreen(
+fun MovementsScreen(
     uiState: MovementsUiState,
     roverPositions: List<Position>,
     onNavigateBack: () -> Unit,

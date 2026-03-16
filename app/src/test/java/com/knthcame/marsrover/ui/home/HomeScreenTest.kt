@@ -2,7 +2,6 @@ package com.knthcame.marsrover.ui.home
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
-import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import org.junit.Rule
 import org.junit.Test
 
@@ -14,9 +13,7 @@ class HomeScreenTest {
     @Test
     fun homeScreen() {
         paparazzi.snapshot {
-            MarsRoverTheme {
-                HomeScreen(onStartSetup = { })
-            }
+            HomeScreenPreview()
         }
     }
 }
