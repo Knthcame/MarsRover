@@ -77,7 +77,7 @@ fun SetupScreenRoute(
 }
 
 @Composable
-private fun SetupScreen(
+fun SetupScreen(
     uiState: SetupUIState,
     onEvent: (SetupUiEvent) -> Unit,
     onSetupCompleted: () -> Unit,
