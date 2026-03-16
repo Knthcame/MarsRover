@@ -31,7 +31,7 @@ fun HomeScreenRoute(onStartSetup: () -> Unit) {
 }
 
 @Composable
-private fun HomeScreen(onStartSetup: () -> Unit) {
+fun HomeScreen(onStartSetup: () -> Unit) {
     Scaffold(
         topBar = { HomeTopBar() },
         modifier = Modifier.fillMaxSize(),
