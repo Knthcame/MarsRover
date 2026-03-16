@@ -10,9 +10,7 @@ class SetupScreenTest {
     val paparazzi = Paparazzi(deviceConfig = DeviceConfig.PIXEL_6)
 
     @Test
-    fun setupScreen() {
-        paparazzi.snapshot {
-            SetupScreenPreview()
-        }
+    fun setupScreen() = paparazzi.snapshot {
+        SetupScreenPreview()
     }
 }

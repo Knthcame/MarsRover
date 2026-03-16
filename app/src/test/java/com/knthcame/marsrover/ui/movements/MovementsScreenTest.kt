@@ -10,9 +10,7 @@ class MovementsScreenTest {
     val paparazzi = Paparazzi(deviceConfig = DeviceConfig.PIXEL_6)
 
     @Test
-    fun movementsScreen() {
-        paparazzi.snapshot {
-            MovementsScreenPreview()
-        }
+    fun movementsScreen() = paparazzi.snapshot {
+        MovementsScreenPreview()
     }
 }

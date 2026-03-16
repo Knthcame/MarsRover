@@ -89,7 +89,7 @@ private fun DirectionButton(direction: CardinalDirection, onSelect: (CardinalDir
 
 @Preview
 @Composable
-private fun DirectionPickerPreview() {
+fun DirectionModalBottomSheetPreview() {
     MarsRoverTheme {
         Surface {
             DirectionsCompassButtons(onSelect = { })

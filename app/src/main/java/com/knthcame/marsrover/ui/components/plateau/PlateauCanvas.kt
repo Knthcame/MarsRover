@@ -150,7 +150,7 @@ private fun DrawScope.drawPlateauGrid(topRightCorner: Coordinates, lineColor: Co
 
 @Composable
 @Preview
-private fun PlateauCanvasSetupPreview() {
+fun PlateauCanvasSetupPreview() {
     MarsRoverTheme {
         Surface {
             Column(
@@ -172,7 +172,7 @@ private fun PlateauCanvasSetupPreview() {
 
 @Composable
 @Preview
-private fun PlateauCanvasMovementsPreview() {
+fun PlateauCanvasMovementsPreview() {
     MarsRoverTheme {
         Surface {
             Column(
