@@ -14,26 +14,26 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface RepositoryModule {
+fun interface RepositoryModule {
     @Singleton
     @Binds
-    abstract fun bindRoverRepository(roverRepository: RoverRepositoryImpl): RoverRepository
+    fun bindRoverRepository(roverRepository: RoverRepositoryImpl): RoverRepository
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface DataSourceModule {
+fun interface DataSourceModule {
     @Singleton
     @Binds
-    abstract fun bindRoverDao(roverDao: FakeRoverDao): RoverDao
+    fun bindRoverDao(roverDao: FakeRoverDao): RoverDao
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface CalculatorModule {
+fun interface CalculatorModule {
     @Singleton
     @Binds
-    abstract fun bindRoverPositionCalculator(
+    fun bindRoverPositionCalculator(
         roverPositionCalculator: RoverPositionCalculatorImpl,
     ): RoverPositionCalculator
 }
