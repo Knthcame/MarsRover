@@ -6,8 +6,8 @@ import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Instructions
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.data.control.repositories.RoverRepository
+import com.knthcame.marsrover.foundation.viewmodels.ViewModelAssistedFactory
 import com.knthcame.marsrover.ui.navigation.Movements
-import com.knthcame.marsrover.ui.navigation.ViewModelAssistedFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

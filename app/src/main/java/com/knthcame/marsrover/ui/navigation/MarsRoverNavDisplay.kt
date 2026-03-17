@@ -57,21 +57,9 @@ fun MarsRoverNavDisplay(modifier: Modifier = Modifier) {
                 })
             }
             entry<Setup> {
-                SetupScreenRoute(onSetupCompleted = {
-                        topRightCorner,
-                        initialPosition,
-                        initialDirection,
-                    ->
-                    backStack.add(
-                        Movements(
-                            plateauHeight = topRightCorner.y,
-                            plateauWidth = topRightCorner.x,
-                            initialPositionX = initialPosition.x,
-                            initialPositionY = initialPosition.y,
-                            initialDirection = initialDirection,
-                        ),
-                    )
-                })
+                SetupScreenRoute(
+                    onNavigate = { navKey -> backStack.add(navKey) },
+                )
             }
             entry<Movements> { movements ->
                 MovementsScreenRoute(

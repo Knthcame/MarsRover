@@ -1,134 +1,227 @@
 package com.knthcame.marsrover.ui.setup
 
+import app.cash.turbine.test
+import com.knthcame.marsrover.TestCoroutineScopeProvider
 import com.knthcame.marsrover.data.control.models.CardinalDirection
-import com.knthcame.marsrover.testViewModelScope
+import com.knthcame.marsrover.ui.navigation.Movements
+import com.knthcame.marsrover.ui.setup.SetupContract.Effect.NavigateToMovements
+import com.knthcame.marsrover.ui.setup.SetupContract.UiEvent
+import kotlin.test.assertEquals
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class SetupViewModelTest {
-    private val defaultUiState get() = SetupUIState.default()
-    private val viewModel = SetupViewModel(testViewModelScope)
+    private val defaultUiState get() = SetupContract.State.default()
+    private val viewModel = SetupViewModel(
+        coroutineScopeProvider = TestCoroutineScopeProvider(),
+    )
 
     @Test
     fun uiState_returnsDefaultState_onInit() {
-        val actual = viewModel.uiState.value
+        val actual = viewModel.state.value
 
         assert(actual == defaultUiState)
     }
 
     @Test
-    fun onEvent_updatesPlateauHeight_whenValueIsEmpty() {
+    fun push_updatesPlateauHeight_whenValueIsEmpty() = runTest {
         val newValue = ""
 
-        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+        viewModel.push(UiEvent.PlateauHeightChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(plateauHeight = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(plateauHeight = null),
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_updatesPlateauHeight_whenValueIsInteger() {
-        val newValue = 12.toString()
+    fun push_updatesPlateauHeight_whenValueIsInteger() = runTest {
+        val newValue = 12
 
-        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+        viewModel.push(UiEvent.PlateauHeightChanged(newValue.toString()))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(plateauHeight = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(plateauHeight = newValue),
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_doesNotUpdatePlateauHeight_whenValueIsNotAnInteger() {
+    fun push_doesNotUpdatePlateauHeight_whenValueIsNotAnInteger() = runTest {
         val newValue = "5f"
 
-        viewModel.onEvent(SetupUiEvent.PlateauHeightChanged(newValue))
+        viewModel.push(UiEvent.PlateauHeightChanged(newValue))
 
-        assert(viewModel.uiState.value.plateauHeight != newValue)
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState,
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_updatesPlateauWidth_whenValueIsEmpty() {
+    fun push_updatesPlateauWidth_whenValueIsEmpty() = runTest {
         val newValue = ""
 
-        viewModel.onEvent(SetupUiEvent.PlateauWidthChanged(newValue))
+        viewModel.push(UiEvent.PlateauWidthChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(plateauWidth = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(plateauWidth = null),
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_updatesPlateauWidth_whenValueIsInteger() {
-        val newValue = 12.toString()
+    fun push_updatesPlateauWidth_whenValueIsInteger() = runTest {
+        val newValue = 12
 
-        viewModel.onEvent(SetupUiEvent.PlateauWidthChanged(newValue))
+        viewModel.push(UiEvent.PlateauWidthChanged(newValue.toString()))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(plateauWidth = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(plateauWidth = newValue),
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_doesNotUpdatePlateauWidth_whenValueIsNotAnInteger() {
+    fun push_doesNotUpdatePlateauWidth_whenValueIsNotAnInteger() = runTest {
         val newValue = "5f"
 
-        viewModel.onEvent(SetupUiEvent.PlateauWidthChanged(newValue))
+        viewModel.push(UiEvent.PlateauWidthChanged(newValue))
 
-        assert(viewModel.uiState.value.plateauWidth != newValue)
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState,
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_updatesInitialX_whenValueIsEmpty() {
+    fun push_updatesInitialX_whenValueIsEmpty() = runTest {
         val newValue = ""
 
-        viewModel.onEvent(SetupUiEvent.InitialXChanged(newValue))
+        viewModel.push(UiEvent.InitialXChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(initialX = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(initialX = null),
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_updatesInitialX_whenValueIsInteger() {
-        val newValue = 4.toString()
+    fun push_updatesInitialX_whenValueIsInteger() = runTest {
+        val newValue = 4
 
-        viewModel.onEvent(SetupUiEvent.InitialXChanged(newValue))
+        viewModel.push(UiEvent.InitialXChanged(newValue.toString()))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(initialX = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(initialX = newValue),
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_doesNotUpdateInitialX_whenValueIsNotAnInteger() {
+    fun push_doesNotUpdateInitialX_whenValueIsNotAnInteger() = runTest {
         val newValue = "2a"
 
-        viewModel.onEvent(SetupUiEvent.InitialXChanged(newValue))
+        viewModel.push(UiEvent.InitialXChanged(newValue))
 
-        assert(viewModel.uiState.value.initialX != newValue)
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState,
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_updatesInitialY_whenValueIsEmpty() {
+    fun push_updatesInitialY_whenValueIsEmpty() = runTest {
         val newValue = ""
 
-        viewModel.onEvent(SetupUiEvent.InitialYChanged(newValue))
+        viewModel.push(UiEvent.InitialYChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(initialY = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(initialY = null),
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_updatesInitialY_whenValueIsInteger() {
-        val newValue = 1.toString()
+    fun push_updatesInitialY_whenValueIsInteger() = runTest {
+        val newValue = 1
 
-        viewModel.onEvent(SetupUiEvent.InitialYChanged(newValue))
+        viewModel.push(UiEvent.InitialYChanged(newValue.toString()))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(initialY = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(initialY = newValue),
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_doesNotUpdateInitialY_whenValueIsNotAnInteger() {
+    fun push_doesNotUpdateInitialY_whenValueIsNotAnInteger() = runTest {
         val newValue = "3k"
 
-        viewModel.onEvent(SetupUiEvent.InitialYChanged(newValue))
+        viewModel.push(UiEvent.InitialYChanged(newValue))
 
-        assert(viewModel.uiState.value.initialY != newValue)
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState,
+                actual = awaitItem(),
+            )
+        }
     }
 
     @Test
-    fun onEvent_updatesInitialDirection_onInitialDirectionChangedEvent() {
+    fun push_updatesInitialDirection_onInitialDirectionChangedEvent() = runTest {
         val newValue = CardinalDirection.South
 
-        viewModel.onEvent(SetupUiEvent.InitialDirectionChanged(newValue))
+        viewModel.push(UiEvent.InitialDirectionChanged(newValue))
 
-        assert(viewModel.uiState.value == defaultUiState.copy(initialDirection = newValue))
+        viewModel.state.test {
+            assertEquals(
+                expected = defaultUiState.copy(initialDirection = newValue),
+                actual = awaitItem(),
+            )
+        }
+    }
+
+    @Test
+    fun push_emitsNavigateToMovementsEffect_onContinueClicked() = runTest {
+        viewModel.effects.test {
+            viewModel.push(UiEvent.OnContinueClicked)
+
+            assertEquals(
+                expected = NavigateToMovements(
+                    movements = Movements(
+                        plateauHeight = defaultUiState.plateauHeight!!,
+                        plateauWidth = defaultUiState.plateauWidth!!,
+                        initialPositionX = defaultUiState.initialX!!,
+                        initialPositionY = defaultUiState.initialY!!,
+                        initialDirection = defaultUiState.initialDirection,
+                    ),
+                ),
+                actual = awaitItem(),
+            )
+        }
     }
 }

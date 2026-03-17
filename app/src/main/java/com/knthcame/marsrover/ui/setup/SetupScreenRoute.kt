@@ -1,38 +1,26 @@
 package com.knthcame.marsrover.ui.setup
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.knthcame.marsrover.data.control.models.CardinalDirection
-import com.knthcame.marsrover.data.control.models.Coordinates
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavKey
+import com.knthcame.marsrover.foundation.coroutines.collectWithLifecycle
+import com.knthcame.marsrover.ui.setup.SetupContract.Effect.NavigateToMovements
 
 @Composable
-fun SetupScreenRoute(
-    onSetupCompleted: (
-        topRightCorner: Coordinates,
-        initialPosition: Coordinates,
-        initialDirection: CardinalDirection,
-    ) -> Unit,
-) {
+fun SetupScreenRoute(onNavigate: (NavKey) -> Unit) {
     val viewModel = hiltViewModel<SetupViewModel>()
-    val uiState by viewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    viewModel.effects.collectWithLifecycle { effect ->
+        when (effect) {
+            is NavigateToMovements -> onNavigate(effect.movements)
+        }
+    }
 
     SetupScreen(
-        uiState = uiState,
-        onEvent = { event -> viewModel.onEvent(event) },
-        onSetupCompleted = {
-            onSetupCompleted(
-                Coordinates(
-                    x = uiState.plateauWidth.toInt(),
-                    y = uiState.plateauHeight.toInt(),
-                ),
-                Coordinates(
-                    x = uiState.initialX.toInt(),
-                    y = uiState.initialY.toInt(),
-                ),
-                uiState.initialDirection,
-            )
-        },
+        state = state,
+        onEvent = { event -> viewModel.push(event) },
     )
 }

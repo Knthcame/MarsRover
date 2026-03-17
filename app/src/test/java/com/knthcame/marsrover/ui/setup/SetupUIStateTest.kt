@@ -6,11 +6,11 @@ import org.junit.Test
 class SetupUIStateTest {
     @Test
     fun isContinueEnabled_returnsTrue_whenNoValueIsEmpty() {
-        val state = SetupUIState(
-            plateauHeight = "4",
-            plateauWidth = "4",
-            initialX = "1",
-            initialY = "3",
+        val state = SetupContract.State(
+            plateauHeight = 4,
+            plateauWidth = 4,
+            initialX = 1,
+            initialY = 3,
             initialDirection = CardinalDirection.East,
         )
 
@@ -19,11 +19,11 @@ class SetupUIStateTest {
 
     @Test
     fun isContinueEnabled_returnsFalse_whenPlateauHeightIsEmpty() {
-        val state = SetupUIState(
-            plateauHeight = "",
-            plateauWidth = "4",
-            initialX = "1",
-            initialY = "3",
+        val state = SetupContract.State(
+            plateauHeight = null,
+            plateauWidth = 4,
+            initialX = 1,
+            initialY = 3,
             initialDirection = CardinalDirection.East,
         )
 
@@ -32,11 +32,11 @@ class SetupUIStateTest {
 
     @Test
     fun isContinueEnabled_returnsFalse_whenPlateauWidthIsEmpty() {
-        val state = SetupUIState(
-            plateauHeight = "4",
-            plateauWidth = "",
-            initialX = "1",
-            initialY = "3",
+        val state = SetupContract.State(
+            plateauHeight = 4,
+            plateauWidth = null,
+            initialX = 1,
+            initialY = 3,
             initialDirection = CardinalDirection.East,
         )
 
@@ -45,11 +45,11 @@ class SetupUIStateTest {
 
     @Test
     fun isContinueEnabled_returnsFalse_whenInitialXIsEmpty() {
-        val state = SetupUIState(
-            plateauHeight = "4",
-            plateauWidth = "4",
-            initialX = "",
-            initialY = "3",
+        val state = SetupContract.State(
+            plateauHeight = 4,
+            plateauWidth = 4,
+            initialX = null,
+            initialY = 3,
             initialDirection = CardinalDirection.East,
         )
 
@@ -58,11 +58,11 @@ class SetupUIStateTest {
 
     @Test
     fun isContinueEnabled_returnsFalse_whenInitialYIsEmpty() {
-        val state = SetupUIState(
-            plateauHeight = "4",
-            plateauWidth = "4",
-            initialX = "1",
-            initialY = "",
+        val state = SetupContract.State(
+            plateauHeight = 4,
+            plateauWidth = 4,
+            initialX = 1,
+            initialY = null,
             initialDirection = CardinalDirection.East,
         )
 

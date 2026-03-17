@@ -40,14 +40,12 @@ import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.components.bottomsheets.DirectionModalBottomSheet
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
+import com.knthcame.marsrover.ui.setup.SetupContract.State
+import com.knthcame.marsrover.ui.setup.SetupContract.UiEvent
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
-fun SetupScreen(
-    uiState: SetupUIState,
-    onEvent: (SetupUiEvent) -> Unit,
-    onSetupCompleted: () -> Unit,
-) {
+fun SetupScreen(state: State, onEvent: (UiEvent) -> Unit) {
     Scaffold(
         topBar = { SetupTopBar() },
         modifier = Modifier.fillMaxSize(),
@@ -62,7 +60,7 @@ fun SetupScreen(
                     focusManager.clearFocus()
                 },
                 onSelect = { direction ->
-                    onEvent(SetupUiEvent.InitialDirectionChanged(direction))
+                    onEvent(UiEvent.InitialDirectionChanged(direction))
                 },
             )
         }
@@ -75,31 +73,31 @@ fun SetupScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            SetupPlateauCanvas(uiState)
+            SetupPlateauCanvas(state)
 
             Text(stringResource(R.string.plateau_size))
             PlateauSizeTextFields(
-                uiState = uiState,
+                uiState = state,
                 onEvent = onEvent,
             )
 
             Text(stringResource(R.string.initial_position))
             InitialPositionTextFields(
-                uiState = uiState,
+                uiState = state,
                 onEvent = onEvent,
                 onDirectionFocusChanged = { focusState -> showBottomSheet = focusState.isFocused },
             )
 
             Spacer(Modifier.weight(1f))
             Button(
-                onClick = onSetupCompleted,
-                enabled = uiState.isContinueEnabled,
+                onClick = { onEvent(UiEvent.OnContinueClicked) },
+                enabled = state.isContinueEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag("setupContinueButton"),
             ) {
                 Text(
-                    text = "Continue",
+                    text = stringResource(R.string.continue_button),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                 )
@@ -109,17 +107,17 @@ fun SetupScreen(
 }
 
 @Composable
-private fun ColumnScope.SetupPlateauCanvas(uiState: SetupUIState) {
+private fun ColumnScope.SetupPlateauCanvas(uiState: State) {
     PlateauCanvas(
         topRightCorner = Coordinates(
-            x = uiState.plateauWidth.toIntOrNull() ?: 1,
-            y = uiState.plateauHeight.toIntOrNull() ?: 1,
+            x = uiState.plateauWidth ?: 1,
+            y = uiState.plateauHeight ?: 1,
         ),
         positions = listOf(
             Position(
                 roverPosition = Coordinates(
-                    x = uiState.initialX.toIntOrNull() ?: 0,
-                    y = uiState.initialY.toIntOrNull() ?: 0,
+                    x = uiState.initialX ?: 0,
+                    y = uiState.initialY ?: 0,
                 ),
                 roverDirection = uiState.initialDirection,
             ),
@@ -131,11 +129,11 @@ private fun ColumnScope.SetupPlateauCanvas(uiState: SetupUIState) {
 }
 
 @Composable
-private fun PlateauSizeTextFields(uiState: SetupUIState, onEvent: (SetupUiEvent) -> Unit) {
+private fun PlateauSizeTextFields(uiState: State, onEvent: (UiEvent) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         TextField(
-            value = uiState.plateauWidth,
-            onValueChange = { value -> onEvent(SetupUiEvent.PlateauWidthChanged(value)) },
+            value = uiState.plateauWidth?.toString().orEmpty(),
+            onValueChange = { value -> onEvent(UiEvent.PlateauWidthChanged(value)) },
             modifier = Modifier
                 .weight(1f)
                 .testTag("setupPlateauWidthTextField"),
@@ -148,8 +146,8 @@ private fun PlateauSizeTextFields(uiState: SetupUIState, onEvent: (SetupUiEvent)
             },
         )
         TextField(
-            value = uiState.plateauHeight,
-            onValueChange = { value -> onEvent(SetupUiEvent.PlateauHeightChanged(value)) },
+            value = uiState.plateauHeight?.toString().orEmpty(),
+            onValueChange = { value -> onEvent(UiEvent.PlateauHeightChanged(value)) },
             modifier = Modifier
                 .weight(1f)
                 .testTag("setupPlateauHeightTextField"),
@@ -166,16 +164,16 @@ private fun PlateauSizeTextFields(uiState: SetupUIState, onEvent: (SetupUiEvent)
 
 @Composable
 private fun InitialPositionTextFields(
-    uiState: SetupUIState,
-    onEvent: (SetupUiEvent) -> Unit,
+    uiState: State,
+    onEvent: (UiEvent) -> Unit,
     onDirectionFocusChanged: (FocusState) -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         TextField(
-            value = uiState.initialX,
-            onValueChange = { value -> onEvent(SetupUiEvent.InitialXChanged(value)) },
+            value = uiState.initialX?.toString().orEmpty(),
+            onValueChange = { value -> onEvent(UiEvent.InitialXChanged(value)) },
             label = {
                 Text(stringResource(R.string.x_axis))
             },
@@ -188,8 +186,8 @@ private fun InitialPositionTextFields(
             ),
         )
         TextField(
-            value = uiState.initialY,
-            onValueChange = { value -> onEvent(SetupUiEvent.InitialYChanged(value)) },
+            value = uiState.initialY?.toString().orEmpty(),
+            onValueChange = { value -> onEvent(UiEvent.InitialYChanged(value)) },
             label = {
                 Text(stringResource(R.string.y_axis))
             },
@@ -232,9 +230,8 @@ private fun SetupTopBar() {
 fun SetupScreenPreview() {
     MarsRoverTheme {
         SetupScreen(
-            uiState = SetupUIState.default(),
+            state = State.default(),
             onEvent = { },
-            onSetupCompleted = { },
         )
     }
 }

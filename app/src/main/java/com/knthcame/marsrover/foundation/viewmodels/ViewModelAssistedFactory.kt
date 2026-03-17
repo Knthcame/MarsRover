@@ -1,4 +1,4 @@
-package com.knthcame.marsrover.ui.navigation
+package com.knthcame.marsrover.foundation.viewmodels
 
 import androidx.lifecycle.ViewModel
 
