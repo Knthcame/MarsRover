@@ -86,7 +86,7 @@ jobs:
           --info --build-cache --configuration-cache
 
       - name: Publish Paparazzi failures
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         if: always()
         with:
@@ -101,7 +101,7 @@ jobs:
           check_name: 'Kotlin test results'
 
       - name: Archive Kotlin test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: kotlin-unit-test-results
@@ -149,7 +149,7 @@ jobs:
           check_name: 'Android instrumented test results'
 
       - name: Archive test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: android-instrumented-test-results
@@ -180,7 +180,7 @@ jobs:
         run: echo "apkfile=$(find app/build/outputs/apk/release/*.apk)" >> $GITHUB_OUTPUT
 
       - name: Upload Release Build to Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-artifacts
           path: ${{ steps.releaseApk.outputs.apkfile }}
