@@ -31,24 +31,13 @@ jobs:
           --write-verification-metadata sha256,pgp
           --export-keys
 
-      - name: Check for modified files
-        id: git-check
-        run: |
-          git diff-index HEAD --
-          echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
-
       - name: Configure git for commit
-        if: steps.git-check.outputs.modified == 'true'
         run: |
           git config --global user.name 'Kenneth Cartanyà Mendoza'
           git config --global user.email 'knthcame@gmail.com'
 
       - name: Commit
-        if: steps.git-check.outputs.modified == 'true'
-        run: |
-          git status
-          git commit -am "Updated lockfile & verification metadata"
+        run: git diff-index --quiet HEAD || git commit -am "Updated lockfile & verification metadata"
 
       - name: Push
-        if: steps.git-check.outputs.modified == 'true'
         run: git push
