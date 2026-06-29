@@ -1,7 +1,7 @@
 name: Dependencies verification
 
 on:
-  pull_request:
+  push:
     branches:
       - 'dependabot/gradle/**'
 
