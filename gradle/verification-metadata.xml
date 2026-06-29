@@ -28,6 +28,8 @@
          <trusted-key id="0E225917414670F4442C250DFD533C07C264648F">
             <trusting group="androidx.activity"/>
             <trusting group="androidx.lifecycle"/>
+            <trusting group="androidx.navigation3"/>
+            <trusting group="androidx.navigationevent"/>
             <trusting group="^com[.]android[.]tools($|([.].*))" regex="true"/>
          </trusted-key>
          <trusted-key id="0F06FF86BEEAF4E71866EE5232EE5355A6BC6E42">
