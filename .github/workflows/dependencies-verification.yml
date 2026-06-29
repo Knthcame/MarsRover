@@ -37,7 +37,10 @@ jobs:
           git config --global user.email "${{ secrets.GITHUB_TOKEN }}+${{ github.actor }}@users.noreply.github.com"
 
       - name: Commit
-        run: git commit -am "Updated lockfile & verification metadata"
+        run: |
+          git add gradle/**
+          git add **/*.lockfile
+          git diff-index --cached --quiet HEAD -- || git commit -m "Updated lockfile & verification metadata"
 
       - name: Push
         run: git push
