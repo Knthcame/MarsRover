@@ -30,8 +30,8 @@ jobs:
 
       - name: Commit
         run: |
-          git add gradle/** &
-          git add **/gradle.lockfile &
+          git add gradle/**
+          git add **/gradle.lockfile
           git commit -m "Updated lockfile & verification metadata"
 
       - name: Push
