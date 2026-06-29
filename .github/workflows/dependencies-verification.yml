@@ -2,7 +2,8 @@ name: Dependencies verification
 
 on:
   pull_request:
-    branches: [ "dependabot/**" ]
+    branches:
+      - 'dependabot/gradle/**'
 
   workflow_dispatch:
 
@@ -10,6 +11,8 @@ jobs:
   locksAndVerificationData:
     name: Update lock file & verification metadata
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
@@ -28,11 +31,13 @@ jobs:
           --write-verification-metadata sha256,pgp
           --export-keys
 
-      - name: Commit
+      - name: Configure git for commit
         run: |
-          git add gradle/** &
-          git add **/gradle.lockfile &
-          git commit -m "Updated lockfile & verification metadata"
+          git config --global user.name 'Kenneth Cartanyà Mendoza'
+          git config --global user.email 'knthcame@gmail.com'
+
+      - name: Commit
+        run: git commit -am "Updated lockfile & verification metadata"
 
       - name: Push
         run: git push
