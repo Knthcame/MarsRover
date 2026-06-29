@@ -48,6 +48,7 @@ jobs:
         run: |
           git add gradle/**
           git add **/*gradle.lockfile
+          git status
           git commit -m "Updated lockfile & verification metadata"
 
       - name: Push
