@@ -46,10 +46,8 @@ jobs:
       - name: Commit
         if: steps.git-check.outputs.modified == 'true'
         run: |
-          git add gradle/**
-          git add **/*gradle.lockfile
           git status
-          git commit -m "Updated lockfile & verification metadata"
+          git commit -am "Updated lockfile & verification metadata"
 
       - name: Push
         if: steps.git-check.outputs.modified == 'true'
