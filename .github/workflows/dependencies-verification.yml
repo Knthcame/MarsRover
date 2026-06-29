@@ -2,7 +2,7 @@ name: Dependencies verification
 
 on:
   pull_request:
-    branches: [ "dependabot/**" ]
+    branches: [ "dependabot/gradle/**" ]
 
   workflow_dispatch:
 
