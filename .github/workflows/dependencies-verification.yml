@@ -37,7 +37,7 @@ jobs:
           git config --global user.email 'knthcame@gmail.com'
 
       - name: Commit
-        run: git diff-index --quiet HEAD || git commit -am "Updated lockfile & verification metadata"
+        run: git commit -am "Updated lockfile & verification metadata"
 
       - name: Push
         run: git push
