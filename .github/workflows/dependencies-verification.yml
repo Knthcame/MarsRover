@@ -28,6 +28,11 @@ jobs:
           --write-verification-metadata sha256,pgp
           --export-keys
 
+      - name: Configurate git for commit
+        run: |
+          git config --global user.name 'Kenneth Cartanyà Mendoza'
+          git config --global user.email 'knthcame@gmail.com'
+
       - name: Commit
         run: |
           git add gradle/**
