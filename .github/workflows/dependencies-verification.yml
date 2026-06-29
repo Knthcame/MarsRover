@@ -34,10 +34,13 @@ jobs:
       - name: Configure git for commit
         run: |
           git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
 
       - name: Commit
-        run: git commit -am "Updated lockfile & verification metadata"
+        run: |
+          git add gradle/**
+          git add **/*.lockfile
+          git diff-index --cached --quiet HEAD -- || git commit -m "Updated lockfile & verification metadata"
 
       - name: Push
         run: git push
