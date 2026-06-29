@@ -1,8 +1,10 @@
 name: Lockfile
 
 on:
-  push:
-    branches: [ "dependabot/**" ]
+  pull_request:
+    branches:
+        - "dependabot/**"
+        - "new-workflow-lockfile-update"
 
   workflow_dispatch:
 
