@@ -47,14 +47,14 @@ jobs:
         uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92
 
       - name: Cache SonarQube packages
-        uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Cache Gradle packages
-        uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
