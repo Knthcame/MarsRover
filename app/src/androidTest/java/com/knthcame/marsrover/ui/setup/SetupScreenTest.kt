@@ -2,7 +2,7 @@ package com.knthcame.marsrover.ui.setup
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -61,11 +61,11 @@ class SetupScreenTest {
         composeRule.onNodeWithTag("setupInitialDirectionTextField")
             .performClick()
 
-        val northButtonTestTag = "modalSheet${CardinalDirection.East}DirectionButton"
-        composeRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag))
-        composeRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
+        val eastButtonTestTag = "modalSheet${CardinalDirection.East}DirectionButton"
+        composeRule.waitUntilExactlyOneExists(hasTestTag(eastButtonTestTag))
+        composeRule.onNodeWithTag(eastButtonTestTag, useUnmergedTree = true)
             .performClick()
-        composeRule.waitUntilDoesNotExist(hasTestTag(northButtonTestTag))
+        composeRule.waitUntilDoesNotExist(hasTestTag(eastButtonTestTag))
 
         navKey.test {
             skipItems(1)
