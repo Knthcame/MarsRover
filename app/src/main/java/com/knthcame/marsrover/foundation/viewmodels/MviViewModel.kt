@@ -22,7 +22,7 @@ abstract class MviViewModel<State, UiEvent, Effect>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
-    private val uiEvents = Channel<UiEvent>(Channel.Factory.BUFFERED)
+    private val uiEvents = Channel<UiEvent>(Channel.BUFFERED)
 
     abstract val state: StateFlow<State>
     val effects: SharedFlow<Effect> = _effects.asSharedFlow()
@@ -41,7 +41,9 @@ abstract class MviViewModel<State, UiEvent, Effect>(
 
     protected abstract fun onUiEvent(uiEvent: UiEvent, state: State)
 
-    protected fun emitEffect(effect: Effect) = viewModelScope.launch {
-        _effects.emit(effect)
+    protected fun emitEffect(effect: Effect) {
+        viewModelScope.launch {
+            _effects.emit(effect)
+        }
     }
 }

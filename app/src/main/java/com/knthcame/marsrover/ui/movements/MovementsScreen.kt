@@ -32,25 +32,22 @@ import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
+import com.knthcame.marsrover.data.control.models.Instructions
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvasLegend
+import com.knthcame.marsrover.ui.movements.MovementsContract.State
+import com.knthcame.marsrover.ui.movements.MovementsContract.UiEvent
 import com.knthcame.marsrover.ui.outcome.OutcomeDialog
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
-fun MovementsScreen(
-    uiState: MovementsUiState,
-    roverPositions: List<Position>,
-    onNavigateBack: () -> Unit,
-    onAddMovement: (Movement) -> Unit,
-    onRemoveMovement: () -> Unit,
-    onConfirm: () -> Unit,
-    onDismissOutputDialog: () -> Unit,
-) {
-    Scaffold(topBar = {
-        MovementsTopBar(onNavigateBack = onNavigateBack)
-    }) { innerPadding ->
+fun MovementsScreen(state: State, onPushEvent: (UiEvent) -> Unit) {
+    Scaffold(
+        topBar = {
+            MovementsTopBar(onNavigateBack = { onPushEvent(UiEvent.NavigateBackClick) })
+        },
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -60,8 +57,8 @@ fun MovementsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             PlateauCanvas(
-                topRightCorner = uiState.instructions.topRightCorner,
-                positions = roverPositions,
+                topRightCorner = state.instructions.topRightCorner,
+                positions = state.predictedPositions,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .heightIn(max = 200.dp),
@@ -69,40 +66,35 @@ fun MovementsScreen(
 
             PlateauCanvasLegend()
 
-            MovementsTextField(
-                uiState = uiState,
-                onRemoveMovement = onRemoveMovement,
-            )
-            MovementsInputButtons(
-                onAddMovement = onAddMovement,
-            )
+            MovementsTextField(state = state, onPushEvent = onPushEvent)
+            MovementsInputButtons(onPushEvent = onPushEvent)
 
             Spacer(Modifier.weight(1f))
 
             Button(
-                onClick = onConfirm,
+                onClick = { onPushEvent(UiEvent.SendMovements) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag("sendMovementsButton"),
-                enabled = uiState.instructions.movements.isNotEmpty(),
+                enabled = state.instructions.movements.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.send_movements))
             }
         }
     }
-    if (uiState.outputReceived) {
+    if (state.outputReceived) {
         OutcomeDialog(
-            input = uiState.input,
-            output = uiState.output,
-            onDismiss = onDismissOutputDialog,
+            input = state.input,
+            output = state.output,
+            onDismiss = { onPushEvent(UiEvent.DismissOutputDialog) },
         )
     }
 }
 
 @Composable
-private fun MovementsTextField(uiState: MovementsUiState, onRemoveMovement: () -> Unit) {
+private fun MovementsTextField(state: State, onPushEvent: (UiEvent) -> Unit) {
     TextField(
-        value = uiState.instructions.movements,
+        value = state.instructions.movements,
         onValueChange = { },
         readOnly = true,
         modifier = Modifier
@@ -116,8 +108,8 @@ private fun MovementsTextField(uiState: MovementsUiState, onRemoveMovement: () -
         },
         trailingIcon = {
             IconButton(
-                onClick = onRemoveMovement,
-                enabled = uiState.instructions.movements.isNotEmpty(),
+                onClick = { onPushEvent(UiEvent.RemoveLastMovement) },
+                enabled = state.instructions.movements.isNotEmpty(),
             ) {
                 Icon(painterResource(R.drawable.backspace), "Backspace icon")
             }
@@ -126,10 +118,10 @@ private fun MovementsTextField(uiState: MovementsUiState, onRemoveMovement: () -
 }
 
 @Composable
-private fun ColumnScope.MovementsInputButtons(onAddMovement: (Movement) -> Unit) {
+private fun ColumnScope.MovementsInputButtons(onPushEvent: (UiEvent) -> Unit) {
     MovementInputButton(
-        onClick = onAddMovement,
         movement = Movement.MoveForward,
+        onPushEvent = onPushEvent,
         modifier = Modifier.align(Alignment.CenterHorizontally),
     )
 
@@ -138,11 +130,11 @@ private fun ColumnScope.MovementsInputButtons(onAddMovement: (Movement) -> Unit)
         modifier = Modifier.fillMaxWidth(),
     ) {
         MovementInputButton(
-            onClick = onAddMovement,
+            onPushEvent = onPushEvent,
             movement = Movement.RotateLeft,
         )
         MovementInputButton(
-            onClick = onAddMovement,
+            onPushEvent = onPushEvent,
             movement = Movement.RotateRight,
         )
     }
@@ -151,11 +143,11 @@ private fun ColumnScope.MovementsInputButtons(onAddMovement: (Movement) -> Unit)
 @Composable
 private fun MovementInputButton(
     movement: Movement,
-    onClick: (Movement) -> Unit,
+    onPushEvent: (UiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OutlinedButton(
-        onClick = { onClick(movement) },
+        onClick = { onPushEvent(UiEvent.AddMovement(movement)) },
         modifier = modifier.testTag("add${movement}MovementButton"),
     ) {
         Row(
@@ -188,29 +180,29 @@ private fun MovementsTopBar(onNavigateBack: () -> Unit) {
 
 @Composable
 @Preview
-fun MovementsScreenPreview() {
+internal fun MovementsScreenPreview() {
     MarsRoverTheme {
         MovementsScreen(
-            uiState = MovementsUiState.default().let { uiState ->
-                uiState.copy(
-                    instructions = uiState.instructions.copy(
-                        movements = "MRMLM",
-                    ),
-                )
-            },
-            roverPositions = listOf(
-                Position(Coordinates(2, 1), CardinalDirection.North),
-                Position(Coordinates(2, 2), CardinalDirection.North),
-                Position(Coordinates(2, 2), CardinalDirection.East),
-                Position(Coordinates(3, 2), CardinalDirection.East),
-                Position(Coordinates(3, 2), CardinalDirection.North),
-                Position(Coordinates(3, 3), CardinalDirection.North),
+            state = State(
+                instructions = Instructions(
+                    topRightCorner = Coordinates(5, 5),
+                    roverPosition = Coordinates(2, 1),
+                    roverDirection = CardinalDirection.North,
+                    movements = "MRMLM",
+                ),
+                input = "",
+                output = "",
+                outputReceived = false,
+                predictedPositions = listOf(
+                    Position(Coordinates(2, 1), CardinalDirection.North),
+                    Position(Coordinates(2, 2), CardinalDirection.North),
+                    Position(Coordinates(2, 2), CardinalDirection.East),
+                    Position(Coordinates(3, 2), CardinalDirection.East),
+                    Position(Coordinates(3, 2), CardinalDirection.North),
+                    Position(Coordinates(3, 3), CardinalDirection.North),
+                ),
             ),
-            onNavigateBack = { },
-            onAddMovement = { },
-            onRemoveMovement = { },
-            onConfirm = { },
-            onDismissOutputDialog = { },
+            onPushEvent = { },
         )
     }
 }

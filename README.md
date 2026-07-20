@@ -88,7 +88,3 @@ It also checks for vulnerabilities in the project dependencies.
   - E.g: Make sure that X, Y coordinates do not exceed the plateau size. Visual feedback can be added via the supporting text of the corresponding TextField.
 - Implement error handling
   - Since the main behaviour is faked and unexpected errors are unlikely, this has been de-prioritized for the moment.
-- Add unit tests for MovementsViewModel
-  - Due to a current [limitation](https://issuetracker.google.com/issues/349807172) of the navigation library, SavedStateHandle requires to use instrumented tests.
-  - Also, mocking SavedStateHandle requires some workarounds at the moment.
-  - Possible solutions include changing the typed navigation for non-typed one.
