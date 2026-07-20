@@ -16,17 +16,6 @@ import kotlinx.coroutines.SupervisorJob
 @InstallIn(SingletonComponent::class)
 interface CoroutinesModule {
 
-    // TODO: Remove once all viewModels are migrated.
-    companion object {
-
-        @Provides
-        fun providesDispatcher(): CoroutineDispatcher = Dispatchers.Default
-
-        @Provides
-        fun providesCoroutineScope(dispatcher: CoroutineDispatcher): CoroutineScope =
-            CoroutineScope(SupervisorJob() + dispatcher)
-    }
-
     @Binds
     fun bindCoroutineScopeProvider(impl: DefaultCoroutineScopeProvider): CoroutineScopeProvider
 }
