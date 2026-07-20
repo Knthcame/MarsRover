@@ -21,6 +21,6 @@ fun SetupScreenRoute(onNavigate: (NavKey) -> Unit) {
 
     SetupScreen(
         state = state,
-        onPushEvent = { event -> viewModel.push(event) },
+        onPushEvent = viewModel::push,
     )
 }
