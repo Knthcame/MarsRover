@@ -24,14 +24,14 @@ class SetupViewModel @Inject constructor(coroutineScopeProvider: CoroutineScopeP
 
     override val state: StateFlow<State> = _state
 
-    override fun onUiEvent(uiEvent: UiEvent, state: State) {
+    override fun onUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.InitialDirectionChanged -> onInitialDirectionChanged(uiEvent.value)
             is UiEvent.InitialXChanged -> onInitialXChanged(uiEvent.value)
             is UiEvent.InitialYChanged -> onInitialYChanged(uiEvent.value)
             is UiEvent.PlateauHeightChanged -> onPlateauHeightChanged(uiEvent.value)
             is UiEvent.PlateauWidthChanged -> onPlateauWidthChanged(uiEvent.value)
-            UiEvent.OnContinueClicked -> onContinueClicked(state)
+            UiEvent.OnContinueClicked -> onContinueClicked(state.value)
         }
     }
 

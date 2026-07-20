@@ -110,8 +110,7 @@ sonar {
                     "**/MainActivity.kt," +
                     "**/*Application.kt," +
                     "**/di/**.kt," +
-                    "**/Fake*," +
-                    "**/ui/movements/**," // Due to limitations in navigation library (see README)
+                    "**/Fake*,"
         )
     }
 }

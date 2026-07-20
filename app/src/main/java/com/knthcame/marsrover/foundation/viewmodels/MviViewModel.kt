@@ -30,7 +30,7 @@ abstract class MviViewModel<State, UiEvent, Effect>(
     init {
         viewModelScope.launch(eventsCoroutineContext) {
             uiEvents.consumeAsFlow().collect { uiEvent ->
-                onUiEvent(uiEvent, state.value)
+                onUiEvent(uiEvent)
             }
         }
     }
@@ -39,7 +39,7 @@ abstract class MviViewModel<State, UiEvent, Effect>(
         uiEvents.trySend(event)
     }
 
-    protected abstract fun onUiEvent(uiEvent: UiEvent, state: State)
+    protected abstract fun onUiEvent(uiEvent: UiEvent)
 
     protected fun emitEffect(effect: Effect) {
         viewModelScope.launch {

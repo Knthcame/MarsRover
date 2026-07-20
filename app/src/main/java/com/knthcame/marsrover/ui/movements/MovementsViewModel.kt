@@ -60,7 +60,7 @@ class MovementsViewModel @AssistedInject constructor(
 
     override val state: StateFlow<State> = _state
 
-    override fun onUiEvent(uiEvent: UiEvent, state: State) = when (uiEvent) {
+    override fun onUiEvent(uiEvent: UiEvent) = when (uiEvent) {
         is UiEvent.AddMovement -> addMovement(uiEvent.movement)
         UiEvent.DismissOutputDialog -> dismissOutputDialog()
         UiEvent.RemoveLastMovement -> removeLastMovement()
