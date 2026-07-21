@@ -12,5 +12,7 @@ import dagger.hilt.components.SingletonComponent
 abstract class CoroutinesModule {
 
     @Binds
-    abstract fun bindCoroutineScopeProvider(impl: DefaultCoroutineScopeProvider): CoroutineScopeProvider
+    abstract fun bindCoroutineScopeProvider(
+        impl: DefaultCoroutineScopeProvider,
+    ): CoroutineScopeProvider
 }

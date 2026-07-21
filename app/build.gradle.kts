@@ -110,6 +110,7 @@ sonar {
                     "**/MainActivity.kt," +
                     "**/*Application.kt," +
                     "**/di/**.kt," +
+                    "**/foundation/coroutines/**," +
                     "**/Fake*,"
         )
     }

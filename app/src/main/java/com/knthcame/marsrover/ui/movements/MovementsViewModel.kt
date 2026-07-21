@@ -69,27 +69,27 @@ class MovementsViewModel @AssistedInject constructor(
         UiEvent.NavigateBackClick -> emitEffect(Effect.NavigateBack)
     }
 
-    private fun addMovement(movement: Movement) = _state.update { oldValue ->
+    private fun addMovement(movement: Movement) = _state.update { state ->
         val nextPosition = roverPositionCalculator.calculateNextPosition(
-            topRightCorner = oldValue.instructions.topRightCorner,
-            currentPosition = oldValue.predictedPositions.last(),
+            topRightCorner = state.instructions.topRightCorner,
+            currentPosition = state.predictedPositions.last(),
             movement = movement,
         )
-        val movements = oldValue.instructions.movements
-        oldValue.copy(
-            instructions = oldValue.instructions.copy(movements = movements + movement.code),
-            predictedPositions = oldValue.predictedPositions + nextPosition,
+        val movements = state.instructions.movements
+        state.copy(
+            instructions = state.instructions.copy(movements = movements + movement.code),
+            predictedPositions = state.predictedPositions + nextPosition,
         )
     }
 
-    private fun removeLastMovement() = _state.update { oldValue ->
-        val oldMovements = oldValue.instructions.movements
+    private fun removeLastMovement() = _state.update { state ->
+        val oldMovements = state.instructions.movements
         val newMovements = oldMovements.substring(0, oldMovements.lastIndex)
-        oldValue.copy(
-            instructions = oldValue.instructions.copy(movements = newMovements),
-            predictedPositions = oldValue.predictedPositions.subList(
+        state.copy(
+            instructions = state.instructions.copy(movements = newMovements),
+            predictedPositions = state.predictedPositions.subList(
                 0,
-                oldValue.predictedPositions.lastIndex,
+                state.predictedPositions.lastIndex,
             ),
         )
     }
@@ -99,8 +99,8 @@ class MovementsViewModel @AssistedInject constructor(
             val state = state.value
             val output = roverRepository.send(state.instructions)
 
-            _state.update { oldValue ->
-                oldValue.copy(
+            _state.update { state ->
+                state.copy(
                     input = json.encodeToString(state.instructions),
                     output = buildString {
                         append(output.roverPosition.x)
@@ -115,7 +115,7 @@ class MovementsViewModel @AssistedInject constructor(
         }
     }
 
-    fun dismissOutputDialog() = _state.update { oldValue ->
-        oldValue.copy(input = "", output = "", outputReceived = false)
+    private fun dismissOutputDialog() = _state.update { state ->
+        state.copy(input = "", output = "", outputReceived = false)
     }
 }
