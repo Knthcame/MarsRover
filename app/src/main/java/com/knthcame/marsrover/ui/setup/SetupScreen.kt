@@ -19,15 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -38,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
-import com.knthcame.marsrover.ui.components.bottomsheets.DirectionModalBottomSheet
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
+import com.knthcame.marsrover.ui.components.selectors.CardinalDirectionSelector
 import com.knthcame.marsrover.ui.setup.SetupContract.State
 import com.knthcame.marsrover.ui.setup.SetupContract.UiEvent
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
@@ -50,21 +43,6 @@ fun SetupScreen(state: State, onPushEvent: (UiEvent) -> Unit) {
         topBar = { SetupTopBar() },
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
-        var showBottomSheet by remember { mutableStateOf(false) }
-        val focusManager = LocalFocusManager.current
-
-        if (showBottomSheet) {
-            DirectionModalBottomSheet(
-                onDismiss = {
-                    showBottomSheet = false
-                    focusManager.clearFocus()
-                },
-                onSelect = { direction ->
-                    onPushEvent(UiEvent.InitialDirectionChanged(direction))
-                },
-            )
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -85,7 +63,6 @@ fun SetupScreen(state: State, onPushEvent: (UiEvent) -> Unit) {
             InitialPositionTextFields(
                 state = state,
                 onPushEvent = onPushEvent,
-                onDirectionFocusChanged = { focusState -> showBottomSheet = focusState.isFocused },
             )
 
             Spacer(Modifier.weight(1f))
@@ -163,11 +140,7 @@ private fun PlateauSizeTextFields(state: State, onPushEvent: (UiEvent) -> Unit) 
 }
 
 @Composable
-private fun InitialPositionTextFields(
-    state: State,
-    onPushEvent: (UiEvent) -> Unit,
-    onDirectionFocusChanged: (FocusState) -> Unit,
-) {
+private fun InitialPositionTextFields(state: State, onPushEvent: (UiEvent) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -199,17 +172,15 @@ private fun InitialPositionTextFields(
                 imeAction = ImeAction.Next,
             ),
         )
-        TextField(
+        CardinalDirectionSelector(
             value = state.initialDirection.name,
-            onValueChange = {},
-            label = {
-                Text(stringResource(R.string.direction))
-            },
-            readOnly = true,
+            label = stringResource(R.string.direction),
             modifier = Modifier
                 .weight(1f)
-                .onFocusChanged(onDirectionFocusChanged)
                 .testTag("setupInitialDirectionTextField"),
+            onSelect = { direction ->
+                onPushEvent(UiEvent.InitialDirectionChanged(direction))
+            },
         )
     }
 }
