@@ -2,6 +2,7 @@ package com.knthcame.marsrover.foundation.coroutines
 
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -10,4 +11,5 @@ import kotlinx.coroutines.SupervisorJob
 class DefaultCoroutineScopeProvider @Inject constructor() : CoroutineScopeProvider {
     override val viewModel = CoroutineScope(Dispatchers.Default + SupervisorJob())
     override val events = Dispatchers.IO + SupervisorJob()
+    override val ui: CoroutineContext = Dispatchers.Main + SupervisorJob()
 }

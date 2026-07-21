@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 abstract class MviViewModel<State, UiEvent, Effect>(
     viewModelScope: CoroutineScope,
     eventsCoroutineContext: CoroutineContext,
+    val uiCoroutineContext: CoroutineContext,
 ) : ViewModel(viewModelScope) {
 
     private val _effects = MutableSharedFlow<Effect>(
@@ -41,8 +42,8 @@ abstract class MviViewModel<State, UiEvent, Effect>(
 
     protected abstract fun onUiEvent(uiEvent: UiEvent)
 
-    protected fun emitEffect(effect: Effect) {
-        viewModelScope.launch {
+    protected fun emitEffect(effect: Effect, context: CoroutineContext = uiCoroutineContext) {
+        viewModelScope.launch(context) {
             _effects.emit(effect)
         }
     }

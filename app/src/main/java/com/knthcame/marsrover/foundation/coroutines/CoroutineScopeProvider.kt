@@ -6,4 +6,5 @@ import kotlinx.coroutines.CoroutineScope
 interface CoroutineScopeProvider {
     val viewModel: CoroutineScope
     val events: CoroutineContext
+    val ui: CoroutineContext
 }

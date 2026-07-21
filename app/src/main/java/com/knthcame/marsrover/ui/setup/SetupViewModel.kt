@@ -19,6 +19,7 @@ class SetupViewModel @Inject constructor(coroutineScopeProvider: CoroutineScopeP
     MviViewModel<State, UiEvent, Effect>(
         viewModelScope = coroutineScopeProvider.viewModel,
         eventsCoroutineContext = coroutineScopeProvider.events,
+        uiCoroutineContext = coroutineScopeProvider.ui,
     ) {
     private val _state = MutableStateFlow(State.default())
 

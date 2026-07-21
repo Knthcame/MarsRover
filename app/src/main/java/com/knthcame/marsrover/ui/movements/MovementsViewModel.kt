@@ -30,8 +30,9 @@ class MovementsViewModel @AssistedInject constructor(
     private val roverPositionCalculator: RoverPositionCalculator,
     coroutineScopeProvider: CoroutineScopeProvider,
 ) : MviViewModel<State, UiEvent, Effect>(
-    coroutineScopeProvider.viewModel,
-    coroutineScopeProvider.events,
+    viewModelScope = coroutineScopeProvider.viewModel,
+    eventsCoroutineContext = coroutineScopeProvider.events,
+    uiCoroutineContext = coroutineScopeProvider.ui,
 ) {
 
     @AssistedFactory
