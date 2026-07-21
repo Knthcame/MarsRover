@@ -10,4 +10,5 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 class TestCoroutineScopeProvider : CoroutineScopeProvider {
     override val viewModel: CoroutineScope = CoroutineScope(UnconfinedTestDispatcher())
     override val events: CoroutineContext = UnconfinedTestDispatcher()
+    override val ui: CoroutineContext = UnconfinedTestDispatcher()
 }

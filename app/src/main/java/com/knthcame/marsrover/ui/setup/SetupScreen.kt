@@ -178,9 +178,7 @@ private fun InitialPositionTextFields(state: State, onPushEvent: (UiEvent) -> Un
             modifier = Modifier
                 .weight(1f)
                 .testTag("setupInitialDirectionTextField"),
-            onSelect = { direction ->
-                onPushEvent(UiEvent.InitialDirectionChanged(direction))
-            },
+            onSelect = { direction -> onPushEvent(UiEvent.InitialDirectionChanged(direction)) },
         )
     }
 }
