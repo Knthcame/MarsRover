@@ -9,6 +9,17 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.knthcame.marsrover.ui.HomeStartButtonTag
+import com.knthcame.marsrover.ui.HomeTopBarTitleTag
+import com.knthcame.marsrover.ui.MovementsOutputDialogOutputTextTag
+import com.knthcame.marsrover.ui.MovementsTextFieldTag
+import com.knthcame.marsrover.ui.SendMovementsButtonTag
+import com.knthcame.marsrover.ui.SetupContinueButtonTag
+import com.knthcame.marsrover.ui.SetupInitialXTag
+import com.knthcame.marsrover.ui.SetupInitialYTag
+import com.knthcame.marsrover.ui.SetupPlateauHeightTag
+import com.knthcame.marsrover.ui.SetupPlateauWidthTag
+import com.knthcame.marsrover.ui.addMovementButtonTag
 import com.knthcame.marsrover.ui.movements.Movement
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -46,73 +57,76 @@ class MainActivityTest {
 
     @Test
     fun testLaunch() {
-        composeActivityRule.onNodeWithTag("homeTopBarTitle", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(HomeTopBarTitleTag, useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     @Test
     fun endToEndTest() {
         // Navigate to setup screen
-        composeActivityRule.onNodeWithTag("homeStartButton").performClick()
+        composeActivityRule.onNodeWithTag(HomeStartButtonTag).performClick()
 
         // Input setup data
-        composeActivityRule.onNodeWithTag("setupPlateauWidthTextField").performTextReplacement("5")
-        composeActivityRule.onNodeWithTag("setupPlateauHeightTextField").performTextReplacement("3")
-        composeActivityRule.onNodeWithTag("setupInitialXTextField").performTextReplacement("1")
-        composeActivityRule.onNodeWithTag("setupInitialYTextField").performTextReplacement("2")
+        composeActivityRule.onNodeWithTag(SetupPlateauWidthTag).performTextReplacement("5")
+        composeActivityRule.onNodeWithTag(SetupPlateauHeightTag).performTextReplacement("3")
+        composeActivityRule.onNodeWithTag(SetupInitialXTag).performTextReplacement("1")
+        composeActivityRule.onNodeWithTag(SetupInitialYTag).performTextReplacement("2")
 
         // Navigate to movements screen
-        composeActivityRule.onNodeWithTag("setupContinueButton", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(SetupContinueButtonTag, useUnmergedTree = true)
             .performScrollTo().performClick()
 
         // Input movements
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.RotateLeft}MovementButton",
+            testTag = addMovementButtonTag(Movement.RotateLeft),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.MoveForward}MovementButton",
+            testTag = addMovementButtonTag(Movement.MoveForward),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.RotateLeft}MovementButton",
+            testTag = addMovementButtonTag(Movement.RotateLeft),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.MoveForward}MovementButton",
+            testTag = addMovementButtonTag(Movement.MoveForward),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.RotateLeft}MovementButton",
+            testTag = addMovementButtonTag(Movement.RotateLeft),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.MoveForward}MovementButton",
+            testTag = addMovementButtonTag(Movement.MoveForward),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.RotateLeft}MovementButton",
+            testTag = addMovementButtonTag(Movement.RotateLeft),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.MoveForward}MovementButton",
+            testTag = addMovementButtonTag(Movement.MoveForward),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
         composeActivityRule.onNodeWithTag(
-            testTag = "add${Movement.MoveForward}MovementButton",
+            testTag = addMovementButtonTag(Movement.MoveForward),
             useUnmergedTree = true,
         ).performScrollTo().performClick()
 
         // Assert correct movement sequence is shown
-        composeActivityRule.onNodeWithTag("movementsTextField", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(MovementsTextFieldTag, useUnmergedTree = true)
             .assertTextEquals("LMLMLMLMM")
 
         // Send instructions
-        composeActivityRule.onNodeWithTag("sendMovementsButton", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(SendMovementsButtonTag, useUnmergedTree = true)
             .performScrollTo().performClick()
 
         // Assert correct output in alert dialog.
-        composeActivityRule.onNodeWithTag("movementsOutputDialogOutputText", useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(
+            MovementsOutputDialogOutputTextTag,
+            useUnmergedTree = true,
+        )
             .assertTextEquals("1 3 N")
     }
 }

@@ -34,6 +34,11 @@ import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Instructions
 import com.knthcame.marsrover.data.control.models.Position
+import com.knthcame.marsrover.ui.MovementsTextFieldTag
+import com.knthcame.marsrover.ui.MovementsTextFieldTrailingIconTag
+import com.knthcame.marsrover.ui.MovementsTopBarTitleTag
+import com.knthcame.marsrover.ui.SendMovementsButtonTag
+import com.knthcame.marsrover.ui.addMovementButtonTag
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvasLegend
 import com.knthcame.marsrover.ui.movements.MovementsContract.State
@@ -75,7 +80,7 @@ fun MovementsScreen(state: State, onPushEvent: (UiEvent) -> Unit) {
                 onClick = { onPushEvent(UiEvent.SendMovements) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag("sendMovementsButton"),
+                    .testTag(SendMovementsButtonTag),
                 enabled = state.instructions.movements.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.send_movements))
@@ -99,7 +104,7 @@ private fun MovementsTextField(state: State, onPushEvent: (UiEvent) -> Unit) {
         readOnly = true,
         modifier = Modifier
             .fillMaxWidth()
-            .testTag("movementsTextField"),
+            .testTag(MovementsTextFieldTag),
         label = {
             Text(stringResource(R.string.movements))
         },
@@ -110,6 +115,7 @@ private fun MovementsTextField(state: State, onPushEvent: (UiEvent) -> Unit) {
             IconButton(
                 onClick = { onPushEvent(UiEvent.RemoveLastMovement) },
                 enabled = state.instructions.movements.isNotEmpty(),
+                modifier = Modifier.testTag(MovementsTextFieldTrailingIconTag),
             ) {
                 Icon(painterResource(R.drawable.backspace), "Backspace icon")
             }
@@ -148,7 +154,7 @@ private fun MovementInputButton(
 ) {
     OutlinedButton(
         onClick = { onPushEvent(UiEvent.AddMovement(movement)) },
-        modifier = modifier.testTag("add${movement}MovementButton"),
+        modifier = modifier.testTag(addMovementButtonTag(movement)),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -167,7 +173,7 @@ private fun MovementsTopBar(onNavigateBack: () -> Unit) {
         title = {
             Text(
                 text = stringResource(R.string.input_movements),
-                modifier = Modifier.testTag("movementsTopBarTitle"),
+                modifier = Modifier.testTag(MovementsTopBarTitleTag),
             )
         },
         navigationIcon = {

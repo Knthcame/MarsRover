@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
+import com.knthcame.marsrover.ui.MovementsOutputDialogOutputTextTag
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
@@ -33,7 +34,7 @@ fun OutcomeDialog(input: String, output: String, onDismiss: () -> Unit) = AlertD
             Text(input)
             HorizontalDivider(Modifier.fillMaxWidth())
             Text(stringResource(R.string.output))
-            Text(output, modifier = Modifier.testTag("movementsOutputDialogOutputText"))
+            Text(output, modifier = Modifier.testTag(MovementsOutputDialogOutputTextTag))
         }
     },
 )

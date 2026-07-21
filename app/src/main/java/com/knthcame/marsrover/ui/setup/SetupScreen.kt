@@ -31,6 +31,13 @@ import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
+import com.knthcame.marsrover.ui.SetupContinueButtonTag
+import com.knthcame.marsrover.ui.SetupInitialDirectionTag
+import com.knthcame.marsrover.ui.SetupInitialXTag
+import com.knthcame.marsrover.ui.SetupInitialYTag
+import com.knthcame.marsrover.ui.SetupPlateauHeightTag
+import com.knthcame.marsrover.ui.SetupPlateauWidthTag
+import com.knthcame.marsrover.ui.SetupTopBarTitleTag
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.components.selectors.CardinalDirectionSelector
 import com.knthcame.marsrover.ui.setup.SetupContract.State
@@ -71,7 +78,7 @@ fun SetupScreen(state: State, onPushEvent: (UiEvent) -> Unit) {
                 enabled = state.isContinueEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag("setupContinueButton"),
+                    .testTag(SetupContinueButtonTag),
             ) {
                 Text(
                     text = stringResource(R.string.continue_button),
@@ -113,7 +120,7 @@ private fun PlateauSizeTextFields(state: State, onPushEvent: (UiEvent) -> Unit) 
             onValueChange = { value -> onPushEvent(UiEvent.PlateauWidthChanged(value)) },
             modifier = Modifier
                 .weight(1f)
-                .testTag("setupPlateauWidthTextField"),
+                .testTag(SetupPlateauWidthTag),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -127,7 +134,7 @@ private fun PlateauSizeTextFields(state: State, onPushEvent: (UiEvent) -> Unit) 
             onValueChange = { value -> onPushEvent(UiEvent.PlateauHeightChanged(value)) },
             modifier = Modifier
                 .weight(1f)
-                .testTag("setupPlateauHeightTextField"),
+                .testTag(SetupPlateauHeightTag),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -152,7 +159,7 @@ private fun InitialPositionTextFields(state: State, onPushEvent: (UiEvent) -> Un
             },
             modifier = Modifier
                 .weight(1f)
-                .testTag("setupInitialXTextField"),
+                .testTag(SetupInitialXTag),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -166,7 +173,7 @@ private fun InitialPositionTextFields(state: State, onPushEvent: (UiEvent) -> Un
             },
             modifier = Modifier
                 .weight(1f)
-                .testTag("setupInitialYTextField"),
+                .testTag(SetupInitialYTag),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -177,7 +184,7 @@ private fun InitialPositionTextFields(state: State, onPushEvent: (UiEvent) -> Un
             label = stringResource(R.string.direction),
             modifier = Modifier
                 .weight(1f)
-                .testTag("setupInitialDirectionTextField"),
+                .testTag(SetupInitialDirectionTag),
             onSelect = { direction -> onPushEvent(UiEvent.InitialDirectionChanged(direction)) },
         )
     }
@@ -189,7 +196,7 @@ private fun SetupTopBar() {
     TopAppBar(title = {
         Text(
             text = stringResource(R.string.initial_setup),
-            modifier = Modifier.testTag("setupTopBarTitle"),
+            modifier = Modifier.testTag(SetupTopBarTitleTag),
         )
     })
 }
