@@ -1,5 +1,6 @@
 package com.knthcame.marsrover.ui.setup
 
+import android.util.Log
 import androidx.core.text.isDigitsOnly
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.foundation.coroutines.CoroutineScopeProvider
@@ -72,20 +73,18 @@ class SetupViewModel @Inject constructor(coroutineScopeProvider: CoroutineScopeP
         state.copy(initialDirection = newValue)
     }
 
-    private fun onContinueClicked(state: State) = try {
-        emitEffect(
-            Effect.NavigateToMovements(
-                Movements(
-                    plateauHeight = state.plateauHeight!!,
-                    plateauWidth = state.plateauWidth!!,
-                    initialPositionX = state.initialX!!,
-                    initialPositionY = state.initialY!!,
-                    initialDirection = state.initialDirection,
-                ),
-            ),
+    private fun onContinueClicked(state: State) = state.toMovementNavKey()?.let { navKey ->
+        emitEffect(Effect.NavigateToMovements(navKey))
+    } ?: Log.e("SetupViewModel", "Invalid user input, cannot continue: $state")
+
+    private fun State.toMovementNavKey(): Movements? {
+        return Movements(
+            plateauHeight = plateauHeight ?: return null,
+            plateauWidth = plateauWidth ?: return null,
+            initialPositionX = initialX ?: return null,
+            initialPositionY = initialY ?: return null,
+            initialDirection = initialDirection,
         )
-    } catch (e: NullPointerException) {
-        e.printStackTrace()
     }
 
     private fun String.isValidInteger() = isEmpty() || isDigitsOnly()
