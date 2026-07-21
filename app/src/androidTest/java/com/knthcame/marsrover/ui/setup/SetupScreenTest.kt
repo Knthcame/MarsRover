@@ -14,12 +14,12 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import com.knthcame.marsrover.HiltTestActivity
 import com.knthcame.marsrover.data.control.models.CardinalDirection
-import com.knthcame.marsrover.ui.SetupContinueButtonTag
-import com.knthcame.marsrover.ui.SetupInitialDirectionTag
-import com.knthcame.marsrover.ui.SetupInitialXTag
-import com.knthcame.marsrover.ui.SetupInitialYTag
-import com.knthcame.marsrover.ui.SetupPlateauHeightTag
-import com.knthcame.marsrover.ui.SetupPlateauWidthTag
+import com.knthcame.marsrover.ui.SETUP_CONTINUE_BUTTON_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_DIRECTION_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_X_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_Y_TAG
+import com.knthcame.marsrover.ui.SETUP_PLATEAU_HEIGHT_TAG
+import com.knthcame.marsrover.ui.SETUP_PLATEAU_WIDTH_TAG
 import com.knthcame.marsrover.ui.modalSheetDirectionButtonTag
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -51,24 +51,24 @@ class SetupScreenTest {
     @Test
     fun screenState_isUpdated_onValidUserInput() {
         // Input text fields
-        val widthTextField = composeRule.onNodeWithTag(SetupPlateauWidthTag)
+        val widthTextField = composeRule.onNodeWithTag(SETUP_PLATEAU_WIDTH_TAG)
         widthTextField.performTextReplacement("7")
         widthTextField.assertTextContains("7")
 
-        val heightTextField = composeRule.onNodeWithTag(SetupPlateauHeightTag)
+        val heightTextField = composeRule.onNodeWithTag(SETUP_PLATEAU_HEIGHT_TAG)
         heightTextField.performTextReplacement("3")
         heightTextField.assertTextContains("3")
 
-        val xTextField = composeRule.onNodeWithTag(SetupInitialXTag)
+        val xTextField = composeRule.onNodeWithTag(SETUP_INITIAL_X_TAG)
         xTextField.performTextReplacement("1")
         xTextField.assertTextContains("1")
 
-        val yTextField = composeRule.onNodeWithTag(SetupInitialYTag)
+        val yTextField = composeRule.onNodeWithTag(SETUP_INITIAL_Y_TAG)
         yTextField.performTextReplacement("2")
         yTextField.assertTextContains("2")
 
         // Select direction
-        composeRule.onNodeWithTag(SetupInitialDirectionTag)
+        composeRule.onNodeWithTag(SETUP_INITIAL_DIRECTION_TAG)
             .performClick()
         val eastButtonTestTag = modalSheetDirectionButtonTag(CardinalDirection.East)
         composeRule.waitUntilExactlyOneExists(hasTestTag(eastButtonTestTag))
@@ -76,29 +76,29 @@ class SetupScreenTest {
             .performClick()
         composeRule.waitUntilDoesNotExist(hasTestTag(eastButtonTestTag))
 
-        composeRule.onNodeWithTag(SetupInitialDirectionTag)
+        composeRule.onNodeWithTag(SETUP_INITIAL_DIRECTION_TAG)
             .assertTextContains(CardinalDirection.East.name)
     }
 
     @Test
     fun screenState_isNotUpdated_onInvalidUserInput() {
-        val widthTextField = composeRule.onNodeWithTag(SetupPlateauWidthTag)
+        val widthTextField = composeRule.onNodeWithTag(SETUP_PLATEAU_WIDTH_TAG)
         widthTextField.performTextReplacement("a")
         widthTextField.assertTextContains("5")
 
-        val heightTextField = composeRule.onNodeWithTag(SetupPlateauHeightTag)
+        val heightTextField = composeRule.onNodeWithTag(SETUP_PLATEAU_HEIGHT_TAG)
         heightTextField.performTextReplacement(".")
         heightTextField.assertTextContains("5")
 
-        val xTextField = composeRule.onNodeWithTag(SetupInitialXTag)
+        val xTextField = composeRule.onNodeWithTag(SETUP_INITIAL_X_TAG)
         xTextField.performTextReplacement("~")
         xTextField.assertTextContains("0")
 
-        val yTextField = composeRule.onNodeWithTag(SetupInitialYTag)
+        val yTextField = composeRule.onNodeWithTag(SETUP_INITIAL_Y_TAG)
         yTextField.performTextReplacement("!")
         yTextField.assertTextContains("0")
 
-        val directionSelector = composeRule.onNodeWithTag(SetupInitialDirectionTag)
+        val directionSelector = composeRule.onNodeWithTag(SETUP_INITIAL_DIRECTION_TAG)
         directionSelector.assert(
             matcher = SemanticsMatcher.expectValue(
                 SemanticsProperties.IsEditable,
@@ -109,37 +109,37 @@ class SetupScreenTest {
 
     @Test
     fun continueButton_isDisabled_onEmptyPlateauWidth() {
-        composeRule.onNodeWithTag(SetupPlateauWidthTag)
+        composeRule.onNodeWithTag(SETUP_PLATEAU_WIDTH_TAG)
             .performTextClearance()
 
-        composeRule.onNodeWithTag(SetupContinueButtonTag)
+        composeRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG)
             .assertIsNotEnabled()
     }
 
     @Test
     fun continueButton_isDisabled_onEmptyPlateauHeight() {
-        composeRule.onNodeWithTag(SetupPlateauHeightTag)
+        composeRule.onNodeWithTag(SETUP_PLATEAU_HEIGHT_TAG)
             .performTextClearance()
 
-        composeRule.onNodeWithTag(SetupContinueButtonTag)
+        composeRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG)
             .assertIsNotEnabled()
     }
 
     @Test
     fun continueButton_isDisabled_onEmptyInitialX() {
-        composeRule.onNodeWithTag(SetupInitialXTag)
+        composeRule.onNodeWithTag(SETUP_INITIAL_X_TAG)
             .performTextClearance()
 
-        composeRule.onNodeWithTag(SetupContinueButtonTag)
+        composeRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG)
             .assertIsNotEnabled()
     }
 
     @Test
     fun continueButton_isDisabled_onEmptyInitialY() {
-        composeRule.onNodeWithTag(SetupInitialYTag)
+        composeRule.onNodeWithTag(SETUP_INITIAL_Y_TAG)
             .performTextClearance()
 
-        composeRule.onNodeWithTag(SetupContinueButtonTag)
+        composeRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG)
             .assertIsNotEnabled()
     }
 }

@@ -4,7 +4,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import com.knthcame.marsrover.ui.HomeStartButtonTag
+import com.knthcame.marsrover.ui.HOME_START_BUTTON_TAG
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
@@ -28,7 +28,7 @@ class HomeScreenTest {
             }
         }
 
-        composeRule.onNodeWithTag(HomeStartButtonTag)
+        composeRule.onNodeWithTag(HOME_START_BUTTON_TAG)
             .performClick()
 
         assert(setupStarted)

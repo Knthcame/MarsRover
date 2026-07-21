@@ -34,10 +34,10 @@ import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Instructions
 import com.knthcame.marsrover.data.control.models.Position
-import com.knthcame.marsrover.ui.MovementsTextFieldTag
-import com.knthcame.marsrover.ui.MovementsTextFieldTrailingIconTag
-import com.knthcame.marsrover.ui.MovementsTopBarTitleTag
-import com.knthcame.marsrover.ui.SendMovementsButtonTag
+import com.knthcame.marsrover.ui.MOVEMENTS_TEXT_FIELD_TAG
+import com.knthcame.marsrover.ui.MOVEMENTS_TEXT_FIELD_TRAILING_ICON_TAG
+import com.knthcame.marsrover.ui.MOVEMENTS_TOP_BAR_TITLE_TAG
+import com.knthcame.marsrover.ui.SEND_MOVEMENTS_BUTTON_TAG
 import com.knthcame.marsrover.ui.addMovementButtonTag
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvasLegend
@@ -80,7 +80,7 @@ fun MovementsScreen(state: State, onPushEvent: (UiEvent) -> Unit) {
                 onClick = { onPushEvent(UiEvent.SendMovements) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag(SendMovementsButtonTag),
+                    .testTag(SEND_MOVEMENTS_BUTTON_TAG),
                 enabled = state.instructions.movements.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.send_movements))
@@ -104,7 +104,7 @@ private fun MovementsTextField(state: State, onPushEvent: (UiEvent) -> Unit) {
         readOnly = true,
         modifier = Modifier
             .fillMaxWidth()
-            .testTag(MovementsTextFieldTag),
+            .testTag(MOVEMENTS_TEXT_FIELD_TAG),
         label = {
             Text(stringResource(R.string.movements))
         },
@@ -115,7 +115,7 @@ private fun MovementsTextField(state: State, onPushEvent: (UiEvent) -> Unit) {
             IconButton(
                 onClick = { onPushEvent(UiEvent.RemoveLastMovement) },
                 enabled = state.instructions.movements.isNotEmpty(),
-                modifier = Modifier.testTag(MovementsTextFieldTrailingIconTag),
+                modifier = Modifier.testTag(MOVEMENTS_TEXT_FIELD_TRAILING_ICON_TAG),
             ) {
                 Icon(painterResource(R.drawable.backspace), "Backspace icon")
             }
@@ -173,7 +173,7 @@ private fun MovementsTopBar(onNavigateBack: () -> Unit) {
         title = {
             Text(
                 text = stringResource(R.string.input_movements),
-                modifier = Modifier.testTag(MovementsTopBarTitleTag),
+                modifier = Modifier.testTag(MOVEMENTS_TOP_BAR_TITLE_TAG),
             )
         },
         navigationIcon = {

@@ -12,10 +12,10 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.text.AnnotatedString
 import com.knthcame.marsrover.HiltTestActivity
 import com.knthcame.marsrover.data.control.models.CardinalDirection
-import com.knthcame.marsrover.ui.MovementsOutputDialogOutputTextTag
-import com.knthcame.marsrover.ui.MovementsTextFieldTag
-import com.knthcame.marsrover.ui.MovementsTextFieldTrailingIconTag
-import com.knthcame.marsrover.ui.SendMovementsButtonTag
+import com.knthcame.marsrover.ui.MOVEMENTS_OUTPUT_DIALOG_OUTPUT_TEXT_TAG
+import com.knthcame.marsrover.ui.MOVEMENTS_TEXT_FIELD_TAG
+import com.knthcame.marsrover.ui.MOVEMENTS_TEXT_FIELD_TRAILING_ICON_TAG
+import com.knthcame.marsrover.ui.SEND_MOVEMENTS_BUTTON_TAG
 import com.knthcame.marsrover.ui.addMovementButtonTag
 import com.knthcame.marsrover.ui.navigation.Movements
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -87,27 +87,27 @@ class MovementsScreenTest {
         composeRule.onNodeWithTag(addMovementButtonTag(Movement.RotateRight))
             .performScrollTo()
             .performClick()
-        composeRule.onNodeWithTag(MovementsTextFieldTrailingIconTag)
+        composeRule.onNodeWithTag(MOVEMENTS_TEXT_FIELD_TRAILING_ICON_TAG)
             .performScrollTo()
             .performClick()
 
         // Assert correct movement sequence is shown
-        composeRule.onNodeWithTag(MovementsTextFieldTag, useUnmergedTree = true)
+        composeRule.onNodeWithTag(MOVEMENTS_TEXT_FIELD_TAG, useUnmergedTree = true)
             .assertTextEquals("LMLMLMLMM")
 
         // Send instructions
-        composeRule.onNodeWithTag(SendMovementsButtonTag, useUnmergedTree = true)
+        composeRule.onNodeWithTag(SEND_MOVEMENTS_BUTTON_TAG, useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
         // Assert correct output in alert dialog.
-        composeRule.onNodeWithTag(MovementsOutputDialogOutputTextTag, useUnmergedTree = true)
+        composeRule.onNodeWithTag(MOVEMENTS_OUTPUT_DIALOG_OUTPUT_TEXT_TAG, useUnmergedTree = true)
             .assertTextEquals("1 3 N")
     }
 
     @Test
     fun sendMovementsButton_isDisabled_onEmptyMovementsTextField() {
-        composeRule.onNodeWithTag(MovementsTextFieldTag)
+        composeRule.onNodeWithTag(MOVEMENTS_TEXT_FIELD_TAG)
             .assert(
                 SemanticsMatcher.expectValue(
                     SemanticsProperties.InputText,
@@ -115,7 +115,7 @@ class MovementsScreenTest {
                 ),
             )
 
-        composeRule.onNodeWithTag(SendMovementsButtonTag)
+        composeRule.onNodeWithTag(SEND_MOVEMENTS_BUTTON_TAG)
             .assertIsNotEnabled()
     }
 }

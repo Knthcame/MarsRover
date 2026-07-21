@@ -20,8 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
-import com.knthcame.marsrover.ui.HomeStartButtonTag
-import com.knthcame.marsrover.ui.HomeTopBarTitleTag
+import com.knthcame.marsrover.ui.HOME_START_BUTTON_TAG
+import com.knthcame.marsrover.ui.HOME_TOP_BAR_TITLE_TAG
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 
 @Composable
@@ -48,7 +48,7 @@ fun HomeScreen(onStartSetup: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)
-                    .testTag(HomeStartButtonTag),
+                    .testTag(HOME_START_BUTTON_TAG),
             ) {
                 Text(
                     text = stringResource(R.string.start),
@@ -66,7 +66,7 @@ private fun HomeTopBar() {
     TopAppBar(title = {
         Text(
             text = stringResource(R.string.app_name),
-            modifier = Modifier.testTag(HomeTopBarTitleTag),
+            modifier = Modifier.testTag(HOME_TOP_BAR_TITLE_TAG),
         )
     })
 }

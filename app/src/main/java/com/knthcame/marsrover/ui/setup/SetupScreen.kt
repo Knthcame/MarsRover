@@ -31,13 +31,13 @@ import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Position
-import com.knthcame.marsrover.ui.SetupContinueButtonTag
-import com.knthcame.marsrover.ui.SetupInitialDirectionTag
-import com.knthcame.marsrover.ui.SetupInitialXTag
-import com.knthcame.marsrover.ui.SetupInitialYTag
-import com.knthcame.marsrover.ui.SetupPlateauHeightTag
-import com.knthcame.marsrover.ui.SetupPlateauWidthTag
-import com.knthcame.marsrover.ui.SetupTopBarTitleTag
+import com.knthcame.marsrover.ui.SETUP_CONTINUE_BUTTON_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_DIRECTION_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_X_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_Y_TAG
+import com.knthcame.marsrover.ui.SETUP_PLATEAU_HEIGHT_TAG
+import com.knthcame.marsrover.ui.SETUP_PLATEAU_WIDTH_TAG
+import com.knthcame.marsrover.ui.SETUP_TOP_BAR_TITLE_TAG
 import com.knthcame.marsrover.ui.components.plateau.PlateauCanvas
 import com.knthcame.marsrover.ui.components.selectors.CardinalDirectionSelector
 import com.knthcame.marsrover.ui.setup.SetupContract.State
@@ -78,7 +78,7 @@ fun SetupScreen(state: State, onPushEvent: (UiEvent) -> Unit) {
                 enabled = state.isContinueEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag(SetupContinueButtonTag),
+                    .testTag(SETUP_CONTINUE_BUTTON_TAG),
             ) {
                 Text(
                     text = stringResource(R.string.continue_button),
@@ -120,7 +120,7 @@ private fun PlateauSizeTextFields(state: State, onPushEvent: (UiEvent) -> Unit) 
             onValueChange = { value -> onPushEvent(UiEvent.PlateauWidthChanged(value)) },
             modifier = Modifier
                 .weight(1f)
-                .testTag(SetupPlateauWidthTag),
+                .testTag(SETUP_PLATEAU_WIDTH_TAG),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -134,7 +134,7 @@ private fun PlateauSizeTextFields(state: State, onPushEvent: (UiEvent) -> Unit) 
             onValueChange = { value -> onPushEvent(UiEvent.PlateauHeightChanged(value)) },
             modifier = Modifier
                 .weight(1f)
-                .testTag(SetupPlateauHeightTag),
+                .testTag(SETUP_PLATEAU_HEIGHT_TAG),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -159,7 +159,7 @@ private fun InitialPositionTextFields(state: State, onPushEvent: (UiEvent) -> Un
             },
             modifier = Modifier
                 .weight(1f)
-                .testTag(SetupInitialXTag),
+                .testTag(SETUP_INITIAL_X_TAG),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -173,7 +173,7 @@ private fun InitialPositionTextFields(state: State, onPushEvent: (UiEvent) -> Un
             },
             modifier = Modifier
                 .weight(1f)
-                .testTag(SetupInitialYTag),
+                .testTag(SETUP_INITIAL_Y_TAG),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
@@ -184,7 +184,7 @@ private fun InitialPositionTextFields(state: State, onPushEvent: (UiEvent) -> Un
             label = stringResource(R.string.direction),
             modifier = Modifier
                 .weight(1f)
-                .testTag(SetupInitialDirectionTag),
+                .testTag(SETUP_INITIAL_DIRECTION_TAG),
             onSelect = { direction -> onPushEvent(UiEvent.InitialDirectionChanged(direction)) },
         )
     }
@@ -196,7 +196,7 @@ private fun SetupTopBar() {
     TopAppBar(title = {
         Text(
             text = stringResource(R.string.initial_setup),
-            modifier = Modifier.testTag(SetupTopBarTitleTag),
+            modifier = Modifier.testTag(SETUP_TOP_BAR_TITLE_TAG),
         )
     })
 }

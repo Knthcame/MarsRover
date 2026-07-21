@@ -1,6 +1,5 @@
 package com.knthcame.marsrover.ui.setup
 
-import android.util.Log
 import androidx.core.text.isDigitsOnly
 import com.knthcame.marsrover.data.control.models.CardinalDirection
 import com.knthcame.marsrover.foundation.coroutines.CoroutineScopeProvider
@@ -33,7 +32,7 @@ class SetupViewModel @Inject constructor(coroutineScopeProvider: CoroutineScopeP
             is UiEvent.InitialYChanged -> onInitialYChanged(uiEvent.value)
             is UiEvent.PlateauHeightChanged -> onPlateauHeightChanged(uiEvent.value)
             is UiEvent.PlateauWidthChanged -> onPlateauWidthChanged(uiEvent.value)
-            UiEvent.OnContinueClicked -> onContinueClicked(state.value)
+            UiEvent.OnContinueClicked -> state.value.onContinueClicked()
         }
     }
 
@@ -73,17 +72,19 @@ class SetupViewModel @Inject constructor(coroutineScopeProvider: CoroutineScopeP
         state.copy(initialDirection = newValue)
     }
 
-    private fun onContinueClicked(state: State) = state.toMovementNavKey()?.let { navKey ->
-        emitEffect(Effect.NavigateToMovements(navKey))
-    } ?: Log.e("SetupViewModel", "Invalid user input, cannot continue: $state")
+    private fun State.onContinueClicked() {
+        if (isContinueEnabled.not()) return
 
-    private fun State.toMovementNavKey(): Movements? {
-        return Movements(
-            plateauHeight = plateauHeight ?: return null,
-            plateauWidth = plateauWidth ?: return null,
-            initialPositionX = initialX ?: return null,
-            initialPositionY = initialY ?: return null,
-            initialDirection = initialDirection,
+        emitEffect(
+            Effect.NavigateToMovements(
+                Movements(
+                    plateauHeight = plateauHeight!!,
+                    plateauWidth = plateauWidth!!,
+                    initialPositionX = initialX!!,
+                    initialPositionY = initialY!!,
+                    initialDirection = initialDirection,
+                ),
+            ),
         )
     }
 

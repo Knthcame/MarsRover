@@ -9,16 +9,16 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.knthcame.marsrover.ui.HomeStartButtonTag
-import com.knthcame.marsrover.ui.HomeTopBarTitleTag
-import com.knthcame.marsrover.ui.MovementsOutputDialogOutputTextTag
-import com.knthcame.marsrover.ui.MovementsTextFieldTag
-import com.knthcame.marsrover.ui.SendMovementsButtonTag
-import com.knthcame.marsrover.ui.SetupContinueButtonTag
-import com.knthcame.marsrover.ui.SetupInitialXTag
-import com.knthcame.marsrover.ui.SetupInitialYTag
-import com.knthcame.marsrover.ui.SetupPlateauHeightTag
-import com.knthcame.marsrover.ui.SetupPlateauWidthTag
+import com.knthcame.marsrover.ui.HOME_START_BUTTON_TAG
+import com.knthcame.marsrover.ui.HOME_TOP_BAR_TITLE_TAG
+import com.knthcame.marsrover.ui.MOVEMENTS_OUTPUT_DIALOG_OUTPUT_TEXT_TAG
+import com.knthcame.marsrover.ui.MOVEMENTS_TEXT_FIELD_TAG
+import com.knthcame.marsrover.ui.SEND_MOVEMENTS_BUTTON_TAG
+import com.knthcame.marsrover.ui.SETUP_CONTINUE_BUTTON_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_X_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_Y_TAG
+import com.knthcame.marsrover.ui.SETUP_PLATEAU_HEIGHT_TAG
+import com.knthcame.marsrover.ui.SETUP_PLATEAU_WIDTH_TAG
 import com.knthcame.marsrover.ui.addMovementButtonTag
 import com.knthcame.marsrover.ui.movements.Movement
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -57,23 +57,23 @@ class MainActivityTest {
 
     @Test
     fun testLaunch() {
-        composeActivityRule.onNodeWithTag(HomeTopBarTitleTag, useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(HOME_TOP_BAR_TITLE_TAG, useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
     @Test
     fun endToEndTest() {
         // Navigate to setup screen
-        composeActivityRule.onNodeWithTag(HomeStartButtonTag).performClick()
+        composeActivityRule.onNodeWithTag(HOME_START_BUTTON_TAG).performClick()
 
         // Input setup data
-        composeActivityRule.onNodeWithTag(SetupPlateauWidthTag).performTextReplacement("5")
-        composeActivityRule.onNodeWithTag(SetupPlateauHeightTag).performTextReplacement("3")
-        composeActivityRule.onNodeWithTag(SetupInitialXTag).performTextReplacement("1")
-        composeActivityRule.onNodeWithTag(SetupInitialYTag).performTextReplacement("2")
+        composeActivityRule.onNodeWithTag(SETUP_PLATEAU_WIDTH_TAG).performTextReplacement("5")
+        composeActivityRule.onNodeWithTag(SETUP_PLATEAU_HEIGHT_TAG).performTextReplacement("3")
+        composeActivityRule.onNodeWithTag(SETUP_INITIAL_X_TAG).performTextReplacement("1")
+        composeActivityRule.onNodeWithTag(SETUP_INITIAL_Y_TAG).performTextReplacement("2")
 
         // Navigate to movements screen
-        composeActivityRule.onNodeWithTag(SetupContinueButtonTag, useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG, useUnmergedTree = true)
             .performScrollTo().performClick()
 
         // Input movements
@@ -115,16 +115,16 @@ class MainActivityTest {
         ).performScrollTo().performClick()
 
         // Assert correct movement sequence is shown
-        composeActivityRule.onNodeWithTag(MovementsTextFieldTag, useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(MOVEMENTS_TEXT_FIELD_TAG, useUnmergedTree = true)
             .assertTextEquals("LMLMLMLMM")
 
         // Send instructions
-        composeActivityRule.onNodeWithTag(SendMovementsButtonTag, useUnmergedTree = true)
+        composeActivityRule.onNodeWithTag(SEND_MOVEMENTS_BUTTON_TAG, useUnmergedTree = true)
             .performScrollTo().performClick()
 
         // Assert correct output in alert dialog.
         composeActivityRule.onNodeWithTag(
-            MovementsOutputDialogOutputTextTag,
+            MOVEMENTS_OUTPUT_DIALOG_OUTPUT_TEXT_TAG,
             useUnmergedTree = true,
         )
             .assertTextEquals("1 3 N")
