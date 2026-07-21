@@ -94,6 +94,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
+detekt {
+    basePath.set(projectDir)
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "Knthcame_MarsRover")
