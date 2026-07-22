@@ -1,18 +1,22 @@
 package com.knthcame.marsrover.ui.movements
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.knthcame.marsrover.data.calculation.RoverPositionCalculator
 import com.knthcame.marsrover.data.control.models.Coordinates
 import com.knthcame.marsrover.data.control.models.Instructions
 import com.knthcame.marsrover.data.control.models.Position
 import com.knthcame.marsrover.data.control.repositories.RoverRepository
+import com.knthcame.marsrover.foundation.coroutines.CoroutineScopeProvider
+import com.knthcame.marsrover.foundation.viewmodels.MviViewModel
+import com.knthcame.marsrover.foundation.viewmodels.ViewModelAssistedFactory
+import com.knthcame.marsrover.ui.movements.MovementsContract.Effect
+import com.knthcame.marsrover.ui.movements.MovementsContract.State
+import com.knthcame.marsrover.ui.movements.MovementsContract.UiEvent
 import com.knthcame.marsrover.ui.navigation.Movements
-import com.knthcame.marsrover.ui.navigation.ViewModelAssistedFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -24,15 +28,19 @@ class MovementsViewModel @AssistedInject constructor(
     @Assisted route: Movements,
     private val roverRepository: RoverRepository,
     private val roverPositionCalculator: RoverPositionCalculator,
-    private val viewModeScope: CoroutineScope,
-) : ViewModel(viewModeScope) {
+    coroutineScopeProvider: CoroutineScopeProvider,
+) : MviViewModel<State, UiEvent, Effect>(
+    viewModelScope = coroutineScopeProvider.viewModel,
+    eventsCoroutineContext = coroutineScopeProvider.events,
+    uiCoroutineContext = coroutineScopeProvider.ui,
+) {
 
     @AssistedFactory
     interface Factory : ViewModelAssistedFactory<MovementsViewModel, Movements>
 
     private val json = Json { prettyPrint = true }
-    private val _uiState = MutableStateFlow(
-        MovementsUiState(
+    private val _state = MutableStateFlow(
+        State(
             instructions = Instructions(
                 topRightCorner = Coordinates(route.plateauWidth, route.plateauHeight),
                 roverPosition = Coordinates(route.initialPositionX, route.initialPositionY),
@@ -42,57 +50,57 @@ class MovementsViewModel @AssistedInject constructor(
             input = "",
             output = "",
             outputReceived = false,
-        ),
-    )
-    private val _roverPositions = MutableStateFlow(
-        listOf(
-            Position(
-                roverPosition = Coordinates(route.initialPositionX, route.initialPositionY),
-                roverDirection = route.initialDirection,
+            predictedPositions = listOf(
+                Position(
+                    roverPosition = Coordinates(route.initialPositionX, route.initialPositionY),
+                    roverDirection = route.initialDirection,
+                ),
             ),
         ),
     )
 
-    val uiState: StateFlow<MovementsUiState> = _uiState
-    val roverPositions: StateFlow<List<Position>> = _roverPositions
+    override val state: StateFlow<State> = _state
 
-    fun addMovement(movement: Movement) {
-        _uiState.update { oldValue ->
-            val movements = oldValue.instructions.movements
-            oldValue.copy(
-                instructions = oldValue.instructions.copy(movements = movements + movement.code),
-            )
-        }
+    override fun onUiEvent(uiEvent: UiEvent) = when (uiEvent) {
+        is UiEvent.AddMovement -> addMovement(uiEvent.movement)
+        UiEvent.DismissOutputDialog -> dismissOutputDialog()
+        UiEvent.RemoveLastMovement -> removeLastMovement()
+        UiEvent.SendMovements -> sendMovements()
+        UiEvent.NavigateBackClick -> emitEffect(Effect.NavigateBack)
+    }
+
+    private fun addMovement(movement: Movement) = _state.update { state ->
         val nextPosition = roverPositionCalculator.calculateNextPosition(
-            topRightCorner = uiState.value.instructions.topRightCorner,
-            currentPosition = roverPositions.value.last(),
+            topRightCorner = state.instructions.topRightCorner,
+            currentPosition = state.predictedPositions.last(),
             movement = movement,
         )
-        _roverPositions.update { oldValue ->
-            oldValue + nextPosition
-        }
+        val movements = state.instructions.movements
+        state.copy(
+            instructions = state.instructions.copy(movements = movements + movement.code),
+            predictedPositions = state.predictedPositions + nextPosition,
+        )
     }
 
-    fun removeLastMovement() {
-        _uiState.update { oldValue ->
-            val oldMovements = oldValue.instructions.movements
-            val newMovements = oldMovements.substring(0, oldMovements.lastIndex)
-            oldValue.copy(
-                instructions = oldValue.instructions.copy(movements = newMovements),
-            )
-        }
-        _roverPositions.update { oldValue ->
-            oldValue.subList(0, oldValue.lastIndex)
-        }
+    private fun removeLastMovement() = _state.update { state ->
+        val oldMovements = state.instructions.movements
+        val newMovements = oldMovements.substring(0, oldMovements.lastIndex)
+        state.copy(
+            instructions = state.instructions.copy(movements = newMovements),
+            predictedPositions = state.predictedPositions.subList(
+                0,
+                state.predictedPositions.lastIndex,
+            ),
+        )
     }
 
-    fun sendMovements() {
-        viewModeScope.launch {
-            val state = uiState.value
+    private fun sendMovements() {
+        viewModelScope.launch {
+            val state = state.value
             val output = roverRepository.send(state.instructions)
 
-            _uiState.update { oldValue ->
-                oldValue.copy(
+            _state.update { state ->
+                state.copy(
                     input = json.encodeToString(state.instructions),
                     output = buildString {
                         append(output.roverPosition.x)
@@ -107,9 +115,7 @@ class MovementsViewModel @AssistedInject constructor(
         }
     }
 
-    fun dismissOutputDialog() {
-        _uiState.update { oldValue ->
-            oldValue.copy(input = "", output = "", outputReceived = false)
-        }
+    private fun dismissOutputDialog() = _state.update { state ->
+        state.copy(input = "", output = "", outputReceived = false)
     }
 }

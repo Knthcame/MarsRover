@@ -1,15 +1,26 @@
 package com.knthcame.marsrover.ui.setup
 
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import com.knthcame.marsrover.HiltTestActivity
 import com.knthcame.marsrover.data.control.models.CardinalDirection
-import com.knthcame.marsrover.data.control.models.Coordinates
+import com.knthcame.marsrover.ui.SETUP_CONTINUE_BUTTON_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_DIRECTION_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_X_TAG
+import com.knthcame.marsrover.ui.SETUP_INITIAL_Y_TAG
+import com.knthcame.marsrover.ui.SETUP_PLATEAU_HEIGHT_TAG
+import com.knthcame.marsrover.ui.SETUP_PLATEAU_WIDTH_TAG
+import com.knthcame.marsrover.ui.modalSheetDirectionButtonTag
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -28,55 +39,107 @@ class SetupScreenTest {
     @Before
     fun before() {
         hiltRule.inject()
+
+        composeRule.setContent {
+            MarsRoverTheme {
+                SetupScreenRoute(onNavigate = { })
+            }
+        }
     }
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun continueButton_sendsInputData_toNextScreen() {
-        var navTopRightCorner: Coordinates? = null
-        var navInitialPosition: Coordinates? = null
-        var navInitialDirection: CardinalDirection? = null
+    fun screenState_isUpdated_onValidUserInput() {
+        // Input text fields
+        val widthTextField = composeRule.onNodeWithTag(SETUP_PLATEAU_WIDTH_TAG)
+        widthTextField.performTextReplacement("7")
+        widthTextField.assertTextContains("7")
 
-        composeRule.setContent {
-            MarsRoverTheme {
-                SetupScreenRoute(onSetupCompleted = {
-                        topRightCorner,
-                        initialPosition,
-                        initialDirection,
-                    ->
-                    navTopRightCorner = topRightCorner
-                    navInitialPosition = initialPosition
-                    navInitialDirection = initialDirection
-                })
-            }
-        }
+        val heightTextField = composeRule.onNodeWithTag(SETUP_PLATEAU_HEIGHT_TAG)
+        heightTextField.performTextReplacement("3")
+        heightTextField.assertTextContains("3")
 
-        // Input setup data
-        composeRule.onNodeWithTag("setupPlateauWidthTextField")
-            .performTextReplacement("5")
-        composeRule.onNodeWithTag("setupPlateauHeightTextField")
-            .performTextReplacement("2")
-        composeRule.onNodeWithTag("setupInitialXTextField")
-            .performTextReplacement("1")
-        composeRule.onNodeWithTag("setupInitialYTextField")
-            .performTextReplacement("2")
-        composeRule.onNodeWithTag("setupInitialDirectionTextField")
+        val xTextField = composeRule.onNodeWithTag(SETUP_INITIAL_X_TAG)
+        xTextField.performTextReplacement("1")
+        xTextField.assertTextContains("1")
+
+        val yTextField = composeRule.onNodeWithTag(SETUP_INITIAL_Y_TAG)
+        yTextField.performTextReplacement("2")
+        yTextField.assertTextContains("2")
+
+        // Select direction
+        composeRule.onNodeWithTag(SETUP_INITIAL_DIRECTION_TAG)
             .performClick()
-
-        val northButtonTestTag = "modalSheet${CardinalDirection.North}DirectionButton"
-        composeRule.waitUntilExactlyOneExists(hasTestTag(northButtonTestTag))
-        composeRule.onNodeWithTag(northButtonTestTag, useUnmergedTree = true)
+        val eastButtonTestTag = modalSheetDirectionButtonTag(CardinalDirection.East)
+        composeRule.waitUntilExactlyOneExists(hasTestTag(eastButtonTestTag))
+        composeRule.onNodeWithTag(eastButtonTestTag, useUnmergedTree = true)
             .performClick()
-        composeRule.waitUntilDoesNotExist(hasTestTag(northButtonTestTag))
+        composeRule.waitUntilDoesNotExist(hasTestTag(eastButtonTestTag))
 
-        // Click continue button
-        composeRule.onNodeWithTag("setupContinueButton")
-            .performScrollTo()
-            .performClick()
+        composeRule.onNodeWithTag(SETUP_INITIAL_DIRECTION_TAG)
+            .assertTextContains(CardinalDirection.East.name)
+    }
 
-        // Assert input is communicated to next screen.
-        assert(navTopRightCorner == Coordinates(5, 2))
-        assert(navInitialPosition == Coordinates(1, 2))
-        assert(navInitialDirection == CardinalDirection.North)
+    @Test
+    fun screenState_isNotUpdated_onInvalidUserInput() {
+        val widthTextField = composeRule.onNodeWithTag(SETUP_PLATEAU_WIDTH_TAG)
+        widthTextField.performTextReplacement("a")
+        widthTextField.assertTextContains("5")
+
+        val heightTextField = composeRule.onNodeWithTag(SETUP_PLATEAU_HEIGHT_TAG)
+        heightTextField.performTextReplacement(".")
+        heightTextField.assertTextContains("5")
+
+        val xTextField = composeRule.onNodeWithTag(SETUP_INITIAL_X_TAG)
+        xTextField.performTextReplacement("~")
+        xTextField.assertTextContains("0")
+
+        val yTextField = composeRule.onNodeWithTag(SETUP_INITIAL_Y_TAG)
+        yTextField.performTextReplacement("!")
+        yTextField.assertTextContains("0")
+
+        val directionSelector = composeRule.onNodeWithTag(SETUP_INITIAL_DIRECTION_TAG)
+        directionSelector.assert(
+            matcher = SemanticsMatcher.expectValue(
+                SemanticsProperties.IsEditable,
+                false,
+            ),
+        )
+    }
+
+    @Test
+    fun continueButton_isDisabled_onEmptyPlateauWidth() {
+        composeRule.onNodeWithTag(SETUP_PLATEAU_WIDTH_TAG)
+            .performTextClearance()
+
+        composeRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG)
+            .assertIsNotEnabled()
+    }
+
+    @Test
+    fun continueButton_isDisabled_onEmptyPlateauHeight() {
+        composeRule.onNodeWithTag(SETUP_PLATEAU_HEIGHT_TAG)
+            .performTextClearance()
+
+        composeRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG)
+            .assertIsNotEnabled()
+    }
+
+    @Test
+    fun continueButton_isDisabled_onEmptyInitialX() {
+        composeRule.onNodeWithTag(SETUP_INITIAL_X_TAG)
+            .performTextClearance()
+
+        composeRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG)
+            .assertIsNotEnabled()
+    }
+
+    @Test
+    fun continueButton_isDisabled_onEmptyInitialY() {
+        composeRule.onNodeWithTag(SETUP_INITIAL_Y_TAG)
+            .performTextClearance()
+
+        composeRule.onNodeWithTag(SETUP_CONTINUE_BUTTON_TAG)
+            .assertIsNotEnabled()
     }
 }

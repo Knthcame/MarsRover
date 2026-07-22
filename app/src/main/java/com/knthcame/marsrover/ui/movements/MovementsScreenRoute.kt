@@ -1,9 +1,11 @@
 package com.knthcame.marsrover.ui.movements
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.knthcame.marsrover.foundation.coroutines.collectWithLifecycle
+import com.knthcame.marsrover.ui.movements.MovementsContract.Effect
 import com.knthcame.marsrover.ui.navigation.Movements
 
 @Composable
@@ -11,16 +13,13 @@ fun MovementsScreenRoute(movements: Movements, onNavigateBack: () -> Unit) {
     val viewModel = hiltViewModel<MovementsViewModel, MovementsViewModel.Factory> { factory ->
         factory.create(movements)
     }
-    val uiState by viewModel.uiState.collectAsState()
-    val roverPositions by viewModel.roverPositions.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    MovementsScreen(
-        uiState = uiState,
-        roverPositions = roverPositions,
-        onNavigateBack = onNavigateBack,
-        onAddMovement = { movement -> viewModel.addMovement(movement) },
-        onRemoveMovement = { viewModel.removeLastMovement() },
-        onConfirm = { viewModel.sendMovements() },
-        onDismissOutputDialog = { viewModel.dismissOutputDialog() },
-    )
+    MovementsScreen(state = state, onPushEvent = viewModel::push)
+
+    viewModel.effects.collectWithLifecycle { effect ->
+        when (effect) {
+            Effect.NavigateBack -> onNavigateBack()
+        }
+    }
 }

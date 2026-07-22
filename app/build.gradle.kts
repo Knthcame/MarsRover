@@ -72,12 +72,12 @@ dependencies {
     ksp(libs.kotlin.metadata.jvm)
     ksp(libs.hilt.compiler)
 
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)
-    testImplementation(libs.hilt.android.testing)
-    kspTest(libs.hilt.compiler)
+    testImplementation(libs.app.cash.turbine)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -88,6 +88,10 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+detekt {
+    basePath.set(projectDir)
 }
 
 sonar {
@@ -106,8 +110,8 @@ sonar {
                     "**/MainActivity.kt," +
                     "**/*Application.kt," +
                     "**/di/**.kt," +
-                    "**/Fake*," +
-                    "**/ui/movements/**," // Due to limitations in navigation library (see README)
+                    "**/foundation/coroutines/**," +
+                    "**/Fake*,"
         )
     }
 }

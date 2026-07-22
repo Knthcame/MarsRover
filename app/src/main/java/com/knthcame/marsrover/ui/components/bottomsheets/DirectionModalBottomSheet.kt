@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.knthcame.marsrover.R
 import com.knthcame.marsrover.data.control.models.CardinalDirection
+import com.knthcame.marsrover.ui.modalSheetDirectionButtonTag
 import com.knthcame.marsrover.ui.theme.MarsRoverTheme
 import kotlinx.coroutines.launch
 
@@ -81,7 +82,7 @@ private fun DirectionsCompassButtons(
 private fun DirectionButton(direction: CardinalDirection, onSelect: (CardinalDirection) -> Unit) {
     OutlinedButton(
         onClick = { onSelect(direction) },
-        modifier = Modifier.testTag("modalSheet${direction}DirectionButton"),
+        modifier = Modifier.testTag(modalSheetDirectionButtonTag(direction)),
     ) {
         Text(direction.name)
     }
