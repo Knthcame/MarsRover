@@ -40,7 +40,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
         with:
-          distribution: 'temurin'
+          distribution: 'jetbrains'
           java-version: '17'
 
       - name: Setup Gradle
@@ -118,7 +118,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
         with:
-          distribution: 'temurin'
+          distribution: 'jetbrains'
           java-version: '17'
 
       - name: Enable KVM
@@ -166,7 +166,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
         with:
-          distribution: 'temurin'
+          distribution: 'jetbrains'
           java-version: '17'
 
       - name: Setup Android SDK
