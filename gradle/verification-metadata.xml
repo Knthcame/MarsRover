@@ -32,8 +32,10 @@
          <trusted-key id="0E225917414670F4442C250DFD533C07C264648F">
             <trusting group="androidx.activity"/>
             <trusting group="androidx.annotation"/>
+            <trusting group="androidx.collection"/>
             <trusting group="androidx.core"/>
             <trusting group="androidx.databinding"/>
+            <trusting group="androidx.emoji2"/>
             <trusting group="androidx.hilt"/>
             <trusting group="androidx.lifecycle"/>
             <trusting group="androidx.navigation3"/>
@@ -47,6 +49,7 @@
             <trusting group="androidx.collection"/>
             <trusting group="androidx.core"/>
             <trusting group="androidx.databinding"/>
+            <trusting group="androidx.graphics" name="graphics-path" version="1.1.0"/>
             <trusting group="androidx.hilt"/>
             <trusting group="androidx.lifecycle"/>
             <trusting group="androidx.navigation"/>
